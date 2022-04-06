@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 
 const app = express();
-
+import RiveScript from 'rivescript';
 
 //// Enable ALL CORS request
 app.use(cors())
@@ -31,11 +31,11 @@ bot.loadFile("brain/testsuite.rive").then(loading_done).catch(loading_error);
 
 // Load a list of files all at once (the best alternative to loadDirectory
 // for the web!)
-bot.loadFile([
+/*bot.loadFile([
   "brain/begin.rive",
   "brain/admin.rive",
   "brain/clients.rive"
-]).then(loading_done).catch(loading_error);
+]).then(loading_done).catch(loading_error);*/
 
 // All file loading operations are asynchronous, so you need handlers
 // to catch when they've finished. If you use loadDirectory (or loadFile
