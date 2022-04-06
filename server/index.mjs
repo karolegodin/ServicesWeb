@@ -1,3 +1,25 @@
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+
+const app = express();
+
+
+//// Enable ALL CORS request
+app.use(cors())
+////
+
+const port = 3001
+
+app.use(bodyParser.json()) 
+app.use(bodyParser.urlencoded({ extended: true })) 
+
+/*
+*****************************
+BOT RIVESCRIPT
+*****************************
+*/
+
 var bot = new RiveScript();
 
 // Load a directory full of RiveScript documents (.rive files). This is for
