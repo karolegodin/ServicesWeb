@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/karolegodin/ServicesWeb/issues"
   },
-  "homepage": "https://github.com/karolegodin/ServicesWeb#readme"
+  "homepage": "https://github.com/karolegodin/ServicesWeb#readme",
+  "dependencies": {
+    "rivescript": "^2.2.0"
+  }
 }
