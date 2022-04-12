@@ -1,9 +1,22 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import fetch from 'node-fetch';
 
 const app = express();
 import RiveScript from 'rivescript';
+
+import {BotService} from "./models/BotService_ArrayImpl.mjs";
+let botServiceInstance;
+let botServiceAccessPoint = new BotService({url:"http://localhost",port:3001});
+
+import {BrainService} from "./models/BrainService_ArrayImpl.mjs";
+let brainServiceInstance;
+//let brainServiceAccessPoint = new BrainService({url:"http://localhost",port:3001});
+
+import {MouthService} from "./models/MouthService_ArrayImpl.mjs";
+let mouthServiceInstance;
+//let mouthServiceAccessPoint = new MouthService({url:"http://localhost",port:3002});
 
 //// Enable ALL CORS request
 app.use(cors())
@@ -63,3 +76,19 @@ function loading_done() {
 function loading_error(error, filename, lineno) {
   console.log("Error when loading files: " + error);
 }
+
+let id = Math.floor(Math.random() * Math.floor(100000)) ;
+let aBot ={ //UGLY
+	'id':id,
+	'title':'Random Title',
+};
+
+BotService.create(botServiceAccessPoint).then(bs=>{
+	botServiceInstance=bs;
+	botServiceInstance
+		.addBot(aBot)
+		.catch((err)=>{console.log(err);});
+	app.listen(port, () => {
+  		console.log(`Example app listening at http://localhost:${port}`)
+	});
+});
