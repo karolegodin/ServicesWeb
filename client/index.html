@@ -38,10 +38,10 @@
 		let addNewBotButton;
 
 		function init(){
-			botListElt = document.getElementById("taskListUL");
-			brainListElt = document.getElementById("personListSELECT");
+			botListElt = document.getElementById("botListUL");
+			brainListElt = document.getElementById("brainListSELECT");
             mouthListElt = document.getElementById("mouthListElt");
-			modal = document.getElementById("newTaskModal");
+			modal = document.getElementById("newModal");
 			inputTitle = document.getElementById("inputTitle");
 			inputStatus = document.getElementById("inputStatus");
 
@@ -59,8 +59,8 @@
 
 		function reloadBotList(){
 			//first, clean up
-			while (taskListElt.firstChild) {
-  				taskListElt.removeChild(taskListElt.firstChild);
+			while (botListElt.firstChild) {
+  				botListElt.removeChild(botListElt.firstChild);
 			}
 			let myHeaders = new Headers();
 			myHeaders.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -80,7 +80,7 @@
 			fetch(myURL,myInit)
 				.then((httpResponse)=>{
 					
-					return httpResponse.json()//correspond à setOfTasks
+					return httpResponse.json()
 				})
 				.then((setOfTasks)=>{
 					for(let task of setOfTasks){

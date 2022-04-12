@@ -24,10 +24,10 @@ var bot = new RiveScript();
 
 // Load a directory full of RiveScript documents (.rive files). This is for
 // Node.JS only: it doesn't work on the web!
-bot.loadDirectory("brain").then(loading_done).catch(loading_error);
+bot.loadDirectory("pathtobrain").then(loading_done).catch(loading_error);
 
 // Load an individual file.
-bot.loadFile("brain/testsuite.rive").then(loading_done).catch(loading_error);
+bot.loadFile("pathtobrain/standard.rive").then(loading_done).catch(loading_error);
 
 // Load a list of files all at once (the best alternative to loadDirectory
 // for the web!)
