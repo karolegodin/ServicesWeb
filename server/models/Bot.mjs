@@ -84,6 +84,15 @@ class Bot{
 
 }
 
+function isInt(value) {
+  let x = parseFloat(value);
+  return !isNaN(value) && (x | 0) === x;
+}
+
+function isString(myVar) {
+  return (typeof myVar === 'string' || myVar instanceof String) ;
+}
+
 class BotIdentifier{
     static botId = this.botId; //the id of the Person in the micro-service
     // TODO : when multiple sources of Persons is used : should differentiate personId and a localPersonId...
