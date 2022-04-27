@@ -37,10 +37,11 @@ var bot = new RiveScript();
 
 // Load a directory full of RiveScript documents (.rive files). This is for
 // Node.JS only: it doesn't work on the web!
-bot.loadDirectory("pathtobrain").then(loading_done).catch(loading_error);
+//bot.loadDirectory("pathtobrain").then(loading_done).catch(loading_error);
 
 // Load an individual file.
 bot.loadFile("pathtobrain/standard.rive").then(loading_done).catch(loading_error);
+let username = "local-user";
 
 // Load a list of files all at once (the best alternative to loadDirectory
 // for the web!)
@@ -64,12 +65,13 @@ function loading_done() {
 
   // RiveScript remembers user data by their username and can tell
   // multiple users apart.
-  let username = "local-user";
+  //let username = "local-user";
 
   // NOTE: the API has changed in v2.0.0 and returns a Promise now.
   bot.reply(username, "Hello, bot!").then(function(reply) {
     console.log("The bot says: " + reply);
   });
+  sendMessage("Coucou bande de nouilles");
 }
 
 // It's good to catch errors too!
@@ -77,7 +79,7 @@ function loading_error(error, filename, lineno) {
   console.log("Error when loading files: " + error);
 }
 
-let id = Math.floor(Math.random() * Math.floor(100000)) ;
+let id = 0 ; //Math.floor(Math.random() * Math.floor(100000)) ;
 let aBot ={ //UGLY
 	'id':id,
 	'title':'Random Title',
@@ -92,6 +94,28 @@ BotService.create(botServiceAccessPoint).then(bs=>{
   		console.log(`Example app listening at http://localhost:${port}`)
 	});
 });
+
+// Handle sending a message to the bot.
+function sendMessage (text) {
+  console.log("You say: " + text);
+	//$("#message").val("");
+	//$("#dialogue").append("<div><span class='user'>You:</span> " + text + "</div>");
+  bot.sortReplies();
+  console.log("tabernacle : " + username);
+  bot.reply(username,text).then(function(reply) {
+    console.log("The bot says: " + reply);
+  });
+	/*bot.reply(username, text, this).then(function(reply) {
+		reply = reply.replace(/\n/g, "<br>");*/
+    
+		//$("#dialogue").append("<div><span class='bot'>Bot:</span> " + reply + "</div>");
+		//$("#dialogue").animate({ scrollTop: $("#dialogue").height() }, 1000);
+	/*}).catch(function(e) {
+		console.log(e.message + "\n" + e.line);*/
+  //return false;
+}
+
+
 
 function isInt(value) {
   let x = parseFloat(value);
