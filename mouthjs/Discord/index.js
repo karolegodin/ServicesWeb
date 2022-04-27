@@ -37,10 +37,10 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.login(token);
-
 /*
-const { Client, Intents, MessageEmbed } = require('discord.js');
+const { Client, Intents, MessageEmbed } = require('@discord.js/rest');
 const fetch = require('node-fetch');
+const { token } = require('./config.json');
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
@@ -86,4 +86,4 @@ client.on('interactionCreate', async interaction => {
 	}
 });
 
-client.login('your-token-goes-here');*/
+client.login(token);*/
