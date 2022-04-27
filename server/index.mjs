@@ -71,6 +71,7 @@ function loading_done() {
   bot.reply(username, "Hello, bot!").then(function(reply) {
     console.log("The bot says: " + reply);
   });
+  sendMessage("Coucou bande de nouilles");
 }
 
 // It's good to catch errors too!
@@ -114,7 +115,7 @@ function sendMessage (text) {
   //return false;
 }
 
-sendMessage("Coucou bande de nouilles");
+
 
 function isInt(value) {
   let x = parseFloat(value);
