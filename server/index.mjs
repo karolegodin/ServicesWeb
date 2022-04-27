@@ -26,6 +26,7 @@ const port = 3001
 
 app.use(bodyParser.json()) 
 app.use(bodyParser.urlencoded({ extended: true })) 
+app.use(express.static('./../client'))
 
 /*
 *****************************
@@ -34,6 +35,7 @@ BOT RIVESCRIPT
 */
 
 var bot = new RiveScript();
+let username = "local-user";
 
 // Load a directory full of RiveScript documents (.rive files). This is for
 // Node.JS only: it doesn't work on the web!
@@ -41,7 +43,7 @@ var bot = new RiveScript();
 
 // Load an individual file.
 bot.loadFile("pathtobrain/standard.rive").then(loading_done).catch(loading_error);
-let username = "local-user";
+
 
 // Load a list of files all at once (the best alternative to loadDirectory
 // for the web!)
@@ -115,6 +117,31 @@ function sendMessage (text) {
   //return false;
 }
 
+//Page d'accueil
+app.get('/', (req, res)=>{
+	try{
+    //let json_var = {'test':'oui'};
+		res.sendFile('/client/index.html', { root: './..' })
+
+	}
+	catch(err){
+		console.log(`Error ${err} thrown`);
+		res.status(404).send('NOT FOUND');
+	}
+});
+
+//Page pour parler à un bot
+app.get('/bots', (req, res)=>{
+	try{
+    //let json_var = {'test':'oui'};
+		res.sendFile('/client/bots.html', { root: './..' })
+
+	}
+	catch(err){
+		console.log(`Error ${err} thrown`);
+		res.status(404).send('NOT FOUND');
+	}
+});
 
 
 function isInt(value) {
