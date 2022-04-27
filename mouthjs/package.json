@@ -1,10 +1,10 @@
 {
   "name": "git-projet-services-web",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon indexSlack.js"
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,12 @@
     "@discordjs/rest": "^0.3.0",
     "@slack/events-api": "^3.0.1",
     "@slack/web-api": "^6.7.1",
+    "axios": "^0.27.2",
     "discord-api-types": "^0.31.1",
-    "discord.js": "^13.6.0"
-  }
+    "discord.js": "^13.6.0",
+    "dotenv": "^16.0.0",
+    "slackbots": "^1.2.0"
+  },
+  "devDependencies": {},
+  "description": ""
 }
