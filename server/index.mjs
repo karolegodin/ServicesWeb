@@ -131,10 +131,10 @@ app.get('/', (req, res)=>{
 });
 
 //Page pour parler à un bot
-app.get('/bots', (req, res)=>{
+app.get('/createBot', (req, res)=>{
 	try{
     //let json_var = {'test':'oui'};
-		res.sendFile('/client/bots.html', { root: './..' })
+		res.sendFile('/client/createBot.html', { root: './..' })
 
 	}
 	catch(err){

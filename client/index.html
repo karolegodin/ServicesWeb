@@ -50,14 +50,20 @@
             reloadMouthList();
 			//setInterval(reloadList,5000);
 
-			newBotButton = document.getElementById("newBotButton");
+			newBotButton = document.getElementById("newBotButton"); //bouton pour créer un bot
 			newBotButton.addEventListener("click",()=>{modal.style.display = "block";});
 			addNewBotButton = document.getElementById("addNewBotButton");
 			addNewBotButton.addEventListener("click",createNewBot);
+			allBotsButton = document.getElementById("allBotsButton"); //bouton pour aller sur la page avec une liste de tous les bots
+			allBotsButton.addEventListener("click",reloadBotList);
+			allBrainsButton = document.getElementById("allBrainsButton");
+			allBrainsButton.addEventListener("click",reloadBrainList); //bouton pour aller sur la page avec une liste de tous les brains
+			allMouthsButton = document.getElementById("allMouthsButton");
+			allMouthsButton.addEventListener("click",reloadMouthList);//bouton pour aller sur la page avec une liste de toutes les mouths
 
 		}
 
-		function reloadBotList(){
+		function reloadBotList(){ //met à jour la liste de tous les bots
 			//first, clean up
 			while (botListElt.firstChild) {
   				botListElt.removeChild(botListElt.firstChild);
@@ -75,17 +81,17 @@
                	cache: 'no-store' 
             };
 
-			let myURL = `http://localhost:3001/`;
+			let myURL = `http://localhost:3001/bots`;
 			
 			fetch(myURL,myInit)
 				.then((httpResponse)=>{
 					
 					return httpResponse.json()
 				})
-				.then((setOfTasks)=>{
-					for(let task of setOfTasks){
-						console.log(`Je suis dans reloadList, la valeur de task est ${task.assignement}`)
-						taskListElt.appendChild(createItem(task));
+				.then((setOfBots)=>{
+					for(let bot of setOfBots){
+						console.log(`Je suis dans reloadList, le nom du bot est ${bot.name}`)
+						botListElt.appendChild(createItem(bot));
 					}
 				})
 				.catch((err)=>{
@@ -93,7 +99,7 @@
 				})
 		}
 
-		function reloadPersonList(){
+		function reloadBrainList(){
 			//first, clean up
 			while (personListElt.firstChild) {
   				personListElt.removeChild(personListElt.firstChild);
@@ -111,19 +117,21 @@
                	cache: 'no-store' 
             };
 
-			let myURL = `http://localhost:3001/v2/persons`;
+			let myURL = `http://localhost:3001/brains`;
 			
 			fetch(myURL,myInit)
 				.then((httpResponse)=>{
 					
 					return httpResponse.json()
 				})
-				.then((setOfPersons)=>{
-					for(let person of setOfPersons){
-						let item = document.createElement("option");
-						item.setAttribute('value',person.personId);
-						item.innerHTML=person.personId;
-						personListElt.appendChild(item);
+				.then((setOfBrains)=>{
+					for(let brain of setOfBrains){
+						//let item = document.createElement("option");
+						//item.setAttribute('value',person.personId);
+						//item.innerHTML=person.personId;
+						//personListElt.appendChild(item);
+						console.log(`Je suis dans reloadList, le nom du brain est ${brain.name}`)
+						brainListElt.appendChild(createItem(brain));
 					}
 				})
 				.catch((err)=>{
@@ -131,6 +139,46 @@
 				})
 		}
 
+		function reloadMouthList(){
+			//first, clean up
+			while (mouthListElt.firstChild) {
+  				mouthListElt.removeChild(mouthListElt.firstChild);
+			}
+			let myHeaders = new Headers();
+			myHeaders.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+			myHeaders.append('Accept', 'application/json');
+			myHeaders.append('Set-Cookie', 'passPhrase=Hop');
+
+			let myInit = { 
+				method: 'GET',
+               	headers: myHeaders,
+               	credentials: 'same-origin',
+               	mode: 'cors',
+               	cache: 'no-store' 
+            };
+
+			let myURL = `http://localhost:3001/mouths`;
+			
+			fetch(myURL,myInit)
+				.then((httpResponse)=>{
+					
+					return httpResponse.json()
+				})
+				.then((setOfMouths)=>{
+					for(let mouth of setOfMouths){
+						//let item = document.createElement("option");
+						//item.setAttribute('value',person.personId);
+						//item.innerHTML=person.personId;
+						//personListElt.appendChild(item);
+						console.log(`Je suis dans reloadList, le nom du mouth est ${mouth.name}`)
+						mouthListElt.appendChild(createItem(mouth));
+					}
+				})
+				.catch((err)=>{
+					console.log(`ERROR : ${err}${err.stack}`);
+				})
+		}
+		
 
 		function createItem(bot){
 			let item = document.createElement("li");
@@ -310,7 +358,7 @@
         </article>
     </main>
 
-	<button id="newBotButton" onclick=window.location.href="http://localhost:3001/bots";>ADD A NEW CHATBOT</button>
+	<button id="newBotButton" onclick=window.location.href="./createBot";>ADD A NEW CHATBOT</button>
 	<div id="newBotModal" class="modal">
 		
 		<div class="modal-content">
@@ -323,7 +371,7 @@
 				<option value="">--Please choose a brain--</option>
 			</select>
 
-            <label for="mouthListUL">Brain:</label>
+            <label for="mouthListUL">Mouth:</label>
     		<select id="mouthListUL" name="assignement">
 				<option value="">--Please choose a mouth--</option>
 			</select>
