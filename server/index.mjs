@@ -143,6 +143,21 @@ app.get('/createBot', (req, res)=>{
 	}
 });
 
+//create a new bot (POST HTTP method)
+app.post('/',(req,res)=>{
+	let theBotToAdd = req.body;
+	botServiceInstance
+		.addTask(theTaskToAdd) 
+		.then((returnString)=>{
+			console.log(returnString);
+			res.status(201).send('All is OK');
+		})
+		.catch((err)=>{
+			console.log(`Error ${err} thrown... stack is : ${err.stack}`);
+			res.status(400).send('BAD REQUEST');
+		});	
+});
+
 
 function isInt(value) {
   let x = parseFloat(value);

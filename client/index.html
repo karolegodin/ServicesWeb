@@ -297,8 +297,8 @@
 			let myHeaders = new Headers();
 			myHeaders.append('Content-Type', 'application/json');
 			let payload = {
-           			title:inputTitle.value,
-           			status:inputStatus.value
+           			id:inputId.value,
+           			name:inputName.value
            	};
 			let myBody = JSON.stringify(payload);
 			let myInit = { 
@@ -308,7 +308,7 @@
            		cache: 'default',
            		body:myBody
         	};
-        	let myURL = "http://localhost:3001/v2/tasks";
+        	let myURL = "http://localhost:3001/";
 
         	//launch the request
 			fetch(myURL,myInit)
@@ -318,8 +318,8 @@
 			.then((responseBody)=>{
 				reloadList();
 				//clear fields
-				inputTitle.value="";
-				inputStatus.value="";
+				inputId.value="";
+				inputName.value="";
 				console.log(`response is ${responseBody}`);
 			})
 			.catch((err)=>{
