@@ -12,11 +12,11 @@ let botServiceAccessPoint = new BotService({url:"http://localhost",port:3001});
 
 import {BrainService} from "./models/BrainService_ArrayImpl.mjs";
 let brainServiceInstance;
-//let brainServiceAccessPoint = new BrainService({url:"http://localhost",port:3001});
+let brainServiceAccessPoint = new BrainService({url:"http://localhost",port:3002});
 
 import {MouthService} from "./models/MouthService_ArrayImpl.mjs";
 let mouthServiceInstance;
-//let mouthServiceAccessPoint = new MouthService({url:"http://localhost",port:3002});
+let mouthServiceAccessPoint = new MouthService({url:"http://localhost",port:3003});
 
 //// Enable ALL CORS request
 app.use(cors())
@@ -116,7 +116,7 @@ function sendMessage (text) {
 		console.log(e.message + "\n" + e.line);*/
   //return false;
 }
-
+/*
 //Page d'accueil
 app.get('/', (req, res)=>{
 	try{
@@ -143,11 +143,41 @@ app.get('/createBot', (req, res)=>{
 	}
 });
 
+EXEMPLE DU TP3 :
+app.get('/v2/tasks/', (req, res)=>{
+	try{
+		let myArrayOfTasks;
+		if( undefined == (myArrayOfTasks = taskServiceInstance.getTasks() )){
+			throw new Error("No tasks to get");
+		}
+		res.status(200).json(myArrayOfTasks);
+	}
+	catch(err){
+		console.log(`Error ${err} thrown... stack is : ${err.stack}`);
+		res.status(404).send('NOT FOUND');
+	}
+});*/
+
+app.get('/bots',(req,res)=>{
+	let botsArray=await getAllBots();
+	res.status(200).json(botsArray);
+})
+
+app.get('/brains',async(req,res)=>{
+	let brainsArray=await getAllBrains();
+	res.status(200).json(brainsArray);
+})
+
+app.get('/mouth',async(req,res)=>{
+	let mouthArray=await getAllMouth();
+	res.status(200).json(mouthArray);
+})
+
 //create a new bot (POST HTTP method)
-app.post('/',(req,res)=>{
+app.post('/bots',(req,res)=>{
 	let theBotToAdd = req.body;
 	botServiceInstance
-		.addTask(theTaskToAdd) 
+		.addBot(theBotToAdd) 
 		.then((returnString)=>{
 			console.log(returnString);
 			res.status(201).send('All is OK');
@@ -158,6 +188,31 @@ app.post('/',(req,res)=>{
 		});	
 });
 
+app.delete();
+
+app.patch();
+
+botService.create(brainServiceAccessPoint).then(ts=>{
+	taskServiceInstance=ts;
+	taskServiceInstance
+		.addTask(aTask)
+		.catch((err)=>{console.log(err);});
+	app.listen(port, () => {
+  		console.log(`Example app listening at http://localhost:${port}`)
+	});
+});
+
+async function getAllBots(){
+	return await botServiceAccessPoint.getAllBots();
+}
+
+async function getAllBrains(){
+	return await brainServiceAccessPoint.getAllBrains();
+}
+
+async function getAllMouth(){
+	return await mouthServiceAccessPoint.getAllMouth();
+}
 
 function isInt(value) {
   let x = parseFloat(value);

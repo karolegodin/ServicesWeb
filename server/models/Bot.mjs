@@ -6,6 +6,9 @@ class Bot{
     static id = this.id;
     static name = this.name; 
     static botRivescript = this.botRivescript;
+    static brain = this.brain;
+    static mouth = this.mouth;
+    static status = this.status;
 
   constructor(data){
     this.url = data.url; // probably localhost
@@ -29,7 +32,7 @@ class Bot{
         this.name = "";
       }
 
-    this.botRivescript = new RiveScript({debug: true});
+    this.botRivescript = new RiveScript();
     //let username = "local-user";
     console.log("Création nouveau rivescript");
   }
