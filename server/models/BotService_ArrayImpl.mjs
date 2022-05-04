@@ -1,4 +1,5 @@
 import {Bot} from "./Bot.mjs";
+import RiveScript from 'rivescript';
 
 class BotService{
 	constructor(data){ 
@@ -11,13 +12,18 @@ class BotService{
 	}
 
 	async addBot(anObject){
+		//console.log("J'ajoute un bot");
 		let newBot;
 		try{
   			newBot = new Bot(anObject);
+			//newBot.botRivescript = new RiveScript();
+			//console.log("Création d'un nouveau rivescript");
+			//let username = "local-user";
 		}catch(err){
 			throw err; //throwing an error inside a Promise
 		}
 		this.array.push(newBot);
+		console.log(`added bot of id ${newBot.id}, named ${newBot.name}`);
 		return `added bot of id ${newBot.id}`;
 	}
 

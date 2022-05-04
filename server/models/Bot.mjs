@@ -1,9 +1,11 @@
 import fetch from 'node-fetch';
+import RiveScript from 'rivescript';
 
 class Bot{  
 
     static id = this.id;
     static name = this.name; 
+    static botRivescript = this.botRivescript;
 
   constructor(data){
     this.url = data.url; // probably localhost
@@ -26,6 +28,10 @@ class Bot{
       } else {
         this.name = "";
       }
+
+    this.botRivescript = new RiveScript({debug: true});
+    //let username = "local-user";
+    console.log("Création nouveau rivescript");
   }
 
   static isBot(anObject){
@@ -81,6 +87,48 @@ class Bot{
     //
     return returnValue;
   }
+
+  /*async loading_done(bot) {
+    console.log("Bot has finished loading!");
+
+    // Now the replies must be sorted!
+    bot.sortReplies();
+
+    // And now we're free to get a reply from the brain!
+
+    // RiveScript remembers user data by their username and can tell
+    // multiple users apart.
+    //let username = "local-user";
+
+    // NOTE: the API has changed in v2.0.0 and returns a Promise now.
+    bot.reply(username, "Hello, bot!").then(function(reply) {
+      console.log("The bot says: " + reply);
+    });
+    sendMessage("Coucou bande de nouilles");
+  }
+
+    // It's good to catch errors too!
+    async loading_error(error, filename, lineno) {
+      console.log("Error when loading files: " + error);
+  }
+
+    async sendMessage (text,bot) {
+      console.log("You say: " + text);
+      //$("#message").val("");
+      //$("#dialogue").append("<div><span class='user'>You:</span> " + text + "</div>");
+      bot.sortReplies();
+      bot.reply(username,text).then(function(reply) {
+        console.log("The bot says: " + reply);
+      });
+      /*bot.reply(username, text, this).then(function(reply) {
+        reply = reply.replace(/\n/g, "<br>");*/
+        
+        //$("#dialogue").append("<div><span class='bot'>Bot:</span> " + reply + "</div>");
+        //$("#dialogue").animate({ scrollTop: $("#dialogue").height() }, 1000);
+      /*}).catch(function(e) {
+        console.log(e.message + "\n" + e.line);*/
+      //return false;
+    //}
 
 }
 
