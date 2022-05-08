@@ -34,15 +34,15 @@ BOT RIVESCRIPT
 *****************************
 */
 
-var bot = new RiveScript();
-let username = "local-user";
+//var bot = new RiveScript();
+//let username = "local-user";
 
 // Load a directory full of RiveScript documents (.rive files). This is for
 // Node.JS only: it doesn't work on the web!
 //bot.loadDirectory("pathtobrain").then(loading_done).catch(loading_error);
 
 // Load an individual file.
-bot.loadFile("pathtobrain/standard.rive").then(loading_done).catch(loading_error);
+//bot.loadFile("pathtobrain/standard.rive").then(loading_done).catch(loading_error);
 
 
 // Load a list of files all at once (the best alternative to loadDirectory
@@ -57,7 +57,7 @@ bot.loadFile("pathtobrain/standard.rive").then(loading_done).catch(loading_error
 // to catch when they've finished. If you use loadDirectory (or loadFile
 // with multiple file names), the success function is called only when ALL
 // the files have finished loading.
-function loading_done() {
+/*function loading_done() {
   console.log("Bot has finished loading!");
 
   // Now the replies must be sorted!
@@ -79,12 +79,12 @@ function loading_done() {
 // It's good to catch errors too!
 function loading_error(error, filename, lineno) {
   console.log("Error when loading files: " + error);
-}
+}*/
 
 let id = 0 ; //Math.floor(Math.random() * Math.floor(100000)) ;
 let aBot ={ //UGLY
 	'id':id,
-	'title':'Random Title',
+	'name':'Steve',
 };
 
 BotService.create(botServiceAccessPoint).then(bs=>{
@@ -92,13 +92,21 @@ BotService.create(botServiceAccessPoint).then(bs=>{
 	botServiceInstance
 		.addBot(aBot)
 		.catch((err)=>{console.log(err);});
+	//let rs = botServiceInstance.getBot(aBot.id);
+	//let rsRive = rs.botRivescript;
+	//console.log(rs.botRivescript.sortReplies);
+	//let username = "local-user";
+	//rsRive.loadFile("./pathtobrain/simple.rive").then(loading_done(rsRive, username)).catch(loading_error);
+	//rsRive.loadFile("./pathtobrain/simple.rive",loading_done(rsRive,username),loading_error);
+	//console.log(rs.id, rs.name);
 	app.listen(port, () => {
+		console.log(aBot.id, aBot.name)
   		console.log(`Example app listening at http://localhost:${port}`)
 	});
 });
 
 // Handle sending a message to the bot.
-function sendMessage (text) {
+/*function sendMessage (text) {
   console.log("You say: " + text);
 	//$("#message").val("");
 	//$("#dialogue").append("<div><span class='user'>You:</span> " + text + "</div>");
@@ -115,7 +123,7 @@ function sendMessage (text) {
 	/*}).catch(function(e) {
 		console.log(e.message + "\n" + e.line);*/
   //return false;
-}
+//}
 
 //Page d'accueil
 app.get('/', (req, res)=>{

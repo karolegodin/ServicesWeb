@@ -29,8 +29,15 @@ class Bot{
         this.name = "";
       }
 
-    this.botRivescript = new RiveScript({debug: true});
+
+    this.botRivescript = new RiveScript();
+    //console.log(this.botRivescript);
     //let username = "local-user";
+    this.botRivescript.loadFile("./pathtobrain/standard.rive").then(this.loading_done).catch(this.loading_error);
+    //this.botRivescript.loadFile("./pathtobrain/standard.rive",this.loading_done,this.loading_error);
+    //this.botRivescript.stringify();
+    //this.sendMessage("Salut toi",username);
+
     console.log("Création nouveau rivescript");
   }
 
@@ -88,23 +95,23 @@ class Bot{
     return returnValue;
   }
 
-  /*async loading_done(bot) {
+  async loading_done() {
     console.log("Bot has finished loading!");
-
+    //console.log(this.botRivescript);
     // Now the replies must be sorted!
-    bot.sortReplies();
+    this.botRivescript.sortReplies();
 
     // And now we're free to get a reply from the brain!
 
     // RiveScript remembers user data by their username and can tell
     // multiple users apart.
-    //let username = "local-user";
+    let username = "local-user";
 
     // NOTE: the API has changed in v2.0.0 and returns a Promise now.
-    bot.reply(username, "Hello, bot!").then(function(reply) {
+    this.botRivescript.reply(username, "Hello, bot!").then(function(reply) {
       console.log("The bot says: " + reply);
     });
-    sendMessage("Coucou bande de nouilles");
+    sendMessage("What is your name",username);
   }
 
     // It's good to catch errors too!
@@ -112,12 +119,12 @@ class Bot{
       console.log("Error when loading files: " + error);
   }
 
-    async sendMessage (text,bot) {
+    async sendMessage (text,username) {
       console.log("You say: " + text);
       //$("#message").val("");
       //$("#dialogue").append("<div><span class='user'>You:</span> " + text + "</div>");
-      bot.sortReplies();
-      bot.reply(username,text).then(function(reply) {
+      this.botRivescript.sortReplies();
+      this.botRivescript.reply(username,text).then(function(reply) {
         console.log("The bot says: " + reply);
       });
       /*bot.reply(username, text, this).then(function(reply) {
@@ -128,7 +135,7 @@ class Bot{
       /*}).catch(function(e) {
         console.log(e.message + "\n" + e.line);*/
       //return false;
-    //}
+    }
 
 }
 
