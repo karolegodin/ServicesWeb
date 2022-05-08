@@ -160,7 +160,7 @@ app.get('/createBot', (req, res)=>{
 	}
 });
 
-EXEMPLE DU TP3 :
+//EXEMPLE DU TP3 :
 app.get('/v2/tasks/', (req, res)=>{
 	try{
 		let myArrayOfTasks;
@@ -173,12 +173,12 @@ app.get('/v2/tasks/', (req, res)=>{
 		console.log(`Error ${err} thrown... stack is : ${err.stack}`);
 		res.status(404).send('NOT FOUND');
 	}
-});*/
+})
 
-app.get('/bots',(req,res)=>{
+/*app.get('/bots',(req,res)=>{
 	let botsArray=await getAllBots();
 	res.status(200).json(botsArray);
-})
+})*/
 
 app.get('/brains',async(req,res)=>{
 	let brainsArray=await getAllBrains();
