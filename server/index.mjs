@@ -7,6 +7,7 @@ const app = express();
 import RiveScript from 'rivescript';
 
 import {BotService} from "./models/BotService_ArrayImpl.mjs";
+import {Bot} from "./models/Bot.mjs";
 let botServiceInstance;
 let botServiceAccessPoint = new BotService({url:"http://localhost",port:3001});
 
@@ -34,15 +35,15 @@ BOT RIVESCRIPT
 *****************************
 */
 
-var bot = new RiveScript();
-let username = "local-user";
+//var bot = new RiveScript();
+//let username = "local-user";
 
 // Load a directory full of RiveScript documents (.rive files). This is for
 // Node.JS only: it doesn't work on the web!
 //bot.loadDirectory("pathtobrain").then(loading_done).catch(loading_error);
 
 // Load an individual file.
-bot.loadFile("pathtobrain/standard.rive").then(loading_done).catch(loading_error);
+//bot.loadFile("pathtobrain/standard.rive").then(loading_done).catch(loading_error);
 
 
 // Load a list of files all at once (the best alternative to loadDirectory
@@ -57,12 +58,14 @@ bot.loadFile("pathtobrain/standard.rive").then(loading_done).catch(loading_error
 // to catch when they've finished. If you use loadDirectory (or loadFile
 // with multiple file names), the success function is called only when ALL
 // the files have finished loading.
-function loading_done() {
+/*function loading_done(bot, username) {
   console.log("Bot has finished loading!");
 
   // Now the replies must be sorted!
+  //let username = "local-user";
   bot.sortReplies();
-
+  console.log("Sort replies");
+  //bot.write("./toto.rive");
   // And now we're free to get a reply from the brain!
 
   // RiveScript remembers user data by their username and can tell
@@ -70,40 +73,52 @@ function loading_done() {
   //let username = "local-user";
 
   // NOTE: the API has changed in v2.0.0 and returns a Promise now.
-  bot.reply(username, "Hello, bot!").then(function(reply) {
+  bot.reply(username, "Hello bot!").then(function(reply) {
     console.log("The bot says: " + reply);
   });
-  sendMessage("Coucou bande de nouilles");
+  sendMessage("Coucou bot",bot);
 }
 
 // It's good to catch errors too!
 function loading_error(error, filename, lineno) {
   console.log("Error when loading files: " + error);
-}
+}*/
 
 let id = 0 ; //Math.floor(Math.random() * Math.floor(100000)) ;
 let aBot ={ //UGLY
 	'id':id,
-	'title':'Random Title',
+	'name':'Steve',
 };
+
+//let aBot = new Bot({id:0,title:"Steve"});
 
 BotService.create(botServiceAccessPoint).then(bs=>{
 	botServiceInstance=bs;
 	botServiceInstance
 		.addBot(aBot)
 		.catch((err)=>{console.log(err);});
+	//let rs = botServiceInstance.getBot(aBot.id);
+	//let rsRive = rs.botRivescript;
+	//console.log(rs.botRivescript.sortReplies);
+	//let username = "local-user";
+	//rsRive.loadFile("./pathtobrain/simple.rive").then(loading_done(rsRive, username)).catch(loading_error);
+	//rsRive.loadFile("./pathtobrain/simple.rive",loading_done(rsRive,username),loading_error);
+	//console.log(rs.id, rs.name);
 	app.listen(port, () => {
+		console.log(aBot.id, aBot.name)
   		console.log(`Example app listening at http://localhost:${port}`)
 	});
 });
 
+
+
 // Handle sending a message to the bot.
-function sendMessage (text) {
+/*function sendMessage (text,bot) {
+	//let username = "local-user";
   console.log("You say: " + text);
 	//$("#message").val("");
 	//$("#dialogue").append("<div><span class='user'>You:</span> " + text + "</div>");
   bot.sortReplies();
-  console.log("tabernacle : " + username);
   bot.reply(username,text).then(function(reply) {
     console.log("The bot says: " + reply);
   });
@@ -112,11 +127,13 @@ function sendMessage (text) {
     
 		//$("#dialogue").append("<div><span class='bot'>Bot:</span> " + reply + "</div>");
 		//$("#dialogue").animate({ scrollTop: $("#dialogue").height() }, 1000);
-	/*}).catch(function(e) {
-		console.log(e.message + "\n" + e.line);*/
+	//}).catch(function(e) {
+		//console.log(e.message + "\n" + e.line);
   //return false;
-}
-/*
+
+//}
+
+
 //Page d'accueil
 app.get('/', (req, res)=>{
 	try{
@@ -180,7 +197,7 @@ app.post('/bots',(req,res)=>{
 		.addBot(theBotToAdd) 
 		.then((returnString)=>{
 			console.log(returnString);
-			res.status(201).send('All is OK');
+			res.status(201).send('New bot added');
 		})
 		.catch((err)=>{
 			console.log(`Error ${err} thrown... stack is : ${err.stack}`);

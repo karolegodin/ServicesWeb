@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Service d'administration de ChatBots</title>
+	<title>ChatBot Interface</title>
     <link rel="stylesheet" type="text/css" href="style.css">
 	<style>
 		.modal {
@@ -36,6 +36,7 @@
 		let inputTitle;
 		let inputStatus;
 		let addNewBotButton;
+		let newBotButton;
 
 		function init(){
 			botListElt = document.getElementById("botListUL");
@@ -292,7 +293,7 @@
 		}*/
 
 		function createNewBot(){
-
+			console.log("Je crée un bot");
   			modal.style.display = "none"; // Make the modal disapear
 
 			//Create the request
@@ -360,7 +361,7 @@
         </article>
     </main>
 
-	<button id="newBotButton" onclick=window.location.href="./createBot";>ADD A NEW CHATBOT</button>
+	<button id="newBotButton" ;>ADD A NEW CHATBOT</button> 
 	<div id="newBotModal" class="modal">
 		
 		<div class="modal-content">
