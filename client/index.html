@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>ChatBot Interface</title>
+	<title>Task Service Test Interface (TaSTI)</title>
     <link rel="stylesheet" type="text/css" href="style.css">
 	<style>
 		.modal {
@@ -36,34 +36,31 @@
 		let inputTitle;
 		let inputStatus;
 		let addNewBotButton;
-		let newBotButton;
 
 		function init(){
 			botListElt = document.getElementById("botListUL");
-			brainListElt = document.getElementById("brainListSELECT");
-            mouthListElt = document.getElementById("mouthListSELECT");
-			modal = document.getElementById("newBotModal");
+			brainListElt = document.getElementById("brainListUL");
+            mouthListElt = document.getElementById("mouthListUL");
+			modal = document.getElementById("newModal");
 			inputTitle = document.getElementById("inputTitle");
 			inputStatus = document.getElementById("inputStatus");
 
-			/*DECOMMENTER LORSQUE LES CLASSES DES BOTS ET BRAINS SONT TERMINEES
 			reloadBotList();
 			reloadBrainList();
-            reloadMouthList();*/
+            reloadMouthList();
 			//setInterval(reloadList,5000);
 
 			newBotButton = document.getElementById("newBotButton"); //bouton pour créer un bot
 			newBotButton.addEventListener("click",()=>{modal.style.display = "block";});
 			addNewBotButton = document.getElementById("addNewBotButton");
 			addNewBotButton.addEventListener("click",createNewBot);
-			/*
 			allBotsButton = document.getElementById("allBotsButton"); //bouton pour aller sur la page avec une liste de tous les bots
 			allBotsButton.addEventListener("click",reloadBotList);
 			allBrainsButton = document.getElementById("allBrainsButton");
 			allBrainsButton.addEventListener("click",reloadBrainList); //bouton pour aller sur la page avec une liste de tous les brains
 			allMouthsButton = document.getElementById("allMouthsButton");
 			allMouthsButton.addEventListener("click",reloadMouthList);//bouton pour aller sur la page avec une liste de toutes les mouths
-			*/
+
 		}
 
 		function reloadBotList(){ //met à jour la liste de tous les bots
@@ -287,21 +284,21 @@
 				console.log(`ERROR : ${err}`);
 			})		
 		}
-		/*
+
 		function removePersonFromTask(taskId){
 			console.log(`removing person from task with Id ${taskId}`);
-		}*/
+		}
 
 		function createNewBot(){
-			console.log("Je crée un bot");
+
   			modal.style.display = "none"; // Make the modal disapear
 
 			//Create the request
 			let myHeaders = new Headers();
 			myHeaders.append('Content-Type', 'application/json');
 			let payload = {
-           			title:inputTitle.value,
-           			status:inputStatus.value
+           			id:inputId.value,
+           			name:inputName.value
            	};
 			let myBody = JSON.stringify(payload);
 			let myInit = { 
@@ -311,7 +308,7 @@
            		cache: 'default',
            		body:myBody
         	};
-        	let myURL = "http://localhost:3001/bots";
+        	let myURL = "http://localhost:3001/";
 
         	//launch the request
 			fetch(myURL,myInit)
@@ -339,14 +336,14 @@
         <h1>Interface d'administration des ChatBots</h1>
     </header>
 
-	<ul id="botListUL">
+	<ul id="taskListUL">
 	</ul>
 
     <nav>
         <ul>
-          <li><a href="http://localhost:3001/bots">ChatBots</a></li>
-          <li><a href="http://localhost:3001/brains">Brains</a></li>
-          <li><a href="http://localhost:3001/mouth">Mouth</a></li>
+          <li><a href="./bots">ChatBots</a></li>
+          <li><a href="./brains">Brains</a></li>
+          <li><a href="./mouth">Mouth</a></li>
         </ul>
   
     </nav>
@@ -361,7 +358,7 @@
         </article>
     </main>
 
-	<button id="newBotButton" ;>ADD A NEW CHATBOT</button> 
+	<button id="newBotButton" onclick=window.location.href="./createBot";>ADD A NEW CHATBOT</button>
 	<div id="newBotModal" class="modal">
 		
 		<div class="modal-content">
@@ -369,13 +366,13 @@
     		<label for="inputTitle">Name:</label>
     		<input type="text" id="inputTitle" name="title"></input>
 
-			<label for="brainListSELECT">Brain:</label>
-    		<select id="brainListSELECT" name="brain">
+			<label for="brainListUL">Brain:</label>
+    		<select id="brainListUL" name="assignement">
 				<option value="">--Please choose a brain--</option>
 			</select>
 
-            <label for="mouthListSELECT">Mouth:</label>
-    		<select id="mouthListSELECT" name="mouth">
+            <label for="mouthListUL">Mouth:</label>
+    		<select id="mouthListUL" name="assignement">
 				<option value="">--Please choose a mouth--</option>
 			</select>
 

@@ -6,9 +6,6 @@ class Bot{
     static id = this.id;
     static name = this.name; 
     static botRivescript = this.botRivescript;
-    static brain = this.brain;
-    static mouth = this.mouth;
-    static status = this.status;
 
   constructor(data){
     this.url = data.url; // probably localhost
@@ -32,15 +29,8 @@ class Bot{
         this.name = "";
       }
 
-
-    this.botRivescript = new RiveScript();
-    //console.log(this.botRivescript);
+    this.botRivescript = new RiveScript({debug: true});
     //let username = "local-user";
-    this.botRivescript.loadFile("./pathtobrain/standard.rive").then(this.loading_done).catch(this.loading_error);
-    //this.botRivescript.loadFile("./pathtobrain/standard.rive",this.loading_done,this.loading_error);
-    //this.botRivescript.stringify();
-    //this.sendMessage("Salut toi",username);
-
     console.log("Création nouveau rivescript");
   }
 
@@ -98,23 +88,23 @@ class Bot{
     return returnValue;
   }
 
-  async loading_done() {
+  /*async loading_done(bot) {
     console.log("Bot has finished loading!");
-    //console.log(this.botRivescript);
+
     // Now the replies must be sorted!
-    this.botRivescript.sortReplies();
+    bot.sortReplies();
 
     // And now we're free to get a reply from the brain!
 
     // RiveScript remembers user data by their username and can tell
     // multiple users apart.
-    let username = "local-user";
+    //let username = "local-user";
 
     // NOTE: the API has changed in v2.0.0 and returns a Promise now.
-    this.botRivescript.reply(username, "Hello, bot!").then(function(reply) {
+    bot.reply(username, "Hello, bot!").then(function(reply) {
       console.log("The bot says: " + reply);
     });
-    sendMessage("What is your name",username);
+    sendMessage("Coucou bande de nouilles");
   }
 
     // It's good to catch errors too!
@@ -122,12 +112,12 @@ class Bot{
       console.log("Error when loading files: " + error);
   }
 
-    async sendMessage (text,username) {
+    async sendMessage (text,bot) {
       console.log("You say: " + text);
       //$("#message").val("");
       //$("#dialogue").append("<div><span class='user'>You:</span> " + text + "</div>");
-      this.botRivescript.sortReplies();
-      this.botRivescript.reply(username,text).then(function(reply) {
+      bot.sortReplies();
+      bot.reply(username,text).then(function(reply) {
         console.log("The bot says: " + reply);
       });
       /*bot.reply(username, text, this).then(function(reply) {
@@ -138,7 +128,7 @@ class Bot{
       /*}).catch(function(e) {
         console.log(e.message + "\n" + e.line);*/
       //return false;
-    }
+    //}
 
 }
 

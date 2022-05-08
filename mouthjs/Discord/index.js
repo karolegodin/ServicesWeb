@@ -1,4 +1,4 @@
-// Require the necessary discord.js classes
+/*// Require the necessary discord.js classes
 const fs = require('node:fs');
 const { Client, Collection, Intents } = require('discord.js');
 const { token } = require('./config.json');
