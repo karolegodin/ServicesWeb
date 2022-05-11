@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Task Service Test Interface (TaSTI)</title>
+	<title>ChatBot Administration Service</title>
     <link rel="stylesheet" type="text/css" href="style.css">
 	<style>
 		.modal {
@@ -45,22 +45,24 @@
 			inputTitle = document.getElementById("inputTitle");
 			inputStatus = document.getElementById("inputStatus");
 
+			//DECOMMENTER LORSQUE LES CLASSES DES BOTS ET BRAINS SONT TERMINEES
 			reloadBotList();
-			reloadBrainList();
-            reloadMouthList();
+			//reloadBrainList();
+            //reloadMouthList();
 			//setInterval(reloadList,5000);
 
 			newBotButton = document.getElementById("newBotButton"); //bouton pour créer un bot
 			newBotButton.addEventListener("click",()=>{modal.style.display = "block";});
 			addNewBotButton = document.getElementById("addNewBotButton");
 			addNewBotButton.addEventListener("click",createNewBot);
+			/*
 			allBotsButton = document.getElementById("allBotsButton"); //bouton pour aller sur la page avec une liste de tous les bots
 			allBotsButton.addEventListener("click",reloadBotList);
 			allBrainsButton = document.getElementById("allBrainsButton");
 			allBrainsButton.addEventListener("click",reloadBrainList); //bouton pour aller sur la page avec une liste de tous les brains
 			allMouthsButton = document.getElementById("allMouthsButton");
 			allMouthsButton.addEventListener("click",reloadMouthList);//bouton pour aller sur la page avec une liste de toutes les mouths
-
+			*/
 		}
 
 		function reloadBotList(){ //met à jour la liste de tous les bots
@@ -101,8 +103,8 @@
 
 		function reloadBrainList(){
 			//first, clean up
-			while (personListElt.firstChild) {
-  				personListElt.removeChild(personListElt.firstChild);
+			while (brainListElt.firstChild) {
+  				brainListElt.removeChild(brainListElt.firstChild);
 			}
 			let myHeaders = new Headers();
 			myHeaders.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -225,7 +227,7 @@
                	mode: 'cors',
                	cache: 'default' 
             };
-            let myURL = `http://localhost:3001/v2/tasks/${botId}`;
+            let myURL = `http://localhost:3001/bots/${botId}`;
 			//let myURL = "http://localhost:3001/v2/tasks"+botId;
 			fetch(myURL,myInit)
 				.then((httpResponse)=>{
@@ -266,7 +268,7 @@
 	   			cache: 'default',
 	   			body:myBody
 			};
-			let myURL = "http://localhost:3001/v2/tasks/${taskId}";
+			let myURL = `http://localhost:3001/bots/${taskId}`;
 
 			//launch the request
 			fetch(myURL,myInit)
@@ -341,9 +343,9 @@
 
     <nav>
         <ul>
-          <li><a href="./bots">ChatBots</a></li>
-          <li><a href="./brains">Brains</a></li>
-          <li><a href="./mouth">Mouth</a></li>
+          <li><a href="http://localhost:3001/bots">ChatBots</a></li>
+          <li><a href="http://localhost:3001/brains">Brains</a></li>
+          <li><a href="http://localhost:3001/mouth">Mouth</a></li>
         </ul>
   
     </nav>
