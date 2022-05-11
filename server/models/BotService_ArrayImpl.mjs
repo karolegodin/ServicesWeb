@@ -12,13 +12,14 @@ class BotService{
 	}
 
 	async addBot(anObject){
-		//console.log("J'ajoute un bot");
+		console.log("J'ajoute un bot avec addBot");
 		let newBot;
 		try{
   			newBot = new Bot(anObject);
 			//newBot.botRivescript = new RiveScript();
 			//console.log("Création d'un nouveau rivescript");
 			//let username = "local-user";
+			//this.array.push(newBot);
 		}catch(err){
 			throw err; //throwing an error inside a Promise
 		}

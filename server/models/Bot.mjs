@@ -8,8 +8,9 @@ class Bot{
     static botRivescript = this.botRivescript;
 
   constructor(data){
-    this.url = data.url; // probably localhost
-    this.port = data.port; // probably 3001
+    //this.url = data.url; // probably localhost
+    //this.port = data.port; // probably 3001
+
 
     if(undefined != data.id) { 
         if(!isInt(data.id)){
@@ -29,18 +30,16 @@ class Bot{
         this.name = "";
       }
 
-
-    this.botRivescript = new RiveScript();
-    //console.log(this.botRivescript);
-    //let username = "local-user";
-    this.botRivescript.loadFile("./pathtobrain/standard.rive").then(this.loading_done).catch(this.loading_error);
-    //this.botRivescript.loadFile("./pathtobrain/standard.rive",this.loading_done,this.loading_error);
-    //this.botRivescript.stringify();
-    //this.sendMessage("Salut toi",username);
-
-    console.log("Création nouveau rivescript");
+      this.botCreation();
   }
 
+  async botCreation(){
+    this.botRivescript = new RiveScript();
+    let username = "local-user";
+    this.botRivescript.loadFile("./pathtobrain/standard.rive").then(()=> this.loading_done()).catch(this.loading_error);
+    console.log("Création nouveau rivescript avec botCreation");
+
+  }
   static isBot(anObject){
     // check if mandatory fields are there
     let hasMandatoryProperties = Object.keys(this).every(key=> anObject.hasOwnProperty(key));
@@ -108,10 +107,11 @@ class Bot{
     let username = "local-user";
 
     // NOTE: the API has changed in v2.0.0 and returns a Promise now.
+    console.log("You say : Hello, bot!");
     this.botRivescript.reply(username, "Hello, bot!").then(function(reply) {
       console.log("The bot says: " + reply);
     });
-    sendMessage("What is your name",username);
+    this.sendMessage("What is your name",username);
   }
 
     // It's good to catch errors too!

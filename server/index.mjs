@@ -15,6 +15,7 @@ let brainServiceInstance;
 //let brainServiceAccessPoint = new BrainService({url:"http://localhost",port:3001});
 
 import {MouthService} from "./models/MouthService_ArrayImpl.mjs";
+import { Bot } from './models/Bot.mjs';
 let mouthServiceInstance;
 //let mouthServiceAccessPoint = new MouthService({url:"http://localhost",port:3002});
 
@@ -81,16 +82,19 @@ function loading_error(error, filename, lineno) {
   console.log("Error when loading files: " + error);
 }*/
 
-let id = 0 ; //Math.floor(Math.random() * Math.floor(100000)) ;
-let aBot ={ //UGLY
-	'id':id,
-	'name':'Steve',
+let id = 0 ; 
+let firstBot ={ 
+	'id':0,
+	'name':'Steve'
 };
+
+//let bot1;
+//bot1 = Bot.botCreation(firstBot.id, firstBot.name);
 
 BotService.create(botServiceAccessPoint).then(bs=>{
 	botServiceInstance=bs;
 	botServiceInstance
-		.addBot(aBot)
+		.addBot(firstBot)
 		.catch((err)=>{console.log(err);});
 	//let rs = botServiceInstance.getBot(aBot.id);
 	//let rsRive = rs.botRivescript;
@@ -100,7 +104,7 @@ BotService.create(botServiceAccessPoint).then(bs=>{
 	//rsRive.loadFile("./pathtobrain/simple.rive",loading_done(rsRive,username),loading_error);
 	//console.log(rs.id, rs.name);
 	app.listen(port, () => {
-		console.log(aBot.id, aBot.name)
+		console.log(firstBot.id, firstBot.name)
   		console.log(`Example app listening at http://localhost:${port}`)
 	});
 });
