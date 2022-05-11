@@ -10,14 +10,14 @@ import {BotService} from "./models/BotService_ArrayImpl.mjs";
 let botServiceInstance;
 let botServiceAccessPoint = new BotService({url:"http://localhost",port:3001});
 
-import {BrainService} from "./models/BrainService_ArrayImpl.mjs";
+/*import {BrainService} from "../brainServer/models/BrainService_ArrayImpl.mjs";
 let brainServiceInstance;
-let brainServiceAccessPoint = new BrainService({url:"http://localhost",port:3001});
+let brainServiceAccessPoint = new BrainService({url:"http://localhost",port:3001});*/
 
-import {MouthService} from "./models/MouthService_ArrayImpl.mjs";
+/*import {MouthService} from "../mouthServer/models/MouthService_ArrayImpl.mjs";
 import { Bot } from './models/Bot.mjs';
 let mouthServiceInstance;
-let mouthServiceAccessPoint = new MouthService({url:"http://localhost",port:3002});
+let mouthServiceAccessPoint = new MouthService({url:"http://localhost",port:3002});*/
 
 //// Enable ALL CORS request
 app.use(cors())
