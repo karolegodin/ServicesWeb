@@ -12,7 +12,7 @@ class BotService{
 	}
 
 	async addBot(anObject){
-		console.log("J'ajoute un bot avec addBot");
+		//console.log("J'ajoute un bot avec addBot");
 		let newBot;
 		try{
   			newBot = new Bot(anObject);

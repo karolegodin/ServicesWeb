@@ -1,11 +1,13 @@
 import fetch from 'node-fetch';
 import RiveScript from 'rivescript';
+import {MouthIdentifier} from "./Mouths.mjs";
 
 class Bot{  
 
     static id = this.id;
     static name = this.name; 
     static botRivescript = this.botRivescript;
+    static mouth = this.mouth;
 
   constructor(data){
     //this.url = data.url; // probably localhost
@@ -30,6 +32,20 @@ class Bot{
         this.name = "";
       }
 
+      if(undefined != data.assignement) {
+        if(!MouthIdentifier.isMouthIdentifier(data.assignement)){
+          throw new Error("Bot Creation : passed assignement is not a Mouth identifier");
+        }
+        this.assignement = data.assignement;
+      } else {
+        // dummy Value
+        let id = Math.floor(Math.random() * Math.floor(100000)) ;
+        let sourceId = Math.floor(Math.random() * Math.floor(100000)) ;
+        let returnValue = new MouthIdentifier({'id':id,'sourceId':sourceId,'mouthId':1});
+        //
+        this.assignement = returnValue;
+      }
+
       this.botCreation();
   }
 
@@ -37,7 +53,7 @@ class Bot{
     this.botRivescript = new RiveScript();
     let username = "local-user";
     this.botRivescript.loadFile("./pathtobrain/standard.rive").then(()=> this.loading_done()).catch(this.loading_error);
-    console.log("Création nouveau rivescript avec botCreation");
+    //console.log("Création nouveau rivescript avec botCreation");
 
   }
   static isBot(anObject){
@@ -55,44 +71,6 @@ class Bot{
     return true;
   }
 
-  async getBotById(botId){
-    // dummy Value
-    let id = Math.floor(Math.random() * Math.floor(100000)) ;
-    let returnValue = new Bot({'botId':id});
-    //
-    return returnValue;
-  }
-
-
-  async getAllBots(){
-    let returnValue = new Array();
-    let myInit = { 
-      method: 'GET',
-      mode: 'cors',
-      cache: 'default' 
-    };
-    let myURL = `${this.url}:${this.port}`;
-    try {
-      const response = await fetch(myURL,myInit);
-      const setOfBots = await response.json();
-      for(let bot of setOfBots){
-          returnValue.push(new BotIdentifier({'botId':bot.id,'botName':bot.name} ));
-          
-      }
-      
-    } catch (error) {
-      console.log(error);
-    }
-    return returnValue;
-  }
-
-  async getBotById(botId){
-    // dummy Value
-    let id = Math.floor(Math.random() * Math.floor(100000)) ;
-    let returnValue = new BotIdentifier({'botId':id});
-    //
-    return returnValue;
-  }
 
   async loading_done() {
     console.log("Bot has finished loading!");
@@ -148,17 +126,4 @@ function isString(myVar) {
   return (typeof myVar === 'string' || myVar instanceof String) ;
 }
 
-class BotIdentifier{
-    static botId = this.botId; //the id of the Person in the micro-service
-    // TODO : when multiple sources of Persons is used : should differentiate personId and a localPersonId...
-    constructor(data){ // TODO : Should check if sourceId is known and valid
-        this.botId = data.botId
-    }
-    static isBotIdentifier(anObject){
-      // check if mandatory fields are there
-      let hasMandatoryProperties = Object.keys(this).every(key=> anObject.hasOwnProperty(key));
-      // TODO : we should also check the property values (if are strings, etc ... as in constructor) 
-      return hasMandatoryProperties;
-    }
-  }
-export {Bot, BotIdentifier}
+export {Bot}

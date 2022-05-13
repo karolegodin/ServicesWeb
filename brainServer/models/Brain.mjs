@@ -43,16 +43,16 @@ class Brain{
     return true;
   }
 
-  async getBrainById(brainId){
+  /*async getBrainById(brainId){
     // dummy Value
     let id = Math.floor(Math.random() * Math.floor(100000)) ;
     let returnValue = new Brain({'brainId':id});
     //
     return returnValue;
-  }
+  }*/
 
 
-  async getAllBrains(){
+  /*async getAllBrains(){
     let returnValue = new Array();
     let myInit = { 
       method: 'GET',
@@ -72,15 +72,15 @@ class Brain{
       console.log(error);
     }
     return returnValue;
-  }
+  }*/
 
-  async getBrainById(brainId){
+  /*async getBrainById(brainId){
     // dummy Value
     let id = Math.floor(Math.random() * Math.floor(100000)) ;
     let returnValue = new BrainIdentifier({'brainId':id});
     //
     return returnValue;
-  }
+  }*/
 
 }
 
@@ -93,7 +93,7 @@ function isString(myVar) {
   return (typeof myVar === 'string' || myVar instanceof String) ;
 }
 
-class BrainIdentifier{
+/*class BrainIdentifier{
     static brainId = this.brainId; //the id of the Person in the micro-service
     // TODO : when multiple sources of Persons is used : should differentiate personId and a localPersonId...
     constructor(data){ // TODO : Should check if sourceId is known and valid
@@ -105,5 +105,5 @@ class BrainIdentifier{
       // TODO : we should also check the property values (if are strings, etc ... as in constructor) 
       return hasMandatoryProperties;
     }
-  }
-export {Brain, BrainIdentifier}
+  }*/
+export {Brain}

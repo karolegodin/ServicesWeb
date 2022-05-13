@@ -128,10 +128,10 @@ async function getAllBots(){
 	return await botServiceAccessPoint.getAllBots();
 }
 
-async function getAllBrains(){
+/*async function getAllBrains(){
 	return await brainServiceAccessPoint.getAllBrains();
 }
 
 async function getAllMouth(){
 	return await mouthServiceAccessPoint.getAllMouth();
-}
+}*/

@@ -67,6 +67,7 @@
 
 		function reloadBotList(){ //met à jour la liste de tous les bots
 			//first, clean up
+			console.log("Je reload la liste des bots");
 			while (botListElt.firstChild) {
   				botListElt.removeChild(botListElt.firstChild);
 			}
@@ -83,7 +84,7 @@
                	cache: 'no-store' 
             };
 
-			let myURL = `http://localhost:3001/bots`;
+			let myURL = `http://localhost:3001/`;
 			
 			fetch(myURL,myInit)
 				.then((httpResponse)=>{
