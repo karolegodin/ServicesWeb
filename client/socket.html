@@ -39,6 +39,10 @@
     item.textContent = msg;
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
+
+    /*socket.on("connect_error", (err) => {
+      console.log(`connect_error due to ${err.message}`);
+    });*/
   });
     </script>
   </body>

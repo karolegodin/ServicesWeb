@@ -21,6 +21,10 @@ import { Mouth } from './models/Mouth.mjs';
 let mouthServiceInstance;
 let mouthServiceAccessPoint = new MouthService({url:"http://localhost",port:3002});
 
+import {BotIdentifier,BotService} from "./models/Bots.mjs";
+let botServiceInstance;
+let botServiceAccessPoint = new BotService({url:"http://localhost",port:3001});
+let botsArray;
 //// Enable ALL CORS request
 app.use(cors())
 ////
@@ -34,9 +38,23 @@ app.use(express.static('./../client'))
 app.use(express.static('./../client'))
 
 let firstMouth ={ 
-	'id':0,
+	'id':1234,
 	'name':'Socket'
 };
+
+const server = http.createServer(app);
+const io = new Server(server);
+io.on('connection', (socket) => {
+	console.log('a user connected');
+	socket.on('chat message', (msg) => {
+		console.log('message: ' + msg);
+		io.emit('chat message', msg);
+	});
+});
+
+/*io.on("connect_error", (err) => {
+	console.log(`connect_error due to ${err.message}`);
+  });*/
 
 MouthService.create(mouthServiceAccessPoint).then(ms=>{
 	mouthServiceInstance=ms;
@@ -44,7 +62,7 @@ MouthService.create(mouthServiceAccessPoint).then(ms=>{
 		.addMouth(firstMouth)
 		.catch((err)=>{console.log(err);});
     socketConnection;*/
-	app.listen(port, () => {
+	server.listen(port, () => {
   		console.log(`Mouth server app listening at http://localhost:${port}`)
 	});
 });
@@ -56,7 +74,8 @@ app.get('/socketio', (req, res)=>{
 		mouthServiceInstance
 			.addMouth(firstMouth)
 			.catch((err)=>{console.log(err);});
-    	socketConnection();
+    	//socketConnection();
+		//console.log(mouthServiceInstance);
 
 	}
 	catch(err){
@@ -65,9 +84,32 @@ app.get('/socketio', (req, res)=>{
 	}
 });
 
-function socketConnection(){
-	const server = http.createServer(app);
-	const io = new Server(server);
+app.get('/mouth',async(req,res)=>{
+	//let mouthArray=await getMouths();
+	//res.status(200).json(mouthArray);
+	try{
+		let myArrayOfMouths;
+		if( undefined == (myArrayOfMouths = mouthServiceInstance.getMouths() )){
+			throw new Error("No mouths to get");
+		}
+		res.status(200).json(myArrayOfMouths);
+	}
+	catch(err){
+		console.log(`Error ${err} thrown... stack is : ${err.stack}`);
+		res.status(404).send('NOT FOUND');
+	}
+})
+
+app.get('/bot',async(req,res)=>{
+	botsArray = await getAllBots();
+	//console.log("heheheee");
+	console.log(botsArray);
+	res.status(200).json(botsArray);
+})
+
+/*function socketConnection(){
+	//const server = http.createServer(app);
+	//const io = new Server(server);
 	io.on('connection', (socket) => {
 		console.log('a user connected');
 		socket.on('chat message', (msg) => {
@@ -75,8 +117,12 @@ function socketConnection(){
 		  io.emit('chat message', msg);
 		});
 	  });
+}*/
+
+async function getMouths(){
+	return mouthServiceAccessPoint.getMouths();
 }
 
-/*async function getAllMouth(){
-	return await mouthServiceAccessPoint.getAllMouth();
-}*/
+async function getAllBots(){
+	return await botServiceAccessPoint.getAllBots();
+}

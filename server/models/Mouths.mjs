@@ -13,18 +13,21 @@ class MouthService{
       mode: 'cors',
       cache: 'default' 
     };
-    let myURL = `${this.url}:${this.port}`;
+    let myURL = `http://localhost:3002/mouth`;
     try {
       const response = await fetch(myURL,myInit);
       const setOfMouths = await response.json();
+      //console.warn(xhr.responseText);
       for(let mouth of setOfMouths){
-          returnValue.push(new MouthIdentifier({'mouthId':mouth.id,'mouthLogin':mouth.login} ));
+          console.log(mouth);
+          returnValue.push(new MouthIdentifier({'mouthId':mouth.id, 'mouthName':mouth.name}));
           
       }
       
     } catch (error) {
       console.log(error);
     }
+    //console.log(returnValue);
     return returnValue;
   }
 
@@ -42,9 +45,11 @@ class MouthService{
 
 class MouthIdentifier{
   static mouthId = this.mouthId; //the id of the Mouth in the micro-service
+  static mouthName = this.mouthName;
   // TODO : when multiple sources of Mouths is used : should differentiate mouthId and a localMouthId...
   constructor(data){ // TODO : Should check if sourceId is known and valid
       this.mouthId = data.mouthId
+      this.mouth = data.mouthName
   }
   static isMouthIdentifier(anObject){
     // check if mandatory fields are there

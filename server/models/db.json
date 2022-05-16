@@ -1,0 +1,10 @@
+{
+    "bots":[
+    {
+        "id": 1234,
+        "name": "Eva",
+        "boteRivescript": "",
+        "mouth": "socket"
+    }
+    ]
+}

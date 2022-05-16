@@ -8,6 +8,7 @@ class Bot{
     static name = this.name; 
     static botRivescript = this.botRivescript;
     static mouth = this.mouth;
+    static brain = this.brain;
 
   constructor(data){
     //this.url = data.url; // probably localhost
@@ -15,11 +16,13 @@ class Bot{
 
 
     if(undefined != data.id) { 
+        console.log(data.id);
         if(!isInt(data.id)){
           throw new Error("Bot Creation : passed Id is not an integer");
         }
         this.id = data.id;
       } else {
+        console.log("id mauvaise");
         this.id = parseInt(    Math.floor(Math.random() * Math.floor(100000))     );
       }
 
@@ -29,10 +32,15 @@ class Bot{
         }
         this.name = data.name;
       } else {
+        console.log("mauvais nom");
         this.name = "";
       }
 
-      if(undefined != data.assignement) {
+      if(undefined == data.mouth){
+        this.mouth = "";
+      }
+
+      /*if(undefined != data.assignement) {
         if(!MouthIdentifier.isMouthIdentifier(data.assignement)){
           throw new Error("Bot Creation : passed assignement is not a Mouth identifier");
         }
@@ -44,8 +52,8 @@ class Bot{
         let returnValue = new MouthIdentifier({'id':id,'sourceId':sourceId,'mouthId':1});
         //
         this.assignement = returnValue;
-      }
-
+      }*/
+      //this.botRivescript = "";
       this.botCreation();
   }
 
@@ -53,6 +61,8 @@ class Bot{
     this.botRivescript = new RiveScript();
     let username = "local-user";
     this.botRivescript.loadFile("./pathtobrain/standard.rive").then(()=> this.loading_done()).catch(this.loading_error);
+    this.brain = new Array();
+    this.brain.push("Standard");
     //console.log("Création nouveau rivescript avec botCreation");
 
   }

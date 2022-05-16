@@ -18,8 +18,8 @@ class MouthService{
 			throw err; //throwing an error inside a Promise
 		}
 		this.array.push(newMouth);
-		console.log(`added mouth of id ${newMouth.id}, named ${newMouth.name}`);
-		return `added mouth of id ${newMouth.id}`;
+		//console.log(`added mouth of id ${newMouth.id}, named ${newMouth.name}`);
+		return `added mouth of id ${newMouth.id},named ${newMouth.name}`;
 	}
 
 	//from PUT

@@ -1,4 +1,5 @@
 import {Bot} from "./Bot.mjs";
+import {parse, stringify} from 'flatted';
 import RiveScript from 'rivescript';
 
 class BotService{
@@ -25,7 +26,8 @@ class BotService{
 		}
 		this.array.push(newBot);
 		console.log(`added bot of id ${newBot.id}, named ${newBot.name}`);
-		return `added bot of id ${newBot.id}`;
+		this.getBots;
+		return `added bot of id ${newBot.id},  named ${newBot.name}`;
 	}
 
 	//from PUT
@@ -81,7 +83,26 @@ class BotService{
 	}
 
 	getBots(){
-		return this.array;
+		//console.log(this.array);
+		let strArray = new Array();
+		for (let i=0; i<this.array.length; i++){
+			//console.log((this.array[i]).botRivescript);
+			strArray.push({'name':(this.array[i]).name, 'id':(this.array[i]).id, 'mouth':(this.array[i]).mouth, 'brain':(this.array[i]).brain});
+			//console.log(strArray[i]);
+		} 
+		return strArray;
+		//let strArray = stringify(this.array);
+		//return strArray;
+		/*try {
+			return this.array;
+		}
+		catch(err){
+			console.log("Je dois utiliser stringify");
+			for (let bot in this.array){
+				stringify(bot);
+			} 
+			return this.array;
+		}*/
 	}
 
 }

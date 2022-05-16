@@ -4,8 +4,8 @@ class Mouth{
     static name = this.name; 
 
   constructor(data){
-    this.url = data.url; // probably localhost
-    this.port = data.port; // probably 3002
+    //this.url = data.url; // probably localhost
+    //this.port = data.port; // probably 3002
 
     if(undefined != data.id) { 
         if(!isInt(data.id)){
