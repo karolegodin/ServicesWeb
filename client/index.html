@@ -36,12 +36,13 @@
 		let inputTitle;
 		let inputStatus;
 		let addNewBotButton;
+		let newBotButton;
 
 		function init(){
 			botListElt = document.getElementById("botListUL");
 			brainListElt = document.getElementById("brainListUL");
             mouthListElt = document.getElementById("mouthListUL");
-			modal = document.getElementById("newModal");
+			modal = document.getElementById("newBotModal");
 			inputTitle = document.getElementById("inputTitle");
 			inputStatus = document.getElementById("inputStatus");
 
@@ -361,7 +362,7 @@
         </article>
     </main>
 
-	<button id="newBotButton" onclick=window.location.href="http://localhost:3002/socketio/";>ADD A NEW CHATBOT</button>
+	<button id="newBotButton">ADD A NEW CHATBOT</button>
 	<div id="newBotModal" class="modal">
 		
 		<div class="modal-content">
@@ -369,20 +370,7 @@
     		<label for="inputTitle">Name:</label>
     		<input type="text" id="inputTitle" name="title"></input>
 
-			<label for="brainListUL">Brain:</label>
-    		<select id="brainListUL" name="assignement">
-				<option value="">--Please choose a brain--</option>
-			</select>
-
-            <label for="mouthListUL">Mouth:</label>
-    		<select id="mouthListUL" name="assignement">
-				<option value="">--Please choose a mouth--</option>
-			</select>
-
-            <label for="inputStatus">Status:</label>
-    		<input type="text" id="inputStatus" name="status"></input>
-
-			<button id="addNewBotButton">Add This ChatBot</button>
+			<button id="addNewBotButton" onclick=window.location.href="http://localhost:3002/socketio/";>Add This ChatBot</button>
     	</div>
     	
 	</div>
