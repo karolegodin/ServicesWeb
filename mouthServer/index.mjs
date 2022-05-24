@@ -42,15 +42,24 @@ let firstMouth ={
 	'name':'Socket'
 };
 
+var bot = new RiveScript();
+bot.loadFile("./../server/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
+
 const server = http.createServer(app);
 const io = new Server(server);
 io.on('connection', (socket) => {
 	console.log('a user connected');
+	let username = "local-user";
 	socket.on('chat message', (msg) => {
-		console.log('message: ' + msg);
+	  console.log('message: ' + msg);
+	  bot.reply(username,msg).then(function(reply) {
+		console.log("The bot says: " + reply);
 		io.emit('chat message', msg);
+		io.emit('chat message', reply);
+	  });
+  
 	});
-});
+  });
 
 /*io.on("connect_error", (err) => {
 	console.log(`connect_error due to ${err.message}`);
@@ -126,3 +135,16 @@ async function getMouths(){
 async function getAllBots(){
 	return await botServiceAccessPoint.getAllBots();
 }
+
+function loading_done() {
+	console.log("Bot has finished loading!");
+	bot.sortReplies();
+	let username = "local-user";
+	bot.reply(username, "Hello, bot!").then(function(reply) {
+	  console.log("The bot says: " + reply);
+	});
+  }
+  
+  function loading_error(error, filename, lineno) {
+	console.log("Error when loading files: " + error);
+  }
