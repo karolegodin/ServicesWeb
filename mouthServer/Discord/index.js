@@ -1,89 +1,45 @@
-/*// Require the necessary discord.js classes
-const fs = require('node:fs');
-const { Client, Collection, Intents } = require('discord.js');
+const RiveScript= require("rivescript")
+const { Client, Intents } = require("discord.js")
+
+const bot = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] })
+
 const { token } = require('./config.json');
 
-// Create a new client instance
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+var steeve = new RiveScript();
 
-client.commands = new Collection();
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+steeve.loadDirectory("../../server/pathtobrain").then(loading_done).catch(loading_error)
 
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	// Set a new item in the Collection
-	// With the key as the command name and the value as the exported module
-	client.commands.set(command.data.name, command);
-}
+bot.login(token)
 
-// When the client is ready, run this code (only once)
-client.once('ready', () => {
-	console.log('Ready!');
-});
+function loading_done() {
+    console.log("Loading done. You can proceed.");
+    steeve.sortReplies();
+    }
 
-client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
 
-	const command = client.commands.get(interaction.commandName);
+    function loading_error(error, filename, lineno) {
+    console.log("Error when loading files: " + error);
+    }
 
-	if (!command) return;
+    bot.on('ready', function () {console.log("Connected to Discord")})
 
-	try {
-		await command.execute(interaction);
-	} catch (error) {
-		console.error(error);
-		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
-	}
-});
-
-client.login(token);
-/*
-const { Client, Intents, MessageEmbed } = require('@discord.js/rest');
-const fetch = require('node-fetch');
-const { token } = require('./config.json');
-
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
-
-const trim = (str, max) => (str.length > max ? `${str.slice(0, max - 3)}...` : str);
-
-client.once('ready', () => {
-	console.log('Ready!');
-});
-
-client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
-
-	const { commandName } = interaction;
-
-	if (commandName === 'cat') {
-		await interaction.deferReply();
-		const { file } = await fetch('https://aws.random.cat/meow').then(response => response.json());
-
-		interaction.editReply({ files: [file] });
-	} else if (commandName === 'urban') {
-		await interaction.deferReply();
-		const term = interaction.options.getString('term');
-		const query = new URLSearchParams({ term });
-
-		const { list } = await fetch(`https://api.urbandictionary.com/v0/define?${query}`).then(response => response.json());
-
-		if (!list.length) {
-			return interaction.editReply(`No results found for **${term}**.`);
-		}
-
-		const [answer] = list;
-
-		const embed = new MessageEmbed()
-			.setColor('#EFFF00')
-			.setTitle(answer.word)
-			.setURL(answer.permalink)
-			.addFields(
-				{ name: 'Definition', value: trim(answer.definition, 1024) },
-				{ name: 'Example', value: trim(answer.example, 1024) },
-				{ name: 'Rating', value: `${answer.thumbs_up} thumbs up. ${answer.thumbs_down} thumbs down.` },
-			);
-		interaction.editReply({ embeds: [embed] });
-	}
-});
-
-client.login(token);*/
+    bot.on('messageCreate', message => {
+            if(message.channel.name == "general" && message.author.id != bot.application.id)
+            {
+                let entry = message.content 
+                steeve.reply(message.author.name, entry).then(function(reply)
+                    {
+                        var output = reply;
+                        if(output != "Error::No Reply Matched")
+                        {
+                            message.channel.send(output)
+                        }
+                        else
+                        {
+                            message.channel.send("I do not understand, please be more precise.")
+                        }
+                    }
+                );
+            }
+        }
+    )
