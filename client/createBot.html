@@ -25,6 +25,156 @@
   			width: 50%;  
 		}
 	</style>
+
+	<script>
+		document.addEventListener('DOMContentLoaded',initBots);
+
+		let botListElt;
+		let brainListElt;
+        let mouthListElt;
+		let addNewBotButton;
+		let newBotButton;
+
+
+		function initBots(){
+			botListElt = document.getElementById("botListUL");
+
+			//DECOMMENTER LORSQUE LES CLASSES DES BOTS ET BRAINS SONT TERMINEES
+			reloadBotList();
+			//reloadMouthList();
+			//reloadBrainList();
+
+			newTaskButton = document.getElementById("newTaskButton");
+			newTaskButton.addEventListener("click",()=>{modal.style.display = "block";});
+			addNewTaskButton = document.getElementById("addNewTaskButton");
+			addNewTaskButton.addEventListener("click",createNewTask);
+
+			
+		}
+		function reloadBotList(){ //met à jour la liste de tous les bots
+			//first, clean up
+			console.log("Je reload la liste des bots");
+			while (botListElt.firstChild) {
+  				botListElt.removeChild(botListElt.firstChild);
+			}
+			let myHeaders = new Headers();
+			myHeaders.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+			myHeaders.append('Accept', 'application/json');
+			myHeaders.append('Set-Cookie', 'passPhrase=Hop');
+
+			let myInit = { 
+				method: 'GET',
+               	headers: myHeaders,
+               	credentials: 'same-origin',
+               	mode: 'cors',
+               	cache: 'no-store' 
+            };
+
+			let myURL = `http://localhost:3001/bot`;
+			
+			fetch(myURL,myInit)
+				.then((httpResponse)=>{
+					
+					return httpResponse.json()
+				})
+				.then((setOfBots)=>{
+					for(let bot of setOfBots){
+						//console.log(`Je suis dans reloadList, le nom du bot est ${bot.name}`)
+						botListElt.appendChild(createItem(bot));
+					}
+				})
+				.catch((err)=>{
+					console.log(`ERROR : ${err} ${err.stack}`);
+				})
+		}
+
+		document.addEventListener('DOMContentLoaded', initMouth);
+
+		function initMouth(){
+			mouthListElt = document.getElementById("mouthListUL");
+			reloadMouthList();
+		}
+		
+		function reloadBrainList(){
+			//first, clean up
+			while (brainListElt.firstChild) {
+  				brainListElt.removeChild(brainListElt.firstChild);
+			}
+			let myHeaders = new Headers();
+			myHeaders.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+			myHeaders.append('Accept', 'application/json');
+			myHeaders.append('Set-Cookie', 'passPhrase=Hop');
+
+			let myInit = { 
+				method: 'GET',
+               	headers: myHeaders,
+               	credentials: 'same-origin',
+               	mode: 'cors',
+               	cache: 'no-store' 
+            };
+
+			let myURL = `http://localhost:3001/brains`;
+			
+			fetch(myURL,myInit)
+				.then((httpResponse)=>{
+					
+					return httpResponse.json()
+				})
+				.then((setOfBrains)=>{
+					for(let brain of setOfBrains){
+						//let item = document.createElement("option");
+						//item.setAttribute('value',person.personId);
+						//item.innerHTML=person.personId;
+						//personListElt.appendChild(item);
+						console.log(`Je suis dans reloadList, le nom du brain est ${brain.name}`)
+						brainListElt.appendChild(createItem(brain));
+					}
+				})
+				.catch((err)=>{
+					console.log(`ERROR : ${err}${err.stack}`);
+				})
+		}
+
+		function reloadMouthList(){
+			//first, clean up
+			while (mouthListElt.firstChild) {
+  				mouthListElt.removeChild(mouthListElt.firstChild);
+			}
+			let myHeaders = new Headers();
+			myHeaders.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+			myHeaders.append('Accept', 'application/json');
+			myHeaders.append('Set-Cookie', 'passPhrase=Hop');
+
+			let myInit = { 
+				method: 'GET',
+               	headers: myHeaders,
+               	credentials: 'same-origin',
+               	mode: 'cors',
+               	cache: 'no-store' 
+            };
+
+			let myURL = `http://localhost:3002/mouth`;
+			
+			fetch(myURL,myInit)
+				.then((httpResponse)=>{
+					
+					return httpResponse.json()
+				})
+				.then((setOfMouths)=>{
+					for(let mouth of setOfMouths){
+						let item = document.createElement("option");
+						item.setAttribute('value',mouth.id);
+						item.innerHTML=mouth.id;
+						mouthListElt.appendChild(item);
+						console.log(`Je suis dans reloadList, le nom du mouth est ${mouth.name}`)
+						mouthListElt.appendChild(createItem(mouth));
+					}
+				})
+				.catch((err)=>{
+					console.log(`ERROR : ${err}${err.stack}`);
+				})
+		}
+	</script>
 </head>
 <body>
 
@@ -32,14 +182,31 @@
         <h1>Création d'un ChatBot</h1>
     </header>
 
+	<ul id="botListUL">
+	</ul>
+
+	<ul id="mouthListUL">
+    </ul>
+	
     <p>
-		say: <input id="user_input" />
-		<button id="submit" onclick=chat(1)>submit</button>
+		Bot Name : 
+		<select id="botListUL" name="botName">
+			<option value="">-- Please choose a bot</option>
+			<option value="">Steeve</option>
+
+		</select>
 	</p>
 
 	<p>
-		reply: <span id="output"></span>
+		Mouth : 
+		<select id="mouthListUL" name="mouthName">
+			<option value="">-- Please choose a mouth</option>
+			<option value="">Socket.io</option>
+			<option value="">Discord</option>
+
+		</select>
 	</p>
+	<button id="newBotButton" onclick="window.open('http://localhost:3002/socketio/', '_blank');">ADD A NEW CHATBOT</button>
 
     <button id="retour" onclick=window.location.href="http://localhost:3001/";>RETOUR</button>
 

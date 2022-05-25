@@ -40,7 +40,15 @@ app.use(express.static('./../client'))
 let id = 0 ; 
 let firstBot ={ 
 	'id':0,
-	'name':'Steve'
+	'name':'Steeve'
+};
+let secondBot ={ 
+	'id':1,
+	'name':'Aiden'
+};
+let thirdBot ={ 
+	'id':2,
+	'name':'Tom'
 };
 
 BotService.create(botServiceAccessPoint).then(bs=>{
@@ -48,10 +56,18 @@ BotService.create(botServiceAccessPoint).then(bs=>{
 	botServiceInstance
 		.addBot(firstBot)
 		.catch((err)=>{console.log(err);});
+	botServiceInstance
+		.addBot(secondBot)
+		.catch((err)=>{console.log(err);});
+	botServiceInstance
+		.addBot(thirdBot)
+		.catch((err)=>{console.log(err);});
 	//console.log(bs);
 	app.listen(port, () => {
 		console.log(firstBot.id, firstBot.name)
-  		console.log(`Example app listening at http://localhost:${port}`)
+		console.log(secondBot.id, secondBot.name)
+		console.log(thirdBot.id, thirdBot.name)
+  		console.log(`Bot server listening at http://localhost:${port}`)
 	});
 });
 

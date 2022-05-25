@@ -95,11 +95,11 @@ class Bot{
     let username = "local-user";
 
     // NOTE: the API has changed in v2.0.0 and returns a Promise now.
-    console.log("You say : Hello, bot!");
-    this.botRivescript.reply(username, "Hello, bot!").then(function(reply) {
-      console.log("The bot says: " + reply);
-    });
-    this.sendMessage("What is your name",username);
+    //console.log("You say : Hello, bot!");
+    //this.botRivescript.reply(username, "Hello, bot!").then(function(reply) {
+    //  console.log("The bot says: " + reply);
+    //});
+    //this.sendMessage("What is your name",username);
   }
 
     // It's good to catch errors too!
