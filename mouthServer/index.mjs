@@ -38,8 +38,13 @@ app.use(express.static('./../client'))
 app.use(express.static('./../client'))
 
 let firstMouth ={ 
-	'id':1234,
+	'id':1,
 	'name':'Socket'
+};
+
+let secondMouth ={ 
+	'id':2,
+	'name':'Discord'
 };
 
 var bot = new RiveScript();
@@ -67,10 +72,13 @@ io.on('connection', (socket) => {
 
 MouthService.create(mouthServiceAccessPoint).then(ms=>{
 	mouthServiceInstance=ms;
-	/*mouthServiceInstance
+	mouthServiceInstance
 		.addMouth(firstMouth)
 		.catch((err)=>{console.log(err);});
-    socketConnection;*/
+    //socketConnection;
+	mouthServiceInstance
+		.addMouth(secondMouth)
+		.catch((err)=>{console.log(err);});
 	server.listen(port, () => {
   		console.log(`Mouth server app listening at http://localhost:${port}`)
 	});

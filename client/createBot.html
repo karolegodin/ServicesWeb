@@ -31,23 +31,26 @@
 
 		let botListElt;
 		let brainListElt;
-        let mouthListElt;
 		let addNewBotButton;
-		let newBotButton;
-
+		let talkBotButton;
+		let chooseBot;
+		let mouthListElt;
 
 		function initBots(){
-			botListElt = document.getElementById("botListUL");
+			botListElt = document.getElementById("botListSELECT");
 
 			//DECOMMENTER LORSQUE LES CLASSES DES BOTS ET BRAINS SONT TERMINEES
 			reloadBotList();
 			//reloadMouthList();
 			//reloadBrainList();
 
-			newTaskButton = document.getElementById("newTaskButton");
-			newTaskButton.addEventListener("click",()=>{modal.style.display = "block";});
-			addNewTaskButton = document.getElementById("addNewTaskButton");
-			addNewTaskButton.addEventListener("click",createNewTask);
+			//newTaskButton = document.getElementById("newTaskButton");
+			//newTaskButton.addEventListener("click",()=>{modal.style.display = "block";});
+			//addNewTaskButton = document.getElementById("addNewTaskButton");
+			//addNewTaskButton.addEventListener("click",createNewTask);
+			//chooseBot = document.getElementById("chooseBot");
+			talkBotButton = document.getElementById("talkBotButton");
+			talkBotButton.addEventListener("click",talkingbot);
 
 			
 		}
@@ -74,13 +77,17 @@
 			
 			fetch(myURL,myInit)
 				.then((httpResponse)=>{
-					
+					for (let field of httpResponse.headers) {
+						console.log(`raw = ${field}`);
+					}
 					return httpResponse.json()
 				})
 				.then((setOfBots)=>{
 					for(let bot of setOfBots){
-						//console.log(`Je suis dans reloadList, le nom du bot est ${bot.name}`)
-						botListElt.appendChild(createItem(bot));
+						let item = document.createElement("option");
+						item.setAttribute("value", bot.name);
+						item.innerHTML += ` ${bot.name}`;
+						botListElt.appendChild(item);
 					}
 				})
 				.catch((err)=>{
@@ -91,7 +98,10 @@
 		document.addEventListener('DOMContentLoaded', initMouth);
 
 		function initMouth(){
-			mouthListElt = document.getElementById("mouthListUL");
+			//let chooseMouth;
+
+			//chooseMouth = document.getElementById("chooseMouth");
+			mouthListElt = document.getElementById("mouthListSELECT");
 			reloadMouthList();
 		}
 		
@@ -162,24 +172,38 @@
 				})
 				.then((setOfMouths)=>{
 					for(let mouth of setOfMouths){
+						console.log(setOfMouths);
 						let item = document.createElement("option");
-						item.setAttribute('value',mouth.id);
-						item.innerHTML=mouth.id;
+						item.setAttribute("value", mouth.name);
+						item.innerHTML += ` ${mouth.name}`;
 						mouthListElt.appendChild(item);
-						console.log(`Je suis dans reloadList, le nom du mouth est ${mouth.name}`)
-						mouthListElt.appendChild(createItem(mouth));
+						console.log(mouthListElt);
 					}
 				})
 				.catch((err)=>{
 					console.log(`ERROR : ${err}${err.stack}`);
 				})
 		}
+
+		function talkingbot(){
+			let mouthSelected = mouthListElt.value;
+
+			if (mouthSelected == 'Socket'){
+				window.open('http://localhost:3002/socketio/', '_blank');
+				//window.open('http://localhost:3001/bot/', '_blank');
+				//normalement faudrait faire un GET... ça arrive
+			}
+
+			if (mouthSelected == 'Discord'){
+				window.open('https://discord.gg/FyKz3kajW7', '_blank');
+			}
+		}
 	</script>
 </head>
 <body>
 
     <header>
-        <h1>Création d'un ChatBot</h1>
+        <h1>Parler à un ChatBot</h1>
     </header>
 
 	<ul id="botListUL">
@@ -189,24 +213,20 @@
     </ul>
 	
     <p>
-		Bot Name : 
-		<select id="botListUL" name="botName">
+		<label for="botListSELECT">Bot:</label>
+		<select id="botListSELECT" name="botName">
 			<option value="">-- Please choose a bot</option>
-			<option value="">Steeve</option>
 
 		</select>
 	</p>
 
 	<p>
-		Mouth : 
-		<select id="mouthListUL" name="mouthName">
+		<label for="mouthListSELECT">Mouth:</label>
+		<select id="mouthListSELECT" name="mouthName">
 			<option value="">-- Please choose a mouth</option>
-			<option value="">Socket.io</option>
-			<option value="">Discord</option>
-
 		</select>
 	</p>
-	<button id="newBotButton" onclick="window.open('http://localhost:3002/socketio/', '_blank');">ADD A NEW CHATBOT</button>
+	<button id="talkBotButton">TALK TO A CHATBOT</button>
 
     <button id="retour" onclick=window.location.href="http://localhost:3001/";>RETOUR</button>
 
