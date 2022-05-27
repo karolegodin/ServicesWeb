@@ -3,11 +3,12 @@ import fetch from 'node-fetch';
 class Brain{  
 
     static id = this.id;
-    static name = this.name; 
+    static name = this.name;
+    //static rive = this.rive;
 
   constructor(data){
-    this.url = data.url; // probably localhost
-    this.port = data.port; // probably 3001
+    //this.url = data.url; // probably localhost
+    //this.port = data.port; // probably 3001
 
     if(undefined != data.id) { 
         if(!isInt(data.id)){

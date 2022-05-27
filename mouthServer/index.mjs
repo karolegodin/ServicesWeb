@@ -35,7 +35,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true })) 
 app.use(express.static('./../client'))
 
-app.use(express.static('./../client'))
+//app.use(express.static('./../client'))
 
 let firstMouth ={ 
 	'id':1,
@@ -48,7 +48,7 @@ let secondMouth ={
 };
 
 var bot = new RiveScript();
-bot.loadFile("./../server/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
+bot.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
 
 //let server;
 //let io;

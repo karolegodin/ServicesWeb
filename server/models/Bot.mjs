@@ -60,7 +60,7 @@ class Bot{
   async botCreation(){
     this.botRivescript = new RiveScript();
     let username = "local-user";
-    this.botRivescript.loadFile("./pathtobrain/standard.rive").then(()=> this.loading_done()).catch(this.loading_error);
+    this.botRivescript.loadFile("./../brainServer/pathtobrain/standard.rive").then(()=> this.loading_done()).catch(this.loading_error);
     this.brain = new Array();
     this.brain.push("Standard");
     //console.log("Création nouveau rivescript avec botCreation");
