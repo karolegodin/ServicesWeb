@@ -19,11 +19,6 @@ class BotService{
       const response = await fetch(myURL,myInit);
       const setOfBots = await response.json();
       //console.warn(xhr.responseText);
-      /*for(let bot of setOfBots){
-          //console.log(bot);
-          returnValue.push(new BotIdentifier({'botId':bot.id, 'botName':bot.name}));
-          
-      }*/
       for (let i=0; i<setOfBots.length; i++){
           //console.log(setOfBots);
           returnValue.push({'botId': (setOfBots[i]).id, 'botName': (setOfBots[i]).name, 'botMouth':(setOfBots[i]).mouth, 'botBrain': (setOfBots[i]).brain, 'botRivescript':null});
@@ -34,19 +29,23 @@ class BotService{
     } catch (error) {
       console.log(error);
     }
-    //console.log("Je sors de la requête GET");
-    //console.log(returnValue);
-    console.log("type de données array");
     console.log(returnValue);
+    //console.log(typeof(returnValue));
     return returnValue;
   }
 
-  async getBotById(botId){
-    // dummy Value
+  async getBotById(id){
+    /*// dummy Value
     let id = Math.floor(Math.random() * Math.floor(100000)) ;
     let returnValue = new BotIdentifier({'botId':id});
     //
-    return returnValue;
+    return returnValue;*/
+    let anArray = this.getAllBots;
+    let index = anArray.findIndex((e)=> { e.id == id });
+		if(index >-1 ){
+			return  (anArray)[index];
+		}
+		throw new Error(`cannot find bot of id ${id}`);
   }
 
 }

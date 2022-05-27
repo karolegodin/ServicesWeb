@@ -49,6 +49,7 @@ let secondMouth ={
 
 var bot = new RiveScript();
 bot.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
+//bot.loadFile("./../brainServer/pathtobrain/client.rive").then(loading_done).catch(loading_error);
 
 //let server;
 //let io;
@@ -148,8 +149,8 @@ app.get('/mouth',async(req,res)=>{
 
 app.get('/bot',async(req,res)=>{
 	botsArray = await getAllBots();
-	//console.log("heheheee");
-	console.log(botsArray);
+	//getBotById(3011);
+	//console.log(botsArray);
 	res.status(200).json(botsArray);
 })
 
@@ -175,14 +176,7 @@ async function getAllBots(){
 }
 
 async function getBotById(botId){
-	let anArray;
-	anArray = getAllBots();
-	//console.log(anArray);
-	let index = anArray.findIndex(e=> e.botId == botId);
-		if(index >-1 ){
-			return  (anArray)[index];
-		}
-		throw new Error(`cannot find bot of id ${id}`);	
+	return await botServiceAccessPoint.getBotById();
 }
 
 function loading_done() {
