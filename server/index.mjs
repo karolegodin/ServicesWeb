@@ -39,15 +39,15 @@ app.use(express.static('./../client'))
 
 let id = 0 ; 
 let firstBot ={ 
-	'id':0,
+	'id':3011,
 	'name':'Steeve'
 };
 let secondBot ={ 
-	'id':1,
+	'id':3012,
 	'name':'Aiden'
 };
 let thirdBot ={ 
-	'id':2,
+	'id':3013,
 	'name':'Tom'
 };
 

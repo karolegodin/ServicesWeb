@@ -26,7 +26,7 @@ class BotService{
       }*/
       for (let i=0; i<setOfBots.length; i++){
           //console.log(setOfBots);
-          returnValue.push({'botId': (setOfBots[i]).id, 'botName': (setOfBots[i]).name, 'botMouth':(setOfBots[i]).mouth, 'botBrain': (setOfBots[i]).brain});
+          returnValue.push({'botId': (setOfBots[i]).id, 'botName': (setOfBots[i]).name, 'botMouth':(setOfBots[i]).mouth, 'botBrain': (setOfBots[i]).brain, 'botRivescript':null});
           //console.log(returnValue);
           //returnValue.push({'botRivescript': (setOfBots[i]).botRivescript});
       }
@@ -36,6 +36,8 @@ class BotService{
     }
     //console.log("Je sors de la requête GET");
     //console.log(returnValue);
+    console.log("type de données array");
+    console.log(returnValue);
     return returnValue;
   }
 
@@ -60,6 +62,7 @@ class BotIdentifier{
       this.botName = data.botName;
       this.botMouth = data.botMouth;
       this.botBrain = data.botBrain;
+      this.botRivescript = data.botRivescript;
   }
   static isBotIdentifier(anObject){
     // check if mandatory fields are there

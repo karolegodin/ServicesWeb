@@ -50,6 +50,8 @@ let secondMouth ={
 var bot = new RiveScript();
 bot.loadFile("./../server/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
 
+//let server;
+//let io;
 const server = http.createServer(app);
 const io = new Server(server);
 io.on('connection', (socket) => {
@@ -69,6 +71,33 @@ io.on('connection', (socket) => {
 /*io.on("connect_error", (err) => {
 	console.log(`connect_error due to ${err.message}`);
   });*/
+/*function createBot(id){
+	let bot = getBotById(id); //bot existant dans la base de données
+	bot.botRivescript = new RiveScript();
+	console.log("Rivescript créé");
+	//console.log(bot.botRivescript);
+	bot.botRivescript.loadFile("./../server/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
+	return bot.botRivescript
+}*/
+
+/*function socketConnection(id){
+	let rive = createBot(id);
+	//server = http.createServer(app);
+	//io = new Server(server);
+	io.on('connection', (socket) => {
+		console.log('a user connected');
+		let username = "local-user";
+		socket.on('chat message', (msg) => {
+		console.log('message: ' + msg);
+		rive.reply(username,msg).then(function(reply) {
+			console.log("The bot says: " + reply);
+			io.emit('chat message', msg);
+			io.emit('chat message', reply);
+		});
+  
+	});
+  });
+}*/
 
 MouthService.create(mouthServiceAccessPoint).then(ms=>{
 	mouthServiceInstance=ms;
@@ -91,7 +120,7 @@ app.get('/socketio', (req, res)=>{
 		mouthServiceInstance
 			.addMouth(firstMouth)
 			.catch((err)=>{console.log(err);});
-    	//socketConnection();
+    	//socketConnection(3012);
 		//console.log(mouthServiceInstance);
 
 	}
@@ -141,7 +170,19 @@ async function getMouths(){
 }
 
 async function getAllBots(){
+	//console.log(botServiceAccessPoint.getAllBots());
 	return await botServiceAccessPoint.getAllBots();
+}
+
+async function getBotById(botId){
+	let anArray;
+	anArray = getAllBots();
+	//console.log(anArray);
+	let index = anArray.findIndex(e=> e.botId == botId);
+		if(index >-1 ){
+			return  (anArray)[index];
+		}
+		throw new Error(`cannot find bot of id ${id}`);	
 }
 
 function loading_done() {
