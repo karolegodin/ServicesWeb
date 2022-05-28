@@ -167,6 +167,23 @@ app.get('/bot',async(req,res)=>{
 	}
 })
 
+app.get('/bot/:idddd', (req, res)=>{
+	let id = req.params.idddd;
+	if(!isInt(id)) {
+		//not the expected parameter
+		res.status(400).send('BAD REQUEST');
+	}else{
+		try{
+			let myBot = botServiceInstance.getBot(id);
+			res.status(200).json({'name':myBot.name});
+		}
+		catch(err){
+			console.log(`Error ${err} thrown`);
+			res.status(404).send('NOT FOUND');
+		}
+	}
+});
+
 //create a new bot (POST HTTP method)
 /*app.post('/bots',(req,res)=>{
 	let theBotToAdd = req.body;

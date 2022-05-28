@@ -149,8 +149,9 @@ app.get('/mouth',async(req,res)=>{
 
 app.get('/bot',async(req,res)=>{
 	botsArray = await getAllBots();
-	//getBotById(3011);
+	//let arrayTest = botServiceAccessPoint.getBotById(3011);
 	//console.log(botsArray);
+	//console.log(arrayTest);
 	res.status(200).json(botsArray);
 })
 
@@ -176,7 +177,7 @@ async function getAllBots(){
 }
 
 async function getBotById(botId){
-	return await botServiceAccessPoint.getBotById();
+	return await botServiceAccessPoint.getBotById(botId);
 }
 
 function loading_done() {

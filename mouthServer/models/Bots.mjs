@@ -35,17 +35,43 @@ class BotService{
   }
 
   async getBotById(id){
+    //const sleep = ms => new Promise(r => setTimeout(r, ms));
     /*// dummy Value
     let id = Math.floor(Math.random() * Math.floor(100000)) ;
     let returnValue = new BotIdentifier({'botId':id});
     //
     return returnValue;*/
-    let anArray = this.getAllBots;
-    let index = anArray.findIndex((e)=> { e.id == id });
+    //let anArray = this.getAllBots;
+    //await sleep(5000);
+    //console.log("Array in service : "+anArray);
+    
+    /*let index = anArray.findIndex((e)=> { e.id == id });
 		if(index >-1 ){
 			return  (anArray)[index];
 		}
-		throw new Error(`cannot find bot of id ${id}`);
+		throw new Error(`cannot find bot of id ${id}`);*/
+    let returnValue = new BotIdentifier({'botId':id});
+    let myInit = { 
+      method: 'GET',
+      mode: 'cors',
+      cache: 'default' 
+    };
+    let myURL = `http://localhost:3001/bot/${id}`;
+    try {
+      const response = await fetch(myURL,myInit);
+      //console.log(response);
+      //console.log("Problème"+await response.json());
+      const setOfBots = await response.json();
+      //console.log(setOfBots);
+      //console.warn(xhr.responseText);
+      returnValue.botName = (setOfBots.name);
+      
+    } catch (error) {
+      console.log(error);
+    }
+    console.log(returnValue);
+    //console.log(typeof(returnValue));
+    return returnValue;
   }
 
 }
@@ -54,7 +80,7 @@ class BotService{
 
 class BotIdentifier{
   static botId = this.botId; //the id of the Bot in the micro-service
-  static botName = this.botName;
+  //static botName = this.botName;
   // TODO : when multiple sources of Bots is used : should differentiate botId and a localbotId...
   constructor(data){ // TODO : Should check if sourceId is known and valid
       this.botId = data.botId;
