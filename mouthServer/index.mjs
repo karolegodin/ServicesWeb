@@ -109,6 +109,7 @@ MouthService.create(mouthServiceAccessPoint).then(ms=>{
 	mouthServiceInstance
 		.addMouth(secondMouth)
 		.catch((err)=>{console.log(err);});
+	//loading_brains(3011);
 	server.listen(port, () => {
   		console.log(`Mouth server app listening at http://localhost:${port}`)
 	});
@@ -192,3 +193,22 @@ function loading_done() {
   function loading_error(error, filename, lineno) {
 	console.log("Error when loading files: " + error);
   }
+
+async function loading_brains(id){
+	console.log("Je suis dans loading_brains");
+	let botToLoad = await getBotById(id);
+	console.log(botToLoad);
+	console.log("Liste des brains : ");
+	console.log(botToLoad.botBrain);
+	for (let i=0; i<botToLoad.botBrain.length; i++){
+		switch((botToLoad.botBrain)[i]){
+			case 'Standard':
+				console.log("Standard to load");
+				botToLoad.botRivescript.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
+				break;
+			case 'Client':
+				console.log("Client to load");
+				botToLoad.botRivescript.loadFile("./../brainServer/pathtobrain/client.rive").then(loading_done).catch(loading_error);
+		}
+	}
+}

@@ -35,21 +35,6 @@ class BotService{
   }
 
   async getBotById(id){
-    //const sleep = ms => new Promise(r => setTimeout(r, ms));
-    /*// dummy Value
-    let id = Math.floor(Math.random() * Math.floor(100000)) ;
-    let returnValue = new BotIdentifier({'botId':id});
-    //
-    return returnValue;*/
-    //let anArray = this.getAllBots;
-    //await sleep(5000);
-    //console.log("Array in service : "+anArray);
-    
-    /*let index = anArray.findIndex((e)=> { e.id == id });
-		if(index >-1 ){
-			return  (anArray)[index];
-		}
-		throw new Error(`cannot find bot of id ${id}`);*/
     let returnValue = new BotIdentifier({'botId':id});
     let myInit = { 
       method: 'GET',
@@ -65,6 +50,7 @@ class BotService{
       //console.log(setOfBots);
       //console.warn(xhr.responseText);
       returnValue.botName = (setOfBots.name);
+      returnValue.botBrain = (setOfBots.brain);
       
     } catch (error) {
       console.log(error);

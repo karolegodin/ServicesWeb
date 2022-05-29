@@ -89,3 +89,7 @@ async function getAllBots(){
 	//console.log(botServiceAccessPoint.getAllBots());
 	return await botServiceAccessPoint.getAllBots();
 }
+
+async function getBotById(botId){
+	return await botServiceAccessPoint.getBotById(botId);
+}

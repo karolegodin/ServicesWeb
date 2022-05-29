@@ -175,7 +175,8 @@ app.get('/bot/:idddd', (req, res)=>{
 	}else{
 		try{
 			let myBot = botServiceInstance.getBot(id);
-			res.status(200).json({'name':myBot.name});
+			res.status(200).json({'name':myBot.name,'mouth':myBot.mouth,'brain':myBot.brain});
+			//res.status(200).json({'brain':myBot});
 		}
 		catch(err){
 			console.log(`Error ${err} thrown`);
@@ -200,11 +201,31 @@ app.get('/bot/:idddd', (req, res)=>{
 	getAllMouths();
 });*/
 
-/*app.delete();
+//app.delete();
 
-app.patch();*/
+app.patch('/bot/:id',(req,res)=>{
+	let id = req.params.id;
+	if(!isInt(id)) { //Should I propagate a bad parameter to the model?
+		//not the expected parameter
+		res.status(400).send('BAD REQUEST');
+	}else{
+		let newValues = req.body; //the client is responsible for formating its request with proper syntax.
+		console.log("Valeurs à update");
+		console.log(newValues.brain);
+		botServiceInstance
+			.updateBot(id, newValues)
+			.then((returnString)=>{
+				console.log(returnString);
+				res.status(201).send('All is OK');
+			})
+			.catch((err)=>{
+				console.log(`Error ${err} thrown... stack is : ${err.stack}`);
+				res.status(400).send('BAD REQUEST');
+			});	
+	}	
+});
 
-app.post('/v2/bots/',(req,res)=>{
+/*app.post('/v2/bots/',(req,res)=>{
 	let thebotToAdd = req.body;
 	botServiceInstance
 		.addBot(thebotToAdd) 
@@ -216,7 +237,7 @@ app.post('/v2/bots/',(req,res)=>{
 			console.log(`Error ${err} thrown... stack is : ${err.stack}`);
 			res.status(400).send('BAD REQUEST');
 		});	
-});
+});*/
 
 function isInt(value) {
   let x = parseFloat(value);

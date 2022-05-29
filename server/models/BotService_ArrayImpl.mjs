@@ -50,6 +50,7 @@ class BotService{
 		let index = this.array.findIndex(e=> e.id == id);	
 		if(index >-1 ){
 			//At this point, you may have a safeguard to verify if the fields of the given Object are from a Bot
+			//console.log((this.array)[index]);
 			for(let property in anObject){
 				if(!Bot.isValidProperty(property,anObject[property])){
 					throw new Error(`given property is not a valid Bot property : ${anObject}`);	
@@ -57,7 +58,9 @@ class BotService{
 			}
 			//At this point, we are sure that all properties are valid and that we can make the update.
 			for(let property in anObject){
-				(this.array)[index][property] = anObject[property];
+				//console.log(anObject);
+				//(this.array)[index][property] = anObject[property];
+				(this.array)[index][property].push(anObject[property]);
 			}
 			return "Done UPDATING";
 		}
