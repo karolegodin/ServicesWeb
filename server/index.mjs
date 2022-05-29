@@ -167,6 +167,18 @@ app.get('/bot',async(req,res)=>{
 	}
 })
 
+app.get('/botV2',async(req,res)=>{
+	try{
+		//let json_var = {'test':'oui'};
+			res.sendFile('/client/botList.html', { root: './..' })
+	
+		}
+		catch(err){
+			console.log(`Error ${err} thrown`);
+			res.status(404).send('NOT FOUND');
+		}
+})
+
 app.get('/bot/:idddd', (req, res)=>{
 	let id = req.params.idddd;
 	if(!isInt(id)) {
@@ -175,8 +187,56 @@ app.get('/bot/:idddd', (req, res)=>{
 	}else{
 		try{
 			let myBot = botServiceInstance.getBot(id);
-			res.status(200).json({'name':myBot.name,'mouth':myBot.mouth,'brain':myBot.brain});
+			res.status(200).json([{'name':myBot.name,'mouth':myBot.mouth,'brain':myBot.brain}]);
 			//res.status(200).json({'brain':myBot});
+		}
+		catch(err){
+			console.log(`Error ${err} thrown`);
+			res.status(404).send('NOT FOUND');
+		}
+	}
+});
+
+app.get('/botV2/3011', (req, res)=>{
+	//let id = req.params.idddd;
+	if(!isInt(id)) {
+		//not the expected parameter
+		res.status(400).send('BAD REQUEST');
+	}else{
+		try{
+			res.sendFile('/client/steeve.html', { root: './..' })
+		}
+		catch(err){
+			console.log(`Error ${err} thrown`);
+			res.status(404).send('NOT FOUND');
+		}
+	}
+});
+
+app.get('/botV2/3012', (req, res)=>{
+	//let id = req.params.idddd;
+	if(!isInt(id)) {
+		//not the expected parameter
+		res.status(400).send('BAD REQUEST');
+	}else{
+		try{
+			res.sendFile('/client/aiden.html', { root: './..' })
+		}
+		catch(err){
+			console.log(`Error ${err} thrown`);
+			res.status(404).send('NOT FOUND');
+		}
+	}
+});
+
+app.get('/botV2/3013', (req, res)=>{
+	//let id = req.params.idddd;
+	if(!isInt(id)) {
+		//not the expected parameter
+		res.status(400).send('BAD REQUEST');
+	}else{
+		try{
+			res.sendFile('/client/tom.html', { root: './..' })
 		}
 		catch(err){
 			console.log(`Error ${err} thrown`);

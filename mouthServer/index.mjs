@@ -148,6 +148,18 @@ app.get('/mouth',async(req,res)=>{
 	}
 })
 
+app.get('/mouthV2',async(req,res)=>{
+	try{
+		//let json_var = {'test':'oui'};
+			res.sendFile('/client/mouthList.html', { root: './..' })
+	
+		}
+		catch(err){
+			console.log(`Error ${err} thrown`);
+			res.status(404).send('NOT FOUND');
+		}
+})
+
 app.get('/bot',async(req,res)=>{
 	botsArray = await getAllBots();
 	//let arrayTest = botServiceAccessPoint.getBotById(3011);

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Liste des Mouth</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+	<style>
+		.modal {
+		  display: none;
+		  position: fixed; 
+		  padding-top: 50px;
+		  left: 0; 
+		  top: 0;
+		  width: 100%;
+		  height: 100%; 
+		  background-color: rgb(0, 0, 0);
+		  background-color: rgba(0, 0, 0, 0.5);
+		}
+		.modal-content {
+  			position: relative; 
+  			background-color: white;
+  			padding: 20px; 
+  			margin: auto; 
+  			width: 50%;  
+		}
+	</style>
+
+    <script>
+        //document.addEventListener('DOMContentLoaded',initBots);
+
+let botListElt;
+let brainListElt;
+let addNewBotButton;
+let talkBotButton;
+let chooseBot;
+let mouthListElt;
+
+/*function initBots(){
+    botListElt = document.getElementById("botListSELECT");
+
+    //DECOMMENTER LORSQUE LES CLASSES DES BOTS ET BRAINS SONT TERMINEES
+    reloadBotList();
+    //reloadMouthList();
+    //reloadBrainList();
+
+    //newTaskButton = document.getElementById("newTaskButton");
+    //newTaskButton.addEventListener("click",()=>{modal.style.display = "block";});
+    //addNewTaskButton = document.getElementById("addNewTaskButton");
+    //addNewTaskButton.addEventListener("click",createNewTask);
+    //chooseBot = document.getElementById("chooseBot");
+    talkBotButton = document.getElementById("talkBotButton");
+    talkBotButton.addEventListener("click",talkingbot);
+
+    
+}*/
+/*function reloadBotList(){ //met à jour la liste de tous les bots
+    //first, clean up
+    console.log("Je reload la liste des bots");
+    while (botListElt.firstChild) {
+          botListElt.removeChild(botListElt.firstChild);
+    }
+    let myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    myHeaders.append('Accept', 'application/json');
+    myHeaders.append('Set-Cookie', 'passPhrase=Hop');
+
+    let myInit = { 
+        method: 'GET',
+           headers: myHeaders,
+           credentials: 'same-origin',
+           mode: 'cors',
+           cache: 'no-store' 
+    };
+
+    let myURL = `http://localhost:3001/bot`;
+    
+    fetch(myURL,myInit)
+        .then((httpResponse)=>{
+            for (let field of httpResponse.headers) {
+                console.log(`raw = ${field}`);
+            }
+            return httpResponse.json()
+        })
+        .then((setOfBots)=>{
+            for(let bot of setOfBots){
+                let item = document.createElement("option");
+                item.setAttribute("value", bot.name);
+                item.innerHTML += ` ${bot.name}`;
+                botListElt.appendChild(item);
+            }
+        })
+        .catch((err)=>{
+            console.log(`ERROR : ${err} ${err.stack}`);
+        })
+}*/
+
+document.addEventListener('DOMContentLoaded', initMouth);
+
+function initMouth(){
+    //let chooseMouth;
+
+    //chooseMouth = document.getElementById("chooseMouth");
+    mouthListElt = document.getElementById("mouthListSELECT");
+    reloadMouthList();
+}
+
+/*function reloadBrainList(){
+    //first, clean up
+    while (brainListElt.firstChild) {
+          brainListElt.removeChild(brainListElt.firstChild);
+    }
+    let myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    myHeaders.append('Accept', 'application/json');
+    myHeaders.append('Set-Cookie', 'passPhrase=Hop');
+
+    let myInit = { 
+        method: 'GET',
+           headers: myHeaders,
+           credentials: 'same-origin',
+           mode: 'cors',
+           cache: 'no-store' 
+    };
+
+    let myURL = `http://localhost:3001/brains`;
+    
+    fetch(myURL,myInit)
+        .then((httpResponse)=>{
+            
+            return httpResponse.json()
+        })
+        .then((setOfBrains)=>{
+            for(let brain of setOfBrains){
+                //let item = document.createElement("option");
+                //item.setAttribute('value',person.personId);
+                //item.innerHTML=person.personId;
+                //personListElt.appendChild(item);
+                console.log(`Je suis dans reloadList, le nom du brain est ${brain.name}`)
+                brainListElt.appendChild(createItem(brain));
+            }
+        })
+        .catch((err)=>{
+            console.log(`ERROR : ${err}${err.stack}`);
+        })
+}*/
+
+function reloadMouthList(){
+    //first, clean up
+    while (mouthListElt.firstChild) {
+          mouthListElt.removeChild(mouthListElt.firstChild);
+    }
+    let myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    myHeaders.append('Accept', 'application/json');
+    myHeaders.append('Set-Cookie', 'passPhrase=Hop');
+
+    let myInit = { 
+        method: 'GET',
+           headers: myHeaders,
+           credentials: 'same-origin',
+           mode: 'cors',
+           cache: 'no-store' 
+    };
+
+    let myURL = `http://localhost:3002/mouth`;
+    
+    fetch(myURL,myInit)
+        .then((httpResponse)=>{
+            return httpResponse.json()
+        })
+        .then((setOfMouths)=>{
+            console.log("SetofMouths");
+            console.log(setOfMouths);
+            for(let mouth of setOfMouths){
+                console.log(setOfMouths);
+                let item = document.createElement("option");
+                item.setAttribute("value", mouth.name);
+                item.innerHTML += ` ${mouth.name}`;
+                mouthListElt.appendChild(item);
+                console.log(mouthListElt);
+            }
+        })
+        .catch((err)=>{
+            console.log(`ERROR : ${err}${err.stack}`);
+        })
+}
+
+/*function talkingbot(){
+    let mouthSelected = mouthListElt.value;
+
+    if (mouthSelected == 'Socket'){
+        window.open('http://localhost:3002/socketio/', '_blank');
+        //window.open('http://localhost:3001/bot/', '_blank');
+        //normalement faudrait faire un GET... ça arrive
+    }
+
+    if (mouthSelected == 'Discord'){
+        window.open('https://discord.gg/FyKz3kajW7', '_blank');
+    }
+}*/
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Liste des Mouth</h1>
+    </header>
+
+	<ul id="mouthListSELECT">
+	</ul>
+    <button id="retour" onclick=window.location.href="http://localhost:3001/";>RETOUR</button>
+</body>
+<footer>
+    <p>©Copyright GODIN Karole & CLAUDE Sarah </p>
+</footer>
+</html>

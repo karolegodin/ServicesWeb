@@ -44,10 +44,18 @@ let firstBrain ={
 	'name':'Standard'
 };
 
+let secondBrain ={ 
+	'id':1,
+	'name':'Client'
+};
+
 BrainService.create(brainServiceAccessPoint).then(ms=>{
 	brainServiceInstance=ms;
 	brainServiceInstance
 		.addBrain(firstBrain)
+		.catch((err)=>{console.log(err);});
+	brainServiceInstance
+		.addBrain(secondBrain)
 		.catch((err)=>{console.log(err);});
     //socketConnection;
 	/*brainServiceInstance
@@ -79,6 +87,18 @@ app.get('/brain',async(req,res)=>{
 		console.log(`Error ${err} thrown... stack is : ${err.stack}`);
 		res.status(404).send('NOT FOUND');
 	}
+})
+
+app.get('/brainV2',async(req,res)=>{
+	try{
+		//let json_var = {'test':'oui'};
+			res.sendFile('/client/brainList.html', { root: './..' })
+	
+		}
+		catch(err){
+			console.log(`Error ${err} thrown`);
+			res.status(404).send('NOT FOUND');
+		}
 })
 
 async function getBrains(){
