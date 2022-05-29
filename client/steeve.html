@@ -253,6 +253,44 @@
 				window.open('https://discord.gg/FyKz3kajW7', '_blank');
 			}
 		}*/ 
+
+        function createItem(bot){
+			let item = document.createElement("li");
+			
+			// Adding a DELETE Button
+			/*let delBtn = document.createElement("button");
+			delBtn.innerHTML = "DELETE";
+			let id = `del_${task.id}`;
+			
+			delBtn.setAttribute("id",id);
+			delBtn.setAttribute("onclick",`deleteTask(${task.id})`);
+			//delBtn.addEventListener("click",()=>{deleteTask(task.id)});
+			item.appendChild(delBtn);*/
+
+
+			// Adding a PUT Button
+			/*let putBtn = document.createElement("button");
+			putBtn.innerHTML = "PUT";
+			putBtn.setAttribute("onclick",`replaceTask(${task.id})`);
+			//putBtn.addEventListener("click",()=>{replaceTask(task.id)});
+			item.appendChild(putBtn);*/
+			
+			// Adding a PATCH Button
+			let patchBtn = document.createElement("button");
+			patchBtn.innerHTML = "PATCH";
+			patchBtn.setAttribute("onclick",`updateBrain(${bot.id})`);
+			patchBtn.addEventListener("click",()=>{updateBrain(bot.id)});
+			item.appendChild(patchBtn);
+
+			item.innerHTML += ` ${bot.title}(asssigned to ${bot.assignement.personId} )`;
+			return item;
+		}
+
+        function updateBrain(botId){
+			console.log(`updating bot brain with Id ${botId}`);
+			//TODO
+			//Obvioulsly, you will need to launch a modal
+		}
 	</script>
 </head>
 <body>
