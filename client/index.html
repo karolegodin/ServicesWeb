@@ -1,39 +1,40 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>ChatBot Administration Service</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
 	<script>
-		document.addEventListener('DOMContentLoaded',init);
+		document.addEventListener('DOMContentLoaded', init);
 
 		let botListElt;
 		let brainListElt;
-        let mouthListElt;
+		let mouthListElt;
 		let modal;
 		let inputTitle;
 		let inputStatus;
 		let addNewBotButton;
 		let newBotButton;
 
-		function init(){
+		function init() {
 			botListElt = document.getElementById("botListUL");
 			brainListElt = document.getElementById("brainListUL");
-            mouthListElt = document.getElementById("mouthListUL");
+			mouthListElt = document.getElementById("mouthListUL");
 			modal = document.getElementById("newBotModal");
 			inputTitle = document.getElementById("inputTitle");
 			inputStatus = document.getElementById("inputStatus");
 
 			reloadBotList();
 			//reloadBrainList();
-            //reloadMouthList();
+			//reloadMouthList();
 			//setInterval(reloadList,5000);
 
 			newBotButton = document.getElementById("newBotButton"); //bouton pour créer un bot
-			newBotButton.addEventListener("click",()=>{modal.style.display = "block";});
+			newBotButton.addEventListener("click", () => { modal.style.display = "block"; });
 			addNewBotButton = document.getElementById("addNewBotButton");
-			addNewBotButton.addEventListener("click",createNewBot);
+			addNewBotButton.addEventListener("click", createNewBot);
 			/*
 			allBotsButton = document.getElementById("allBotsButton"); //bouton pour aller sur la page avec une liste de tous les bots
 			allBotsButton.addEventListener("click",reloadBotList);
@@ -44,48 +45,48 @@
 			*/
 		}
 
-		function reloadBotList(){ //met à jour la liste de tous les bots
+		function reloadBotList() { //met à jour la liste de tous les bots
 			//first, clean up
 			console.log("Je reload la liste des bots");
 			while (botListElt.firstChild) {
-  				botListElt.removeChild(botListElt.firstChild);
+				botListElt.removeChild(botListElt.firstChild);
 			}
 			let myHeaders = new Headers();
 			myHeaders.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 			myHeaders.append('Accept', 'application/json');
 			myHeaders.append('Set-Cookie', 'passPhrase=Hop');
 
-			let myInit = { 
+			let myInit = {
 				method: 'GET',
-               	headers: myHeaders,
-               	credentials: 'same-origin',
-               	mode: 'cors',
-               	cache: 'no-store' 
-            };
+				headers: myHeaders,
+				credentials: 'same-origin',
+				mode: 'cors',
+				cache: 'no-store'
+			};
 
 			let myURL = `http://localhost:3001/bot`;
-			
-			fetch(myURL,myInit)
-				.then((httpResponse)=>{
+
+			fetch(myURL, myInit)
+				.then((httpResponse) => {
 					for (let field of httpResponse.headers) {
 						console.log(`raw = ${field}`);
 					}
 					return httpResponse.json()
 				})
-				.then((setOfBots)=>{
-					for(let bot of setOfBots){
+				.then((setOfBots) => {
+					for (let bot of setOfBots) {
 						let item = document.createElement("option");
 						item.setAttribute("value", bot.name);
 						item.innerHTML += ` ${bot.name}`;
 						botListElt.appendChild(item);
 					}
 				})
-				.catch((err)=>{
+				.catch((err) => {
 					console.log(`ERROR : ${err} ${err.stack}`);
 				})
 		}
 
-		function initMouth(){
+		function initMouth() {
 			let mouthListElt;
 			let chooseMouth;
 
@@ -94,33 +95,33 @@
 			reloadMouthList();
 		}
 
-		function reloadBrainList(){
+		function reloadBrainList() {
 			//first, clean up
 			while (brainListElt.firstChild) {
-  				brainListElt.removeChild(brainListElt.firstChild);
+				brainListElt.removeChild(brainListElt.firstChild);
 			}
 			let myHeaders = new Headers();
 			myHeaders.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 			myHeaders.append('Accept', 'application/json');
 			myHeaders.append('Set-Cookie', 'passPhrase=Hop');
 
-			let myInit = { 
+			let myInit = {
 				method: 'GET',
-               	headers: myHeaders,
-               	credentials: 'same-origin',
-               	mode: 'cors',
-               	cache: 'no-store' 
-            };
+				headers: myHeaders,
+				credentials: 'same-origin',
+				mode: 'cors',
+				cache: 'no-store'
+			};
 
 			let myURL = `http://localhost:3001/brains`;
-			
-			fetch(myURL,myInit)
-				.then((httpResponse)=>{
-					
+
+			fetch(myURL, myInit)
+				.then((httpResponse) => {
+
 					return httpResponse.json()
 				})
-				.then((setOfBrains)=>{
-					for(let brain of setOfBrains){
+				.then((setOfBrains) => {
+					for (let brain of setOfBrains) {
 						//let item = document.createElement("option");
 						//item.setAttribute('value',person.personId);
 						//item.innerHTML=person.personId;
@@ -129,74 +130,74 @@
 						brainListElt.appendChild(createItem(brain));
 					}
 				})
-				.catch((err)=>{
+				.catch((err) => {
 					console.log(`ERROR : ${err}${err.stack}`);
 				})
 		}
 
-		function reloadMouthList(){
+		function reloadMouthList() {
 			//first, clean up
 			while (mouthListElt.firstChild) {
-  				mouthListElt.removeChild(mouthListElt.firstChild);
+				mouthListElt.removeChild(mouthListElt.firstChild);
 			}
 			let myHeaders = new Headers();
 			myHeaders.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 			myHeaders.append('Accept', 'application/json');
 			myHeaders.append('Set-Cookie', 'passPhrase=Hop');
 
-			let myInit = { 
+			let myInit = {
 				method: 'GET',
-               	headers: myHeaders,
-               	credentials: 'same-origin',
-               	mode: 'cors',
-               	cache: 'no-store' 
-            };
+				headers: myHeaders,
+				credentials: 'same-origin',
+				mode: 'cors',
+				cache: 'no-store'
+			};
 
 			let myURL = `http://localhost:3002/mouth`;
-			
-			fetch(myURL,myInit)
-				.then((httpResponse)=>{
-					
+
+			fetch(myURL, myInit)
+				.then((httpResponse) => {
+
 					return httpResponse.json()
 				})
-				.then((setOfMouths)=>{
-					for(let mouth of setOfMouths){
+				.then((setOfMouths) => {
+					for (let mouth of setOfMouths) {
 						let item = document.createElement("option");
 						item.setAttribute("value", mouth.name);
 						item.innerHTML += ` ${mouth.name}`;
 						mouthListElt.appendChild(item);
 					}
 				})
-				.catch((err)=>{
+				.catch((err) => {
 					console.log(`ERROR : ${err}${err.stack}`);
 				})
 		}
-		
 
-		function createItem(bot){
+
+		function createItem(bot) {
 			let item = document.createElement("li");
-			
+
 			// Adding a DELETE Button
 			let delBtn = document.createElement("button");
 			delBtn.innerHTML = "DELETE";
 			let id = `del_${bot.id}`;
-			
-			delBtn.setAttribute("id",id);
-			delBtn.setAttribute("onclick",`deletebot(${bot.id})`);
+
+			delBtn.setAttribute("id", id);
+			delBtn.setAttribute("onclick", `deletebot(${bot.id})`);
 			//delBtn.addEventListener("click",()=>{deletebot(bot.id)});
 			item.appendChild(delBtn);
 
 			// Adding a PUT Button
 			let putBtn = document.createElement("button");
 			putBtn.innerHTML = "PUT";
-			putBtn.setAttribute("onclick",`replacebot(${bot.id})`);
+			putBtn.setAttribute("onclick", `replacebot(${bot.id})`);
 			//putBtn.addEventListener("click",()=>{replacebot(bot.id)});
 			item.appendChild(putBtn);
 
 			// Adding a PATCH Button
 			let patchBtn = document.createElement("button");
 			patchBtn.innerHTML = "PATCH";
-			patchBtn.setAttribute("onclick",`updatebot(${bot.id})`);
+			patchBtn.setAttribute("onclick", `updatebot(${bot.id})`);
 			//patchBtn.addEventListener("click",()=>{updatebot(bot.id)});
 			item.appendChild(patchBtn);
 
@@ -207,39 +208,39 @@
 			return item;
 		}
 
-		function deleteBot(bot){
-			
+		function deleteBot(bot) {
+
 			let myHeaders = new Headers();
 			myHeaders.append('Content-Type', 'application/json');
 
-			let myInit = { 
+			let myInit = {
 				method: 'DELETE',
-               	headers: myHeaders,
-               	mode: 'cors',
-               	cache: 'default' 
-            };
-            let myURL = `http://localhost:3001/bots/${botId}`;
+				headers: myHeaders,
+				mode: 'cors',
+				cache: 'default'
+			};
+			let myURL = `http://localhost:3001/bots/${botId}`;
 			//let myURL = "http://localhost:3001/v2/tasks"+botId;
-			fetch(myURL,myInit)
-				.then((httpResponse)=>{
+			fetch(myURL, myInit)
+				.then((httpResponse) => {
 					return httpResponse.text()
 				})
-				.then((returnString)=>{
+				.then((returnString) => {
 					reloadList();
 					console.log(`All is OK ${returnString}`)
 				})
-				.catch((err)=>{
+				.catch((err) => {
 					console.log(`ERROR : ${err}`);
-				})		
+				})
 		}
 
-		function replaceBot(taskId){
+		function replaceBot(taskId) {
 			console.log(`replacing bot with Id ${botId}`);
 			//TODO
 			//Obvioulsly, you will need to launch a modal
 		}
 
-		function updateBot(botId){
+		function updateBot(botId) {
 			console.log(`updating bot with Id ${botId}`);
 			//TODO
 			modal.style.display = "none"; // Make the modal disapear
@@ -248,114 +249,112 @@
 			let myHeaders = new Headers();
 			myHeaders.append('Content-Type', 'application/json');
 			let payload = {
-		   		title:inputTitle.value,
-		   		status:inputStatus.value
-   			};
+				title: inputTitle.value,
+				status: inputStatus.value
+			};
 			let myBody = JSON.stringify(payload);
-			let myInit = { 
+			let myInit = {
 				method: 'PATCH',
-	   			headers: myHeaders,
-	   			mode: 'cors',
-	   			cache: 'default',
-	   			body:myBody
+				headers: myHeaders,
+				mode: 'cors',
+				cache: 'default',
+				body: myBody
 			};
 			let myURL = `http://localhost:3001/bots/${taskId}`;
 
 			//launch the request
-			fetch(myURL,myInit)
-			.then((httpResponse)=>{
-				return httpResponse.text();
-			})
-			.then((responseBody)=>{
-				reloadList();
-				//clear fields
-				inputTitle.value="";
-				inputStatus.value="";
-				console.log(`response is ${responseBody}`);
-			})
-			.catch((err)=>{
-				console.log(`ERROR : ${err}`);
-			})		
+			fetch(myURL, myInit)
+				.then((httpResponse) => {
+					return httpResponse.text();
+				})
+				.then((responseBody) => {
+					reloadList();
+					//clear fields
+					inputTitle.value = "";
+					inputStatus.value = "";
+					console.log(`response is ${responseBody}`);
+				})
+				.catch((err) => {
+					console.log(`ERROR : ${err}`);
+				})
 		}
 
-		function removePersonFromTask(taskId){
+		function removePersonFromTask(taskId) {
 			console.log(`removing person from task with Id ${taskId}`);
 		}
 
-		function createNewBot(){
+		function createNewBot() {
 
-  			modal.style.display = "none"; // Make the modal disapear
+			modal.style.display = "none"; // Make the modal disapear
 
 			//Create the request
 			let myHeaders = new Headers();
 			myHeaders.append('Content-Type', 'application/json');
 			let payload = {
-           			id:inputId.value,
-           			name:inputName.value
-           	};
+				id: inputId.value,
+				name: inputName.value
+			};
 			let myBody = JSON.stringify(payload);
-			let myInit = { 
+			let myInit = {
 				method: 'POST',
-           		headers: myHeaders,
-           		mode: 'cors',
-           		cache: 'default',
-           		body:myBody
-        	};
-        	let myURL = "http://localhost:3001/";
+				headers: myHeaders,
+				mode: 'cors',
+				cache: 'default',
+				body: myBody
+			};
+			let myURL = "http://localhost:3001/";
 
-        	//launch the request
-			fetch(myURL,myInit)
-			.then((httpResponse)=>{
-				return httpResponse.text();
-			})
-			.then((responseBody)=>{
-				reloadList();
-				//clear fields
-				inputId.value="";
-				inputName.value="";
-				console.log(`response is ${responseBody}`);
-			})
-			.catch((err)=>{
-				console.log(`ERROR : ${err}`);
-			})		
+			//launch the request
+			fetch(myURL, myInit)
+				.then((httpResponse) => {
+					return httpResponse.text();
+				})
+				.then((responseBody) => {
+					reloadList();
+					//clear fields
+					inputId.value = "";
+					inputName.value = "";
+					console.log(`response is ${responseBody}`);
+				})
+				.catch((err) => {
+					console.log(`ERROR : ${err}`);
+				})
 		}
 
 	</script>
 
 </head>
+
 <body>
 
-    <header>
-        <h1>Interface d'administration des ChatBots</h1>
-    </header>
+	<header>
+		<h1>Interface d'administration des ChatBots</h1>
+	</header>
 
 	<ul id="taskListUL">
 	</ul>
 
-    <nav>
-        <ul>
-          <li><a href="http://localhost:3001/botV2">ChatBots</a></li>
-          <li><a href="http://localhost:3003/brainV2">Brains</a></li>
-          <li><a href="http://localhost:3002/mouthV2">Mouth</a></li>
-        </ul>
-  
-    </nav>
+	<nav>
+		<ul>
+			<li><a href="http://localhost:3001/botV2">ChatBots</a></li>
+			<li><a href="http://localhost:3003/brainV2">Brains</a></li>
+			<li><a href="http://localhost:3002/mouthV2">Mouth</a></li>
+		</ul>
 
-    <main>
-        <article>
-          <h2>L'ensemble des ChatBots sont listés ci-dessous.</h2>
-          <p>Vous pouvez :</p>
-          <p>-créer, supprimer des ChatBots</p>
-          <p>-ajouter ou changer un Brain associé</p>
-          <p>-ajouter ou changer une Mouth associée</p>
-        </article>
-    </main>
+	</nav>
 
-	<button id="newBotButton" onclick=window.location.href="./createBot";>TALK TO A CHATBOT</button>
+	<main>
+		<article>
+			<h2>L'ensemble des ChatBots sont listés ci-dessous.</h2>
+			<p>Vous pouvez :</p>
+			<p>-créer, supprimer des ChatBots</p>
+			<p>-ajouter ou changer un Brain associé</p>
+			<p>-ajouter ou changer une Mouth associée</p>
+		</article>
+	</main>
 
-    <footer>
-        <p>©Copyright GODIN Karole & CLAUDE Sarah </p>
-    </footer>
+	<button id="newBotButton" onclick=window.location.href="./createBot" ;>TALK TO A CHATBOT</button>
 
+	<object type="text/html" data="./partials/footer.html" width="200" height="300"></object>
 </body>
 </html>
