@@ -26,8 +26,8 @@
     "discord-api-types": "^0.31.1",
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
+    "rivescript": "^2.2.0",
     "slackbots": "^1.2.0"
   },
-  "devDependencies": {},
   "description": ""
 }
