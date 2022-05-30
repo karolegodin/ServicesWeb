@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Steeve</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
 	<script>
 		document.addEventListener('DOMContentLoaded',initInfos);
 
@@ -254,19 +254,34 @@
 			//putBtn.addEventListener("click",()=>{replaceTask(task.id)});
 			item.appendChild(putBtn);*/
 			
-			// Adding a PATCH Button
+			// Adding a PATCH Button : ajouter un brain
 			let patchBtn = document.createElement("button");
-			patchBtn.innerHTML = "PATCH";
+			patchBtn.innerHTML = "AJOUTER UN CERVEAU";
 			patchBtn.setAttribute("onclick",`updateBrain(${bot.id})`);
 			patchBtn.addEventListener("click",()=>{updateBrain(bot.id)});
 			item.appendChild(patchBtn);
 
 			item.innerHTML += ` ${bot.title}(asssigned to ${bot.assignement.personId} )`;
+
+			// Adding a PATCH Button : supprimer un brain
+			let patchBtn2 = document.createElement("button");
+			patchBtn2.innerHTML = "SUPPRIMER UN CERVEAU";
+			patchBtn2.setAttribute("onclick",`updateBrain(${bot.id})`);
+			patchBtn2.addEventListener("click",()=>{updateBrain(bot.id)});
+			item.appendChild(patchBtn2);
+
+			item.innerHTML += ` ${bot.title}(asssigned to ${bot.assignement.personId} )`;
 			return item;
 		}
 
-        function updateBrain(botId){
-			console.log(`updating bot brain with Id ${botId}`);
+        function addBrain(botId){
+			console.log(`adding bot brain with Id ${botId}`);
+			//TODO
+			//Obvioulsly, you will need to launch a modal
+		}
+
+		function removeBrain(botId){
+			console.log(`deleting bot brain with Id ${botId}`);
 			//TODO
 			//Obvioulsly, you will need to launch a modal
 		}
@@ -284,5 +299,5 @@
     <button id="retour" onclick=window.location.href="http://localhost:3001/botV2";>RETOUR</button>
 
 </body>
-<object type="text/html" data="footer.html" width="200" height="300"></object>
+<object type="text/html" data="/partials/footer.html" width="200" height="300"></object>
 </html>
