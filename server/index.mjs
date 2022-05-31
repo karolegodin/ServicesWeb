@@ -1,9 +1,13 @@
-import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import fetch from 'node-fetch';
 import http from "http";
 import {Server} from "socket.io";
+const express = require('express');
+const mongoose = require('mongoose');
+const authRoutes = require('./routes/authRoutes');
+const cookieParser = require('cookie-parser');
+const { requireAuth, checkUser } = require('./middleware/authMiddleware');
 
 const app = express();
 import RiveScript from 'rivescript';
@@ -324,3 +328,5 @@ async function getBots(){
 	console.log(botServiceAccessPoint);
 	return botServiceAccessPoint.getBots();
 }
+
+app.use(authRoutes);
