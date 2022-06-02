@@ -183,15 +183,25 @@
 					for (let field of httpResponse.headers) {
 						//console.log(`raw = ${field}`);
 					}
+					//const setOfBrainstoRm = httpResponse.json();
 					return httpResponse.json()
 				})
-				.then((setOfInfos)=>{
-                    console.log(setOfInfos);
-					for(let info of setOfInfos){
-						console.log(setOfInfos);
+				.then((setOfBrainstoRm)=>{
+					console.log("Liste de cerveaux de Steeve");
+					//let set = setOfBrainstoRm.brain
+                    console.log(setOfBrainstoRm[0]);
+					/*for(let i=0; i<setOfBrainstoRm.lenght; i++){
+						console.log(setOfBrainstoRm);
                         let item = document.createElement("option");
-                        item.setAttribute("value", info.brain);
-                        item.innerHTML += `${info.brain}`;
+                        item.setAttribute("value", setOfBrainstoRm[i].brain);
+                        item.innerHTML += `${setOfBrainstoRm[i].brain}`;
+                        brainListToRm.appendChild(item);
+                        console.log(brainListToRm);
+					}*/
+					for(let bot of setOfBrainstoRm[0].brain){
+						let item = document.createElement("option");
+                        item.setAttribute("value", bot);
+                        item.innerHTML += `${bot}`;
                         brainListToRm.appendChild(item);
                         console.log(brainListToRm);
 					}
@@ -322,10 +332,12 @@
                 })
                 .then((setOfBrains) => {
                     for (let brain of setOfBrains) {
+						console.log(setOfBrains);
                         let item = document.createElement("option");
                         item.setAttribute("value", brain.name);
                         item.innerHTML += ` ${brain.name}`;
                         brainListElt.appendChild(item);
+						console.log(brainListElt);
                     }
                 })
                 .catch((err) => {
@@ -389,8 +401,56 @@
 		}*/
 
         function addBrain(botId){
-			
-			console.log(`adding bot brain with Id ${botId}`);
+			let brainSelected = `${brainListElt.value}`;
+			console.log("Brain choisi : "+ brainSelected);
+			//console.log(typeof(brainSelected));
+			let myHeaders = new Headers();
+			myHeaders.append('Content-Type', 'application/json');
+			myHeaders.append('Accept', 'application/json');
+			myHeaders.append('Set-Cookie', 'passPhrase=Hop');
+
+			let brainRequest = {"brain":brainSelected};
+			let myInit = { 
+				method: 'PATCH',
+               	headers: myHeaders,
+               	credentials: 'same-origin',
+               	mode: 'cors',
+               	cache: 'no-store',
+				body: JSON.stringify(brainRequest)
+
+            };
+			console.log(typeof(myInit.body));
+			let myURL = `http://localhost:3001/bot/3011`;
+
+			fetch(myURL,myInit)
+				.then((httpResponse)=>{
+					//console.log("réponse"+ httpResponse.json());
+					return httpResponse.text()
+				})
+				.then((responseBody)=>{
+
+					reloadBotInfos();
+					reloadBrainList();
+					reloadBrainListToRm();
+					console.log(`adding bot brain`);
+					location.reload;
+					/*
+						//let item = document.createElement("option");
+						//item.setAttribute('value',person.personId);
+						//item.innerHTML=person.personId;
+						//personListElt.appendChild(item);
+						
+						
+						brainListElt.appendChild(createItem(brain));
+						
+					*/
+				})
+				.catch((err)=>{
+					console.log(`ERROR : ${err}${err.stack}`);
+				})
+
+
+		
 			
 		}
 

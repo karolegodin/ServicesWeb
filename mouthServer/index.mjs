@@ -72,14 +72,15 @@ io.on('connection', (socket) => {
 /*io.on("connect_error", (err) => {
 	console.log(`connect_error due to ${err.message}`);
   });*/
-/*function createBot(id){
+function createBot(id){
 	let bot = getBotById(id); //bot existant dans la base de données
-	bot.botRivescript = new RiveScript();
+	//console.log("bot " +bot);
+	/*bot.botRivescript = new RiveScript();
 	console.log("Rivescript créé");
 	//console.log(bot.botRivescript);
-	bot.botRivescript.loadFile("./../server/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
-	return bot.botRivescript
-}*/
+	bot.botRivescript.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
+	return bot.botRivescript*/
+}
 
 /*function socketConnection(id){
 	let rive = createBot(id);
@@ -110,6 +111,7 @@ MouthService.create(mouthServiceAccessPoint).then(ms=>{
 		.addMouth(secondMouth)
 		.catch((err)=>{console.log(err);});
 	//loading_brains(3011);
+	//createBot(3011);
 	server.listen(port, () => {
   		console.log(`Mouth server app listening at http://localhost:${port}`)
 	});
@@ -168,6 +170,26 @@ app.get('/bot',async(req,res)=>{
 	res.status(200).json(botsArray);
 })
 
+app.get('/bot/:idddd', async(req, res)=>{
+	let id = req.params.idddd;
+	if(!isInt(id)) {
+		//not the expected parameter
+		res.status(400).send('BAD REQUEST');
+	}else{
+		try{
+			let myBot = await getBotById(id);
+			console.log("My bot dans l'url ");
+			console.log(myBot[0]);
+			res.status(200).json([{'name':myBot[0].botName,'mouth':myBot[0].botMouth,'brain':myBot[0].botBrain}]);
+			//res.status(200).json({'brain':myBot});
+		}
+		catch(err){
+			console.log(`Error ${err} thrown`);
+			res.status(404).send('NOT FOUND');
+		}
+	}
+});
+
 /*function socketConnection(){
 	//const server = http.createServer(app);
 	//const io = new Server(server);
@@ -193,6 +215,11 @@ async function getBotById(botId){
 	return await botServiceAccessPoint.getBotById(botId);
 }
 
+function isInt(value) {
+	let x = parseFloat(value);
+	return !isNaN(value) && (x | 0) === x;
+  }
+  
 function loading_done() {
 	console.log("Bot has finished loading!");
 	bot.sortReplies();

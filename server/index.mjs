@@ -187,7 +187,9 @@ app.get('/bot/:idddd', (req, res)=>{
 	}else{
 		try{
 			let myBot = botServiceInstance.getBot(id);
-			res.status(200).json([{'name':myBot.name,'mouth':myBot.mouth,'brain':myBot.brain}]);
+			console.log("mybot dans l'url");
+			console.log(myBot);
+			res.status(200).json([{'id':myBot.id,'name':myBot.name,'mouth':myBot.mouth,'brain':myBot.brain}]);
 			//res.status(200).json({'brain':myBot});
 		}
 		catch(err){

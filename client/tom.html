@@ -9,12 +9,22 @@
 		document.addEventListener('DOMContentLoaded',initInfos);
 
 		//let botListElt;
-		//let brainListElt;
+		let brainListElt;
 		//let addNewBotButton;
 		//let talkBotButton;
 		//let chooseBot;
 		//let mouthListElt;
         let infoListElt;
+		let brainListToRm;
+		//let addBrainButton = document.createElement("button");
+		//let rmBrainButton = document.createElement("button");
+		let addBrainButton;
+		let rmBrainButton;
+
+		//addBrainButton.innerHTML = "ADD";
+		//addBrainButton.setAttribute("onclick",`addBrain(${bot.id})`);
+		//rmBrainButton.innerHTML = "REMOVE";
+		//rmBrainButton.setAttribute("onclick",`removeBrain(${bot.id})`);
 
         function initInfos(){
             //let chooseMouth;
@@ -83,8 +93,8 @@
 			//addNewTaskButton = document.getElementById("addNewTaskButton");
 			//addNewTaskButton.addEventListener("click",createNewTask);
 			//chooseBot = document.getElementById("chooseBot");
-			talkBotButton = document.getElementById("talkBotButton");
-			talkBotButton.addEventListener("click",talkingbot);
+			//talkBotButton = document.getElementById("talkBotButton");
+			//talkBotButton.addEventListener("click",talkingbot);
 
 			
 		}
@@ -139,47 +149,111 @@
 			reloadMouthList();
 		}
 		
-		function reloadBrainList(){
-                //first, clean up
-                console.log("Je reload la liste des brains");
-            while (brainListElt.firstChild) {
-                brainListElt.removeChild(brainListElt.firstChild);
-            }
-            let myHeaders = new Headers();
-            myHeaders.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-            myHeaders.append('Accept', 'application/json');
-            myHeaders.append('Set-Cookie', 'passPhrase=Hop');
+		document.addEventListener('DOMContentLoaded', initBrainsToRm);
 
-            let myInit = { 
-                method: 'GET',
-                headers: myHeaders,
-                credentials: 'same-origin',
-                mode: 'cors',
-                cache: 'no-store' 
+		function initBrainsToRm(){
+			brainListToRm = document.getElementById("brainListToRmSELECT");
+			reloadBrainListToRm();
+			rmBrainButton= document.getElementById("rmBrainButton");
+			rmBrainButton.addEventListener("click",removeBrain);
+		}
+		function reloadBrainListToRm(){
+                //first, clean up
+			console.log("Je reload la liste des brains de Tom");
+			while (brainListToRm.firstChild) {
+				brainListToRm.removeChild(brainListToRm.firstChild);
+			}
+            let myHeaders = new Headers();
+			myHeaders.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+			myHeaders.append('Accept', 'application/json');
+			myHeaders.append('Set-Cookie', 'passPhrase=Hop');
+
+			let myInit = { 
+				method: 'GET',
+               	headers: myHeaders,
+               	credentials: 'same-origin',
+               	mode: 'cors',
+               	cache: 'no-store' 
+            };
+
+            let myURL = `http://localhost:3001/bot/3013`;
+
+            fetch(myURL,myInit)
+				.then((httpResponse)=>{
+					for (let field of httpResponse.headers) {
+						//console.log(`raw = ${field}`);
+					}
+					//const setOfBrainstoRm = httpResponse.json();
+					return httpResponse.json()
+				})
+				.then((setOfBrainstoRm)=>{
+					console.log("Liste de cerveaux de Tom");
+					//let set = setOfBrainstoRm.brain
+                    console.log(setOfBrainstoRm[0]);
+					/*for(let i=0; i<setOfBrainstoRm.lenght; i++){
+						console.log(setOfBrainstoRm);
+                        let item = document.createElement("option");
+                        item.setAttribute("value", setOfBrainstoRm[i].brain);
+                        item.innerHTML += `${setOfBrainstoRm[i].brain}`;
+                        brainListToRm.appendChild(item);
+                        console.log(brainListToRm);
+					}*/
+					for(let bot of setOfBrainstoRm[0].brain){
+						let item = document.createElement("option");
+                        item.setAttribute("value", bot);
+                        item.innerHTML += `${bot}`;
+                        brainListToRm.appendChild(item);
+                        console.log(brainListToRm);
+					}
+				})
+				.catch((err)=>{
+					console.log(`ERROR : ${err} ${err.stack}`);
+				})
+		}
+
+		/*function reloadBrainListToAdd(){
+			//first, clean up
+			console.log("Je reload la liste des brains");
+			while (brainListToAdd.firstChild) {
+				brainListToRAdd.removeChild(brainListToAdd.firstChild);
+			}
+            let myHeaders = new Headers();
+			myHeaders.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+			myHeaders.append('Accept', 'application/json');
+			myHeaders.append('Set-Cookie', 'passPhrase=Hop');
+
+			let myInit = { 
+				method: 'GET',
+               	headers: myHeaders,
+               	credentials: 'same-origin',
+               	mode: 'cors',
+               	cache: 'no-store' 
             };
 
             let myURL = `http://localhost:3003/brain`;
-            
-            fetch(myURL,myInit)
-                .then((httpResponse)=>{
-                    for (let field of httpResponse.headers) {
-                        console.log(`raw = ${field}`);
-                    }
-                    return httpResponse.json()
-                })
-                .then((setOfBrains)=>{
-                    for(let brain of setOfBrains){
-                        let item = document.createElement("option");
-                        item.setAttribute("value", brain.name);
-                        item.innerHTML += ` ${brain.name}`;
-                        brainListElt.appendChild(item);
-                    }
-                })
-                .catch((err)=>{
-                    console.log(`ERROR : ${err} ${err.stack}`);
-                })
-		}
 
+            fetch(myURL,myInit)
+				.then((httpResponse)=>{
+					for (let field of httpResponse.headers) {
+						//console.log(`raw = ${field}`);
+					}
+					return httpResponse.json()
+				})
+				.then((setOfInfos)=>{
+                    console.log(setOfInfos);
+					for(let info of setOfInfos){
+						console.log(setOfInfos);
+                        let item = document.createElement("option");
+                        item.setAttribute("value", info.name);
+                        item.innerHTML += `${info.name}`;
+                        brainListToRm.appendChild(item);
+                        console.log(brainListToRm);
+					}
+				})
+				.catch((err)=>{
+					console.log(`ERROR : ${err} ${err.stack}`);
+				})
+		}*/
 		function reloadMouthList(){
 			//first, clean up
 			while (mouthListElt.firstChild) {
@@ -219,6 +293,58 @@
 				})
 		}
 
+
+		document.addEventListener('DOMContentLoaded', initBrains);
+
+		function initBrains() {
+            brainListElt = document.getElementById("brainListSELECT");
+            reloadBrainList();
+			addBrainButton = document.getElementById("addBrainButton");
+			addBrainButton.addEventListener("click",addBrain);
+        }
+		function reloadBrainList() {
+            //first, clean up
+            console.log("Je reload la liste des brains");
+            while (brainListElt.firstChild) {
+                brainListElt.removeChild(brainListElt.firstChild);
+            }
+            let myHeaders = new Headers();
+            myHeaders.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+            myHeaders.append('Accept', 'application/json');
+            myHeaders.append('Set-Cookie', 'passPhrase=Hop');
+
+            let myInit = {
+                method: 'GET',
+                headers: myHeaders,
+                credentials: 'same-origin',
+                mode: 'cors',
+                cache: 'no-store'
+            };
+
+            let myURL = `http://localhost:3003/brain`;
+
+            fetch(myURL, myInit)
+                .then((httpResponse) => {
+                    for (let field of httpResponse.headers) {
+                        console.log(`raw = ${field}`);
+                    }
+                    return httpResponse.json()
+                })
+                .then((setOfBrains) => {
+                    for (let brain of setOfBrains) {
+						console.log(setOfBrains);
+                        let item = document.createElement("option");
+                        item.setAttribute("value", brain.name);
+                        item.innerHTML += ` ${brain.name}`;
+                        brainListElt.appendChild(item);
+						console.log(brainListElt);
+                    }
+                })
+                .catch((err) => {
+                    console.log(`ERROR : ${err} ${err.stack}`);
+                })
+        }
+
 		/*function talkingbot(){
 			let mouthSelected = mouthListElt.value;
 
@@ -232,6 +358,107 @@
 				window.open('https://discord.gg/FyKz3kajW7', '_blank');
 			}
 		}*/ 
+
+        /*function createItem(bot){
+			let item = document.createElement("li");
+			
+			// Adding a DELETE Button
+			let delBtn = document.createElement("button");
+			delBtn.innerHTML = "DELETE";
+			let id = `del_${task.id}`;
+			
+			delBtn.setAttribute("id",id);
+			delBtn.setAttribute("onclick",`deleteTask(${task.id})`);
+			//delBtn.addEventListener("click",()=>{deleteTask(task.id)});
+			item.appendChild(delBtn);
+
+
+			// Adding a PUT Button
+			let putBtn = document.createElement("button");
+			putBtn.innerHTML = "PUT";
+			putBtn.setAttribute("onclick",`replaceTask(${task.id})`);
+			//putBtn.addEventListener("click",()=>{replaceTask(task.id)});
+			item.appendChild(putBtn);
+			
+			// Adding a PATCH Button : ajouter un brain
+			//let patchBtn = document.createElement("button");
+			patchBtn.innerHTML = "AJOUTER UN CERVEAU";
+			patchBtn.setAttribute("onclick",`updateBrain(${bot.id})`);
+			patchBtn.addEventListener("click",()=>{updateBrain(bot.id)});
+			item.appendChild(patchBtn);
+
+			item.innerHTML += ` ${bot.title}(asssigned to ${bot.assignement.personId} )`;
+
+			// Adding a PATCH Button : supprimer un brain
+			let patchBtn2 = document.createElement("button");
+			patchBtn2.innerHTML = "SUPPRIMER UN CERVEAU";
+			patchBtn2.setAttribute("onclick",`updateBrain(${bot.id})`);
+			patchBtn2.addEventListener("click",()=>{updateBrain(bot.id)});
+			item.appendChild(patchBtn2);
+
+			item.innerHTML += ` ${bot.title}(asssigned to ${bot.assignement.personId} )`;
+			return item;
+		}*/
+
+        function addBrain(botId){
+			let brainSelected = `${brainListElt.value}`;
+			console.log("Brain choisi : "+ brainSelected);
+			//console.log(typeof(brainSelected));
+			let myHeaders = new Headers();
+			myHeaders.append('Content-Type', 'application/json');
+			myHeaders.append('Accept', 'application/json');
+			myHeaders.append('Set-Cookie', 'passPhrase=Hop');
+
+			let brainRequest = {"brain":brainSelected};
+			let myInit = { 
+				method: 'PATCH',
+               	headers: myHeaders,
+               	credentials: 'same-origin',
+               	mode: 'cors',
+               	cache: 'no-store',
+				body: JSON.stringify(brainRequest)
+
+            };
+			console.log(typeof(myInit.body));
+			let myURL = `http://localhost:3001/bot/3013`;
+
+			fetch(myURL,myInit)
+				.then((httpResponse)=>{
+					//console.log("réponse"+ httpResponse.json());
+					return httpResponse.text()
+				})
+				.then((responseBody)=>{
+
+					reloadBotInfos();
+					reloadBrainList();
+					reloadBrainListToRm();
+					console.log(`adding bot brain`);
+					location.reload;
+					/*
+						//let item = document.createElement("option");
+						//item.setAttribute('value',person.personId);
+						//item.innerHTML=person.personId;
+						//personListElt.appendChild(item);
+						
+						
+						brainListElt.appendChild(createItem(brain));
+						
+					*/
+				})
+				.catch((err)=>{
+					console.log(`ERROR : ${err}${err.stack}`);
+				})
+
+
+		
+			
+		}
+
+		function removeBrain(botId){
+			console.log(`deleting bot brain with Id ${botId}`);
+			//TODO
+			//Obvioulsly, you will need to launch a modal
+		}
 	</script>
 </head>
 <body>
@@ -243,10 +470,26 @@
 	<ul id="infoListSELECT">
 	</ul>
 
+	
+	<p>
+		<label for="brainListSELECT">Add a brain:</label>
+		<select id="brainListSELECT" name="brainName">
+			<option value="">-- Please choose a brain to add</option>
+		</select>
+	</p>
+	<button id="addBrainButton">ADD</button>
+
+	<p>
+		<label for="brainListToRmSELECT">Remove a brain:</label>
+		<select id="brainListToRmSELECT" name="brainToRmName">
+			<option value="">-- Please choose a brain to remove</option>
+		</select>
+	</p>
+	<button id="rmBrainButton">REMOVE</button>
+
+
     <button id="retour" onclick=window.location.href="http://localhost:3001/botV2";>RETOUR</button>
 
 </body>
-<footer>
-    <p>©Copyright GODIN Karole & CLAUDE Sarah </p>
-</footer>
+<object type="text/html" data="/partials/footer.html" width="200" height="300"></object>
 </html>
