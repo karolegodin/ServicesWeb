@@ -1,6 +1,6 @@
 # Projet de Service Web 2022
 
-> Ce projet a pour but l'utilisation de bots sur différentes "bouches" (Discord, socket) et ayant des "cerveaux" (.rive) modifiables.
+> Ce projet a pour but la mise en place d'un service web à travers l'utilisation de bots sur différentes "bouches" (Discord, socket) et ayant des "cerveaux" (.rive) modifiables.
 
 ## Utilisation de l'application
 
