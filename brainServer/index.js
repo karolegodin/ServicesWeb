@@ -1,10 +1,13 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import fetch from 'node-fetch';
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const fetch = require('node-fetch');
+const authRoutes = require('./../server/routes/authRoutes.js');
+const cookieParser = require('cookie-parser');
+const { requireAuth, checkUser } = require('./../server/middleware/authMiddleware.js');
 
 const app = express();
-import RiveScript from 'rivescript';
+const RiveScript = require('rivescript');
 
 /*import {BotService} from "./models/BotService_ArrayImpl.mjs";
 let botServiceInstance;
@@ -19,12 +22,12 @@ import { Bot } from './models/Bot.mjs';
 let mouthServiceInstance;
 let mouthServiceAccessPoint = new MouthService({url:"http://localhost",port:3002});*/
 
-import {BrainService} from "./models/BrainService_ArrayImpl.mjs";
-import { Brain } from './models/Brain.mjs';
+const {BrainService} = require("./models/BrainService_ArrayImpl.js");
+const { Brain } = require('./models/Brain.js');
 let brainServiceInstance;
 let brainServiceAccessPoint = new BrainService({url:"http://localhost",port:3003});
 
-import {BotIdentifier,BotService} from "./models/Bots.mjs";
+const {BotIdentifier,BotService} = require("./models/Bots.js");
 let botServiceInstance;
 let botServiceAccessPoint = new BotService({url:"http://localhost",port:3001});
 let botsArray;
@@ -37,7 +40,13 @@ const port = 3003
 
 app.use(bodyParser.json()) 
 app.use(bodyParser.urlencoded({ extended: true })) 
-app.use(express.static('./../client'))
+app.use(express.static('./../server/views'))
+app.use(express.json());
+app.use(cookieParser());
+
+// view engine
+app.set('views','./../server/views');
+app.set('view engine', 'ejs');
 
 let firstBrain ={ 
 	'id':0,
@@ -66,6 +75,8 @@ BrainService.create(brainServiceAccessPoint).then(ms=>{
 	});
 });
 
+app.get('*', checkUser);
+
 app.get('/bot',async(req,res)=>{
 	botsArray = await getAllBots();
 	//console.log("heheheee");
@@ -92,7 +103,7 @@ app.get('/brain',async(req,res)=>{
 app.get('/brainV2',async(req,res)=>{
 	try{
 		//let json_var = {'test':'oui'};
-			res.sendFile('/client/brainList.html', { root: './..' })
+			res.render('brainList')
 	
 		}
 		catch(err){
@@ -113,3 +124,5 @@ async function getAllBots(){
 async function getBotById(botId){
 	return await botServiceAccessPoint.getBotById(botId);
 }
+
+app.use(authRoutes);

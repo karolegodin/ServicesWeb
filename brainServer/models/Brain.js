@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+const fetch = require('node-fetch');
 
 class Brain{  
 
@@ -107,4 +107,4 @@ function isString(myVar) {
       return hasMandatoryProperties;
     }
   }*/
-export {Brain}
+module.exports = {Brain};

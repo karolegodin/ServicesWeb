@@ -1,5 +1,5 @@
-import fetch from 'node-fetch';
-import RiveScript from 'rivescript';
+const fetch = require('node-fetch');
+const RiveScript = require('rivescript');
 
 class BotService{  
   constructor(data){
@@ -19,6 +19,11 @@ class BotService{
       const response = await fetch(myURL,myInit);
       const setOfBots = await response.json();
       //console.warn(xhr.responseText);
+      /*for(let bot of setOfBots){
+          //console.log(bot);
+          returnValue.push(new BotIdentifier({'botId':bot.id, 'botName':bot.name}));
+          
+      }*/
       for (let i=0; i<setOfBots.length; i++){
           //console.log(setOfBots);
           returnValue.push({'botId': (setOfBots[i]).id, 'botName': (setOfBots[i]).name, 'botMouth':(setOfBots[i]).mouth, 'botBrain': (setOfBots[i]).brain, 'botRivescript':null});
@@ -29,12 +34,14 @@ class BotService{
     } catch (error) {
       console.log(error);
     }
+    //console.log("Je sors de la requête GET");
+    //console.log(returnValue);
+    console.log("type de données array");
     console.log(returnValue);
-    //console.log(typeof(returnValue));
     return returnValue;
   }
 
-  async getBotById(id){
+  async getBotById(botId){
     let returnValue = new BotIdentifier({'botId':id});
     let myInit = { 
       method: 'GET',
@@ -50,7 +57,6 @@ class BotService{
       //console.log(setOfBots);
       //console.warn(xhr.responseText);
       returnValue.botName = (setOfBots.name);
-      returnValue.botBrain = (setOfBots.brain);
       
     } catch (error) {
       console.log(error);
@@ -85,4 +91,4 @@ class BotIdentifier{
 
 
 
-export {BotIdentifier, BotService}
+module.exports = {BotIdentifier, BotService};

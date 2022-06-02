@@ -1,12 +1,15 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import fetch from 'node-fetch';
-import http from "http";
-import {Server} from "socket.io";
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const fetch = require('node-fetch');
+const http = require('http');
+const {Server} = require('socket.io');
+const authRoutes = require('./../server/routes/authRoutes.js');
+const cookieParser = require('cookie-parser');
+const { requireAuth, checkUser } = require('./../server/middleware/authMiddleware.js');
 
 const app = express();
-import RiveScript from 'rivescript';
+const RiveScript = require('rivescript');
 
 /*import {BotService} from "./models/BotService_ArrayImpl.mjs";
 let botServiceInstance;
@@ -16,12 +19,12 @@ let botServiceAccessPoint = new BotService({url:"http://localhost",port:3001});*
 let brainServiceInstance;
 let brainServiceAccessPoint = new BrainService({url:"http://localhost",port:3001});*/
 
-import {MouthService} from "./models/MouthService_ArrayImpl.mjs";
-import { Mouth } from './models/Mouth.mjs';
+const {MouthService} = require ('./models/MouthService_ArrayImpl.js');
+const { Mouth } = require('./models/Mouth.js');
 let mouthServiceInstance;
 let mouthServiceAccessPoint = new MouthService({url:"http://localhost",port:3002});
 
-import {BotIdentifier,BotService} from "./models/Bots.mjs";
+const {BotIdentifier,BotService} = require('./models/Bots.js');
 let botServiceInstance;
 let botServiceAccessPoint = new BotService({url:"http://localhost",port:3001});
 let botsArray;
@@ -33,9 +36,13 @@ const port = 3002
 
 app.use(bodyParser.json()) 
 app.use(bodyParser.urlencoded({ extended: true })) 
-app.use(express.static('./../client'))
+app.use(express.static('./../server/views'))
+app.use(express.json());
+app.use(cookieParser());
 
-//app.use(express.static('./../client'))
+// view engine
+app.set('views','./../server/views');
+app.set('view engine', 'ejs');
 
 let firstMouth ={ 
 	'id':1,
@@ -72,14 +79,15 @@ io.on('connection', (socket) => {
 /*io.on("connect_error", (err) => {
 	console.log(`connect_error due to ${err.message}`);
   });*/
-/*function createBot(id){
+function createBot(id){
 	let bot = getBotById(id); //bot existant dans la base de données
-	bot.botRivescript = new RiveScript();
+	//console.log("bot " +bot);
+	/*bot.botRivescript = new RiveScript();
 	console.log("Rivescript créé");
 	//console.log(bot.botRivescript);
 	bot.botRivescript.loadFile("./../server/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
-	return bot.botRivescript
-}*/
+	return bot.botRivescript*/
+}
 
 /*function socketConnection(id){
 	let rive = createBot(id);
@@ -115,10 +123,12 @@ MouthService.create(mouthServiceAccessPoint).then(ms=>{
 	});
 });
 
+app.get('*', checkUser);
+
 app.get('/socketio', (req, res)=>{
 	try{
     //let json_var = {'test':'oui'};
-		res.sendFile('/client/socket.html', { root: './..' })
+		res.render('socket')
 		mouthServiceInstance
 			.addMouth(firstMouth)
 			.catch((err)=>{console.log(err);});
@@ -146,19 +156,19 @@ app.get('/mouth',async(req,res)=>{
 		console.log(`Error ${err} thrown... stack is : ${err.stack}`);
 		res.status(404).send('NOT FOUND');
 	}
-})
+});
 
 app.get('/mouthV2',async(req,res)=>{
 	try{
 		//let json_var = {'test':'oui'};
-			res.sendFile('/client/mouthList.html', { root: './..' })
+			res.render('mouthList')
 	
 		}
 		catch(err){
 			console.log(`Error ${err} thrown`);
 			res.status(404).send('NOT FOUND');
 		}
-})
+});
 
 app.get('/bot',async(req,res)=>{
 	botsArray = await getAllBots();
@@ -166,7 +176,27 @@ app.get('/bot',async(req,res)=>{
 	//console.log(botsArray);
 	//console.log(arrayTest);
 	res.status(200).json(botsArray);
-})
+});
+
+app.get('/bot/:idddd', async(req, res)=>{
+	let id = req.params.idddd;
+	if(!isInt(id)) {
+		//not the expected parameter
+		res.status(400).send('BAD REQUEST');
+	}else{
+		try{
+			let myBot = await getBotById(id);
+			console.log("My bot dans l'url ");
+			console.log(myBot[0]);
+			res.status(200).json([{'name':myBot[0].botName,'mouth':myBot[0].botMouth,'brain':myBot[0].botBrain}]);
+			//res.status(200).json({'brain':myBot});
+		}
+		catch(err){
+			console.log(`Error ${err} thrown`);
+			res.status(404).send('NOT FOUND');
+		}
+	}
+});
 
 /*function socketConnection(){
 	//const server = http.createServer(app);
@@ -192,6 +222,11 @@ async function getAllBots(){
 async function getBotById(botId){
 	return await botServiceAccessPoint.getBotById(botId);
 }
+
+function isInt(value) {
+	let x = parseFloat(value);
+	return !isNaN(value) && (x | 0) === x;
+  }
 
 function loading_done() {
 	console.log("Bot has finished loading!");
@@ -224,3 +259,5 @@ async function loading_brains(id){
 		}
 	}
 }
+
+app.use(authRoutes);

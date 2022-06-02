@@ -1,22 +1,22 @@
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import fetch from 'node-fetch';
-import http from "http";
-import {Server} from "socket.io";
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const fetch = require('node-fetch');
+const http = require("http");
+const {Server} = require("socket.io");
 const express = require('express');
 const mongoose = require('mongoose');
-const authRoutes = require('./routes/authRoutes');
+const authRoutes = require('./routes/authRoutes.js');
 const cookieParser = require('cookie-parser');
-const { requireAuth, checkUser } = require('./middleware/authMiddleware');
+const { requireAuth, checkUser } = require('./middleware/authMiddleware.js');
 
 const app = express();
-import RiveScript from 'rivescript';
+const RiveScript = require('rivescript');
 
-import {BotService} from "./models/BotService_ArrayImpl.mjs";
+const {BotService} = require('./models/BotService_ArrayImpl.js');
 let botServiceInstance;
 let botServiceAccessPoint = new BotService({url:"http://localhost",port:3001});
 
-import {MouthIdentifier,MouthService} from "./models/Mouths.mjs";
+const {MouthIdentifier,MouthService} = require ('./models/Mouths.js');
 let mouthServiceInstance;
 let mouthServiceAccessPoint = new MouthService({url:"http://localhost",port:3002});
 
@@ -38,8 +38,18 @@ const port = 3001
 
 app.use(bodyParser.json()) 
 app.use(bodyParser.urlencoded({ extended: true })) 
-app.use(express.static('./../client'))
+app.use(express.static('views'))
+app.use(express.json());
+app.use(cookieParser());
 
+// view engine
+app.set('view engine', 'ejs');
+
+// database connection
+const dbURI = 'mongodb+srv://webserviceproject:YjWds5PxDPBsDEA@cluster0.leyyy.mongodb.net/auth';
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true })
+  .then((result) => app.listen(port))
+  .catch((err) => console.log(err));
 
 let id = 0 ; 
 let firstBot ={ 
@@ -75,12 +85,13 @@ BotService.create(botServiceAccessPoint).then(bs=>{
 	});
 });
 
+app.get('*', checkUser);
 
 //Page d'accueil
 app.get('/', (req, res)=>{
 	try{
     //let json_var = {'test':'oui'};
-		res.sendFile('/client/index.html', { root: './..' })
+		res.render('index')
 
 	}
 	catch(err){
@@ -93,7 +104,7 @@ app.get('/', (req, res)=>{
 app.get('/createBot', (req, res)=>{
 	try{
     //let json_var = {'test':'oui'};
-		res.sendFile('/client/createBot.html', { root: './..' })
+		res.render('createBot')
 
 	}
 	catch(err){
@@ -133,7 +144,7 @@ app.get('/mouth',async(req,res)=>{
 //PARLER AVEC SOCKET
 app.get('/socketio', (req, res)=>{
 	try{
-		res.sendFile('/client/index.html', { root: './..' })
+		res.render('socket')
 		/*io.on('connection', (socket) => {
 			console.log('a user connected');
 			let username = "local-user";
@@ -174,7 +185,7 @@ app.get('/bot',async(req,res)=>{
 app.get('/botV2',async(req,res)=>{
 	try{
 		//let json_var = {'test':'oui'};
-			res.sendFile('/client/botList.html', { root: './..' })
+			res.render('botList')
 	
 		}
 		catch(err){
@@ -191,7 +202,9 @@ app.get('/bot/:idddd', (req, res)=>{
 	}else{
 		try{
 			let myBot = botServiceInstance.getBot(id);
-			res.status(200).json([{'name':myBot.name,'mouth':myBot.mouth,'brain':myBot.brain}]);
+			console.log("mybot dans l'url");
+			console.log(myBot);
+			res.status(200).json([{'id':myBot.id,'name':myBot.name,'mouth':myBot.mouth,'brain':myBot.brain}]);
 			//res.status(200).json({'brain':myBot});
 		}
 		catch(err){
@@ -208,7 +221,7 @@ app.get('/botV2/3011', (req, res)=>{
 		res.status(400).send('BAD REQUEST');
 	}else{
 		try{
-			res.sendFile('/client/steeve.html', { root: './..' })
+			res.render('steeve')
 		}
 		catch(err){
 			console.log(`Error ${err} thrown`);
@@ -224,7 +237,7 @@ app.get('/botV2/3012', (req, res)=>{
 		res.status(400).send('BAD REQUEST');
 	}else{
 		try{
-			res.sendFile('/client/aiden.html', { root: './..' })
+			res.render('aiden')
 		}
 		catch(err){
 			console.log(`Error ${err} thrown`);
@@ -240,13 +253,24 @@ app.get('/botV2/3013', (req, res)=>{
 		res.status(400).send('BAD REQUEST');
 	}else{
 		try{
-			res.sendFile('/client/tom.html', { root: './..' })
+			res.render('tom')
 		}
 		catch(err){
 			console.log(`Error ${err} thrown`);
 			res.status(404).send('NOT FOUND');
 		}
 	}
+});
+
+app.get('/login', (req, res)=>{
+	try{
+			res.render('login')
+	
+		}
+		catch(err){
+			console.log(`Error ${err} thrown`);
+			res.status(404).send('NOT FOUND');
+		}
 });
 
 //create a new bot (POST HTTP method)

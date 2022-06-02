@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html>
+<%- include('partials/header'); -%>
 
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>ChatBot Administration Service</title>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<script>
 		document.addEventListener('DOMContentLoaded', init);
 
@@ -323,39 +317,30 @@
 
 	</script>
 
-</head>
+	<body>
+		<nav>
+			<ul>
+				<li><a href="http://localhost:3001/botV2">ChatBots</a></li>
+				<li><a href="http://localhost:3003/brainV2">Brains</a></li>
+				<li><a href="http://localhost:3002/mouthV2">Mouth</a></li>
+			</ul>
+		</nav>
 
-<body>
-	<nav>
-		<h1><a href="/">Interface d'administration des ChatBots</a></h1>
-		<ul>
-			<li><a href="http://localhost:3002/logout">Log out</a></li>
-			<li><a href="http://localhost:3002/login" class="btn">Log in</a></li>
+		<ul id="taskListUL">
 		</ul>
-	</nav>
-	<nav>
-		<ul>
-			<li><a href="http://localhost:3001/botV2">ChatBots</a></li>
-			<li><a href="http://localhost:3003/brainV2">Brains</a></li>
-			<li><a href="http://localhost:3002/mouthV2">Mouth</a></li>
-		</ul>
-	</nav>
 
-	<ul id="taskListUL">
-	</ul>
+		<main>
+			<article>
+				<h2>L'ensemble des ChatBots sont listés ci-dessous.</h2>
+				<p>Vous pouvez :</p>
+				<p>-créer, supprimer des ChatBots</p>
+				<p>-ajouter ou changer un Brain associé</p>
+				<p>-ajouter ou changer une Mouth associée</p>
+			</article>
+		</main>
 
-	<main>
-		<article>
-			<h2>L'ensemble des ChatBots sont listés ci-dessous.</h2>
-			<p>Vous pouvez :</p>
-			<p>-créer, supprimer des ChatBots</p>
-			<p>-ajouter ou changer un Brain associé</p>
-			<p>-ajouter ou changer une Mouth associée</p>
-		</article>
-	</main>
+		<button id="newBotButton" onclick=window.location.href="./createBot" ;>TALK TO A CHATBOT</button>
 
-	<button id="newBotButton" onclick=window.location.href="./createBot" ;>TALK TO A CHATBOT</button>
+	</body>
 
-	<object type="text/html" data="./partials/footer.html" width="200" height="300"></object>
-</body>
-</html>
+<%- include('partials/footer'); -%>

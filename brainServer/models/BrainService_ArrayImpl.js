@@ -1,4 +1,4 @@
-import {Brain} from "./Brain.mjs";
+const {Brain} = require('./Brain.js');
 
 class BrainService{
 	constructor(data){ 
@@ -79,4 +79,4 @@ class BrainService{
 
 }
 
-export {BrainService}
+module.exports = {BrainService};

@@ -1,4 +1,4 @@
-import {Mouth} from "./Mouth.mjs";
+const {Mouth} = require("./Mouth.js");
 
 class MouthService{
 	constructor(data){ 
@@ -80,4 +80,4 @@ class MouthService{
 
 }
 
-export {MouthService}
+module.exports = {MouthService};

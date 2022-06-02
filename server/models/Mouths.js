@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+const fetch = require('node-fetch');
 
 class MouthService{  
   constructor(data){
@@ -61,4 +61,4 @@ class MouthIdentifier{
 
 
 
-export {MouthIdentifier, MouthService}
+module.exports = {MouthIdentifier, MouthService};

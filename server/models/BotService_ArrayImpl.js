@@ -1,6 +1,6 @@
-import {Bot} from "./Bot.mjs";
-import {parse, stringify} from 'flatted';
-import RiveScript from 'rivescript';
+const {Bot} = require('./Bot.js');
+const {parse, stringify} = require('flatted');
+const RiveScript = require('rivescript');
 
 class BotService{
 	constructor(data){ 
@@ -110,4 +110,4 @@ class BotService{
 
 }
 
-export {BotService}
+module.exports = {BotService};

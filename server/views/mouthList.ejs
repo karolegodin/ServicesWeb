@@ -1,108 +1,102 @@
-<!DOCTYPE html>
-<html>
+<%- include('partials/header'); -%>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Liste des Bots</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
     <script>
-        document.addEventListener('DOMContentLoaded', initBots);
+        //document.addEventListener('DOMContentLoaded',initBots);
 
         let botListElt;
         let brainListElt;
         let addNewBotButton;
-        //let talkBotButton;
+        let talkBotButton;
         let chooseBot;
         let mouthListElt;
 
-        function initBots() {
+        /*function initBots(){
             botListElt = document.getElementById("botListSELECT");
-
+        
             //DECOMMENTER LORSQUE LES CLASSES DES BOTS ET BRAINS SONT TERMINEES
             reloadBotList();
             //reloadMouthList();
             //reloadBrainList();
-
+        
             //newTaskButton = document.getElementById("newTaskButton");
             //newTaskButton.addEventListener("click",()=>{modal.style.display = "block";});
             //addNewTaskButton = document.getElementById("addNewTaskButton");
             //addNewTaskButton.addEventListener("click",createNewTask);
             //chooseBot = document.getElementById("chooseBot");
-            //talkBotButton = document.getElementById("talkBotButton");
-            //talkBotButton.addEventListener("click",talkingbot);
-
-
-        }
-        function reloadBotList() { //met à jour la liste de tous les bots
+            talkBotButton = document.getElementById("talkBotButton");
+            talkBotButton.addEventListener("click",talkingbot);
+        
+            
+        }*/
+        /*function reloadBotList(){ //met à jour la liste de tous les bots
             //first, clean up
             console.log("Je reload la liste des bots");
             while (botListElt.firstChild) {
-                botListElt.removeChild(botListElt.firstChild);
+                  botListElt.removeChild(botListElt.firstChild);
             }
             let myHeaders = new Headers();
             myHeaders.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
             myHeaders.append('Accept', 'application/json');
             myHeaders.append('Set-Cookie', 'passPhrase=Hop');
-
-            let myInit = {
+        
+            let myInit = { 
                 method: 'GET',
-                headers: myHeaders,
-                credentials: 'same-origin',
-                mode: 'cors',
-                cache: 'no-store'
+                   headers: myHeaders,
+                   credentials: 'same-origin',
+                   mode: 'cors',
+                   cache: 'no-store' 
             };
-
+        
             let myURL = `http://localhost:3001/bot`;
-
-            fetch(myURL, myInit)
-                .then((httpResponse) => {
+            
+            fetch(myURL,myInit)
+                .then((httpResponse)=>{
                     for (let field of httpResponse.headers) {
-                        //console.log(`raw = ${field}`);
+                        console.log(`raw = ${field}`);
                     }
                     return httpResponse.json()
                 })
-                .then((setOfBots) => {
-                    for (let bot of setOfBots) {
+                .then((setOfBots)=>{
+                    for(let bot of setOfBots){
                         let item = document.createElement("option");
                         item.setAttribute("value", bot.name);
                         item.innerHTML += ` ${bot.name}`;
                         botListElt.appendChild(item);
                     }
                 })
-                .catch((err) => {
+                .catch((err)=>{
                     console.log(`ERROR : ${err} ${err.stack}`);
                 })
-        }
+        }*/
 
-    //document.addEventListener('DOMContentLoaded', initMouth);
+        document.addEventListener('DOMContentLoaded', initMouth);
 
-        /*function initMouth(){
+        function initMouth() {
             //let chooseMouth;
-    
+
             //chooseMouth = document.getElementById("chooseMouth");
             mouthListElt = document.getElementById("mouthListSELECT");
             reloadMouthList();
-        }*/
+        }
 
         /*function reloadBrainList(){
             //first, clean up
             while (brainListElt.firstChild) {
-                brainListElt.removeChild(brainListElt.firstChild);
+                  brainListElt.removeChild(brainListElt.firstChild);
             }
             let myHeaders = new Headers();
             myHeaders.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
             myHeaders.append('Accept', 'application/json');
             myHeaders.append('Set-Cookie', 'passPhrase=Hop');
-    
+        
             let myInit = { 
                 method: 'GET',
-                headers: myHeaders,
-                credentials: 'same-origin',
-                mode: 'cors',
-                cache: 'no-store' 
+                   headers: myHeaders,
+                   credentials: 'same-origin',
+                   mode: 'cors',
+                   cache: 'no-store' 
             };
-    
+        
             let myURL = `http://localhost:3001/brains`;
             
             fetch(myURL,myInit)
@@ -125,7 +119,7 @@
                 })
         }*/
 
-        /*function reloadMouthList(){
+        function reloadMouthList() {
             //first, clean up
             while (mouthListElt.firstChild) {
                 mouthListElt.removeChild(mouthListElt.firstChild);
@@ -134,24 +128,25 @@
             myHeaders.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
             myHeaders.append('Accept', 'application/json');
             myHeaders.append('Set-Cookie', 'passPhrase=Hop');
-    
-            let myInit = { 
+
+            let myInit = {
                 method: 'GET',
                 headers: myHeaders,
                 credentials: 'same-origin',
                 mode: 'cors',
-                cache: 'no-store' 
+                cache: 'no-store'
             };
-    
+
             let myURL = `http://localhost:3002/mouth`;
-            
-            fetch(myURL,myInit)
-                .then((httpResponse)=>{
-                    
+
+            fetch(myURL, myInit)
+                .then((httpResponse) => {
                     return httpResponse.json()
                 })
-                .then((setOfMouths)=>{
-                    for(let mouth of setOfMouths){
+                .then((setOfMouths) => {
+                    console.log("SetofMouths");
+                    console.log(setOfMouths);
+                    for (let mouth of setOfMouths) {
                         console.log(setOfMouths);
                         let item = document.createElement("option");
                         item.setAttribute("value", mouth.name);
@@ -160,40 +155,34 @@
                         console.log(mouthListElt);
                     }
                 })
-                .catch((err)=>{
+                .catch((err) => {
                     console.log(`ERROR : ${err}${err.stack}`);
                 })
-        }*/
+        }
 
         /*function talkingbot(){
             let mouthSelected = mouthListElt.value;
-    
+        
             if (mouthSelected == 'Socket'){
                 window.open('http://localhost:3002/socketio/', '_blank');
                 //window.open('http://localhost:3001/bot/', '_blank');
                 //normalement faudrait faire un GET... ça arrive
             }
-    
+        
             if (mouthSelected == 'Discord'){
                 window.open('https://discord.gg/FyKz3kajW7', '_blank');
             }
         }*/
     </script>
-</head>
 
-<body>
-    <header>
-        <h1>Liste des Bots</h1>
-    </header>
+    <body>
+        <header>
+            <h1>Liste des Mouth</h1>
+        </header>
 
-    <ul id="botListSELECT">
-    </ul>
+        <ul id="mouthListSELECT">
+        </ul>
+        <button id="retour" onclick=window.location.href="http://localhost:3001/" ;>RETOUR</button>
+    </body>
 
-    <button id="steeveInfos" onclick=window.location.href="http://localhost:3001/botV2/3011" ;>INFOS STEEVE</button>
-    <button id="aidenInfos" onclick=window.location.href="http://localhost:3001/botV2/3012" ;>INFOS AIDEN</button>
-    <button id="tomInfos" onclick=window.location.href="http://localhost:3001/botV2/3013" ;>INFOS TOM</button>
-    <button id="retour" onclick=window.location.href="http://localhost:3001/" ;>RETOUR</button>
-
-</body>
-<object type="text/html" data="./partials/footer.html" width="200" height="300"></object>
-</html>
+<%- include('partials/footer'); -%>

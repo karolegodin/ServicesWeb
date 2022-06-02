@@ -1,5 +1,5 @@
-import fetch from 'node-fetch';
-import RiveScript from 'rivescript';
+const fetch = require('node-fetch');
+const RiveScript = require('rivescript');
 
 class BotService{  
   constructor(data){
@@ -19,11 +19,6 @@ class BotService{
       const response = await fetch(myURL,myInit);
       const setOfBots = await response.json();
       //console.warn(xhr.responseText);
-      /*for(let bot of setOfBots){
-          //console.log(bot);
-          returnValue.push(new BotIdentifier({'botId':bot.id, 'botName':bot.name}));
-          
-      }*/
       for (let i=0; i<setOfBots.length; i++){
           //console.log(setOfBots);
           returnValue.push({'botId': (setOfBots[i]).id, 'botName': (setOfBots[i]).name, 'botMouth':(setOfBots[i]).mouth, 'botBrain': (setOfBots[i]).brain, 'botRivescript':null});
@@ -34,15 +29,15 @@ class BotService{
     } catch (error) {
       console.log(error);
     }
-    //console.log("Je sors de la requête GET");
-    //console.log(returnValue);
-    console.log("type de données array");
     console.log(returnValue);
+    //console.log(typeof(returnValue));
     return returnValue;
   }
 
-  async getBotById(botId){
-    let returnValue = new BotIdentifier({'botId':id});
+  async getBotById(id){
+    //let returnValue = new BotIdentifier({'botId':id});
+    let returnValue = new Array();
+    //console.log(returnValue);
     let myInit = { 
       method: 'GET',
       mode: 'cors',
@@ -51,17 +46,23 @@ class BotService{
     let myURL = `http://localhost:3001/bot/${id}`;
     try {
       const response = await fetch(myURL,myInit);
-      //console.log(response);
-      //console.log("Problème"+await response.json());
       const setOfBots = await response.json();
-      //console.log(setOfBots);
       //console.warn(xhr.responseText);
-      returnValue.botName = (setOfBots.name);
-      
+      //returnValue.botName = (setOfBots.name);
+      //returnValue.botBrain = (setOfBots.brain);
+      //returnValue.botName = (setOfBots.name);
+      //returnValue.botBrain = (setOfBots.brain);
+      for(let bot of setOfBots){
+        //console.log("Le bot est : ");
+        //console.log(bot);
+        //console.log(bot.id);
+        returnValue.push(new BotIdentifier({'botId':bot.id, 'botName':bot.name}));
+        console.log(returnValue);
+      }
     } catch (error) {
       console.log(error);
     }
-    console.log(returnValue);
+    //console.log(returnValue);
     //console.log(typeof(returnValue));
     return returnValue;
   }
@@ -72,7 +73,7 @@ class BotService{
 
 class BotIdentifier{
   static botId = this.botId; //the id of the Bot in the micro-service
-  //static botName = this.botName;
+  static botName = this.botName;
   // TODO : when multiple sources of Bots is used : should differentiate botId and a localbotId...
   constructor(data){ // TODO : Should check if sourceId is known and valid
       this.botId = data.botId;
@@ -91,4 +92,4 @@ class BotIdentifier{
 
 
 
-export {BotIdentifier, BotService}
+module.exports = {BotIdentifier, BotService};

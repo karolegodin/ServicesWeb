@@ -54,4 +54,4 @@ function isString(myVar) {
   return (typeof myVar === 'string' || myVar instanceof String) ;
 }
 
-export {Mouth}
+module.exports = {Mouth};

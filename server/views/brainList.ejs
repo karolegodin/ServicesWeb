@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html>
+<%- include('partials/header'); -%>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Liste des Brains</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
     <script>
         document.addEventListener('DOMContentLoaded', initBrains);
 
@@ -212,5 +206,5 @@
     </ul>
     <button id="retour" onclick=window.location.href="http://localhost:3001/" ;>RETOUR</button>
 </body>
-<object type="text/html" data="./partials/footer.html" width="200" height="300"></object>
-</html>
+
+<%- include('partials/footer'); -%>
