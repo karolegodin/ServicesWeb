@@ -50,6 +50,10 @@ A partir de la page d'accueil, cliquez sur le bouton `Talk to a chatbot`.
 
 Vous pouvez alors choisir le bot avec lequel vous souhaitez communiquer ainsi que la bouche que vous souhaitez utiliser. Si vous souhaitez utiliser Discord, sélectionnez `Discord` dans la liste des Mouth puis cliquez sur `Talk to a chatbot`.
 
+Discord s'ouvre alors sur un nouvel onglet de votre navigateur. Vous pouvez également choisir de l'ouvrir via l'application. Une fois sur Discord, vous pouvez entrer vos requêtes sur le canal `#général` et le bot vous répondra directement dans le canal.
+
+Remarque : Le bot sur Discord se prénomme **Steeve**. Cependant, cela ne signifie pas que c'est l'instance du bot Steeve sur le serveur qui est chargée. Le nom qui apparaît est seulement le nom du bot sur la plateforme Discord. Le bot qui est connecté depuis le serveur est celui que vous avez choisi sur le client.
+
 ## Utilisation du bot Mastodon
 
 ## Auteurs
