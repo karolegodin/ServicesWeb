@@ -1,6 +1,6 @@
-import fetch from 'node-fetch';
-import RiveScript from 'rivescript';
-import {MouthIdentifier} from "./Mouths.mjs";
+const fetch = require('node-fetch');
+const RiveScript = require('rivescript');
+const {MouthIdentifier} = require('./Mouths.js');
 
 class Bot{  
 
@@ -136,4 +136,4 @@ function isString(myVar) {
   return (typeof myVar === 'string' || myVar instanceof String) ;
 }
 
-export {Bot}
+module.exports = {Bot};

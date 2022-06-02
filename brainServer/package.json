@@ -2,17 +2,19 @@
   "name": "brainserver",
   "version": "1.0.0",
   "description": "",
-  "main": "index.mjs",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "nodemon": "nodemon index.mjs"
+    "nodemon": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "express": "^4.17.3",
-    "node-fetch": "^3.2.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "node-fetch": "^2.6.7",
     "nodemon": "^2.0.15",
     "rivescript": "^2.2.0"
   }
