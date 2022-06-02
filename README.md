@@ -17,7 +17,7 @@ Appuyez sur la touche `entrée` pour chaque item puis validez (`yes`).
 
 ### 3e étape : Intallation des modules
 
-Installer tous les modules cités dans les "package.json" pour chaque serveur dans le terminale correspondant :
+Installer tous les modules cités dans les "package.json" pour chaque serveur dans le terminal correspondant :
 
 `$npm install nom_du_module`
 
@@ -36,7 +36,19 @@ Ouvrez un navigateur Mozilla Firefox et entrez l'URL suivant :
 
 ## Utilisation de la partie Socket
 
+A partir de la page d'accueil, cliquez sur le bouton `Talk to a chatbot`.
+
+Vous pouvez alors choisir le bot avec lequel vous souhaitez communiquer ainsi que la bouche que vous souhaitez utiliser. Si vous souhaitez utiliser un socket, sélectionnez `socket` dans la liste des Mouth puis cliquez sur `Talk to a chatbot`.
+
+Une interface de communication avec le bot sélectionné s'ouvre alors dans votre navigateur. Vous pouvez entrer vos requêtes dans la partie basse de la page et presser la touche `entrée` ou bien cliquer sur le bouton `Send`.
+
+Vos requêtes s'afficheront en gris sur la partie haute de la page. Les réponses du bot s'afficheront en blanc en dessous de vos requêtes.
+
 ## Utilisation du bot Discord
+
+A partir de la page d'accueil, cliquez sur le bouton `Talk to a chatbot`.
+
+Vous pouvez alors choisir le bot avec lequel vous souhaitez communiquer ainsi que la bouche que vous souhaitez utiliser. Si vous souhaitez utiliser Discord, sélectionnez `Discord` dans la liste des Mouth puis cliquez sur `Talk to a chatbot`.
 
 ## Utilisation du bot Mastodon
 
