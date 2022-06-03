@@ -58,18 +58,34 @@ app.set('view engine', 'ejs');
 
 let firstMouth = {
 	'id': 1,
-	'name': 'Socket'
+	'name': 'Discord'
 };
 
 let secondMouth = {
 	'id': 2,
-	'name': 'Discord'
+	'name': 'Socket - Steeve'
 };
 
-var bot = new RiveScript();
-bot.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
+let thirdMouth = {
+	'id': 3,
+	'name': 'Socket - Aiden'
+};
+
+let fourthMouth = {
+	'id': 4,
+	'name': 'Socket - Tom'
+};
+
+ 
+
+var botSteeve = new RiveScript();
+botSteeve.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done_steeve).catch(loading_error);
 //bot.loadFile("./../brainServer/pathtobrain/client.rive").then(loading_done).catch(loading_error);
 //bot.loadFile("./../brainServer/pathtobrain/eliza.rive").then(loading_done).catch(loading_error);
+var botAiden = new RiveScript();
+botAiden.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done_aiden).catch(loading_error);
+var botTom = new RiveScript();
+botTom.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done_tom).catch(loading_error);
 
 //let server;
 //let io;
@@ -80,7 +96,7 @@ io.on('connection', (socket) => {
 	let username = "local-user";
 	socket.on('chat message', (msg) => {
 		console.log('message: ' + msg);
-		bot.reply(username, msg).then(function (reply) {
+		botSteeve.reply(username, msg).then(function (reply) {
 			console.log("The bot says: " + reply);
 			io.emit('chat message', msg);
 			io.emit('chat message', reply);
@@ -125,11 +141,17 @@ function createBot(id) {
 MouthService.create(mouthServiceAccessPoint).then(ms => {
 	mouthServiceInstance = ms;
 	mouthServiceInstance
-		.addMouth(firstMouth)
+		.addMouth(secondMouth)
 		.catch((err) => { console.log(err); });
 	//socketConnection;
 	mouthServiceInstance
-		.addMouth(secondMouth)
+		.addMouth(firstMouth)
+		.catch((err) => { console.log(err); });
+	mouthServiceInstance
+		.addMouth(thirdMouth)
+		.catch((err) => { console.log(err); });
+	mouthServiceInstance
+		.addMouth(fourthMouth)
 		.catch((err) => { console.log(err); });
 	//loading_brains(3011);
 	server.listen(port, () => {
@@ -143,9 +165,9 @@ app.get('/socketio', (req, res) => {
 	try {
 		//let json_var = {'test':'oui'};
 		res.render('socket')
-		mouthServiceInstance
+		/*mouthServiceInstance
 			.addMouth(firstMouth)
-			.catch((err) => { console.log(err); });
+			.catch((err) => { console.log(err); });*/
 		//socketConnection(3012);
 		//console.log(mouthServiceInstance);
 
@@ -243,12 +265,30 @@ function isInt(value) {
 	return !isNaN(value) && (x | 0) === x;
 }
 
-function loading_done() {
-	console.log("Bot has finished loading!");
-	bot.sortReplies();
+function loading_done_steeve() {
+	console.log("Steeve has finished loading!");
+	botSteeve.sortReplies();
 	let username = "local-user";
-	bot.reply(username, "Hello, bot!").then(function (reply) {
-		console.log("The bot says: " + reply);
+	botSteeve.reply(username, "Hello, bot!").then(function (reply) {
+		console.log("Steeve says: " + reply);
+	});
+}
+
+function loading_done_aiden() {
+	console.log("Aiden has finished loading!");
+	botAiden.sortReplies();
+	let username = "local-user";
+	botAiden.reply(username, "Hello, bot!").then(function (reply) {
+		console.log("Aiden says: " + reply);
+	});
+}
+
+function loading_done_tom() {
+	console.log("Tom has finished loading!");
+	botTom.sortReplies();
+	let username = "local-user";
+	botTom.reply(username, "Hello, bot!").then(function (reply) {
+		console.log("Tom says: " + reply);
 	});
 }
 
@@ -285,10 +325,6 @@ async function loading_brains(id) {
 			case 'Standard':
 				console.log("Standard to load");
 				botToLoad.botRivescript.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
-				break;
-			case 'Eliza':
-				console.log("Eliza to load");
-				botToLoad.botRivescript.loadFile("./../brainServer/pathtobrain/eliza.rive").then(loading_done).catch(loading_error);
 				break;
 			case 'Client':
 				console.log("Client to load");
