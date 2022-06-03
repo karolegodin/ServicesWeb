@@ -17,7 +17,7 @@ Appuyez sur la touche `entrée` pour chaque item puis validez (`yes`).
 
 ### 3e étape : Intallation des modules
 
-Installer tous les modules cités dans les "package.json" pour chaque serveur dans le terminal correspondant :
+Installer tous les modules cités dans les "package-lock.json" pour chaque serveur dans le terminal correspondant :
 
 `$npm install nom_du_module`
 

@@ -77,14 +77,14 @@ BrainService.create(brainServiceAccessPoint).then(ms=>{
 
 app.get('*', checkUser);
 
-app.get('/bot',async(req,res)=>{
+app.get('/bot',requireAuth,async(req,res)=>{
 	botsArray = await getAllBots();
 	//console.log("heheheee");
 	console.log(botsArray);
 	res.status(200).json(botsArray);
 })
 
-app.get('/brain',async(req,res)=>{
+app.get('/brain',requireAuth,async(req,res)=>{
 	//let brainArray=await getBrains();
 	//res.status(200).json(brainArray);
 	try{
@@ -100,7 +100,7 @@ app.get('/brain',async(req,res)=>{
 	}
 })
 
-app.get('/brainV2',async(req,res)=>{
+app.get('/brainV2',requireAuth,async(req,res)=>{
 	try{
 		//let json_var = {'test':'oui'};
 			res.render('brainList')

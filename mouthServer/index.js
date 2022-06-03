@@ -161,7 +161,7 @@ MouthService.create(mouthServiceAccessPoint).then(ms => {
 
 app.get('*', checkUser);
 
-app.get('/socketio', (req, res) => {
+app.get('/socketio', requireAuth, (req, res) => {
 	try {
 		//let json_var = {'test':'oui'};
 		res.render('socket')
@@ -178,7 +178,7 @@ app.get('/socketio', (req, res) => {
 	}
 });
 
-app.get('/mouth', async (req, res) => {
+app.get('/mouth', requireAuth, async (req, res) => {
 	//let mouthArray=await getMouths();
 	//res.status(200).json(mouthArray);
 	try {
@@ -194,7 +194,7 @@ app.get('/mouth', async (req, res) => {
 	}
 });
 
-app.get('/mouthV2', async (req, res) => {
+app.get('/mouthV2', requireAuth, async (req, res) => {
 	try {
 		//let json_var = {'test':'oui'};
 		res.render('mouthList')
@@ -206,7 +206,7 @@ app.get('/mouthV2', async (req, res) => {
 	}
 });
 
-app.get('/bot', async (req, res) => {
+app.get('/bot', requireAuth, async (req, res) => {
 	botsArray = await getAllBots();
 	//let arrayTest = botServiceAccessPoint.getBotById(3011);
 	//console.log(botsArray);
@@ -214,7 +214,7 @@ app.get('/bot', async (req, res) => {
 	res.status(200).json(botsArray);
 });
 
-app.get('/bot/:idddd', async (req, res) => {
+app.get('/bot/:idddd', requireAuth, async (req, res) => {
 	let id = req.params.idddd;
 	if (!isInt(id)) {
 		//not the expected parameter
