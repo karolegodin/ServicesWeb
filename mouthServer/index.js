@@ -95,11 +95,12 @@ io.on('connection', (socket) => {
 function createBot(id) {
 	let bot = getBotById(id); //bot existant dans la base de données
 	//console.log("bot " +bot);
-	/*bot.botRivescript = new RiveScript();
+	let newBot = new RiveScript();
 	console.log("Rivescript créé");
 	//console.log(bot.botRivescript);
-	bot.botRivescript.loadFile("./../server/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
-	return bot.botRivescript*/
+	newBot.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
+	bot.botRivescript = "OK";
+	return bot.botRivescript
 }
 
 /*function socketConnection(id){
@@ -201,8 +202,9 @@ app.get('/bot/:idddd', async (req, res) => {
 			let myBot = await getBotById(id);
 			console.log("My bot dans l'url ");
 			console.log(myBot[0]);
-			res.status(200).json([{ 'name': myBot[0].botName, 'mouth': myBot[0].botMouth, 'brain': myBot[0].botBrain }]);
+			res.status(200).json([{'id': myBot[0].botId, 'name': myBot[0].botName, 'mouth': myBot[0].botMouth, 'brain': myBot[0].botBrain, 'botRivescript': myBot[0].botRivescript }]);
 			//res.status(200).json({'brain':myBot});
+			createBot(3011);
 		}
 		catch (err) {
 			console.log(`Error ${err} thrown`);

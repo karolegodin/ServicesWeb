@@ -56,8 +56,8 @@ class BotService{
         //console.log("Le bot est : ");
         //console.log(bot);
         //console.log(bot.id);
-        returnValue.push(new BotIdentifier({'botId':bot.id, 'botName':bot.name}));
-        console.log(returnValue);
+        returnValue.push(new BotIdentifier({'botId':bot.id, 'botName':bot.name, 'botMouth':bot.mouth, 'botBrain':bot.brain, 'botRivescript':null}));
+        //console.log(returnValue);
       }
     } catch (error) {
       console.log(error);

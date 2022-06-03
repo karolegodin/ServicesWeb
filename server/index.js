@@ -35,6 +35,7 @@ app.use(cors())
 ////
 
 const port = 3001
+const port2 = 3000
 
 app.use(bodyParser.json()) 
 app.use(bodyParser.urlencoded({ extended: true })) 
@@ -48,7 +49,7 @@ app.set('view engine', 'ejs');
 // database connection
 const dbURI = 'mongodb+srv://webserviceproject:YjWds5PxDPBsDEA@cluster0.leyyy.mongodb.net/auth';
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true })
-  .then((result) => app.listen(port))
+  .then((result) => app.listen(port2))
   .catch((err) => console.log(err));
 
 let id = 0 ; 
