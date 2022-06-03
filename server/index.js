@@ -102,7 +102,7 @@ app.get('/', (req, res)=>{
 });
 
 //Page pour parler à un bot
-app.get('/createBot', (req, res)=>{
+app.get('/createBot', requireAuth, (req, res)=>{
 	try{
     //let json_var = {'test':'oui'};
 		res.render('createBot')
@@ -135,7 +135,7 @@ app.get('/createBot', (req, res)=>{
 	res.status(200).json(brainsArray);
 })*/
 
-app.get('/mouth',async(req,res)=>{
+app.get('/mouth', requireAuth, async(req,res)=>{
 	let mouthsArray = await getAllMouths();
 	res.status(200).json(mouthsArray);
 })
@@ -143,7 +143,7 @@ app.get('/mouth',async(req,res)=>{
 //const server = http.createServer(app);
 //const io = new Server(server);
 //PARLER AVEC SOCKET
-app.get('/socketio', (req, res)=>{
+app.get('/socketio', requireAuth, (req, res)=>{
 	try{
 		res.render('socket')
 		/*io.on('connection', (socket) => {
@@ -167,7 +167,7 @@ app.get('/socketio', (req, res)=>{
 	}
 });
 
-app.get('/bot',async(req,res)=>{
+app.get('/bot', requireAuth, async(req,res)=>{
 	//let botArray=await getBots();
 	//res.status(200).json(botArray);
 	try{
@@ -183,7 +183,7 @@ app.get('/bot',async(req,res)=>{
 	}
 })
 
-app.get('/botV2',async(req,res)=>{
+app.get('/botV2', requireAuth, async(req,res)=>{
 	try{
 		//let json_var = {'test':'oui'};
 			res.render('botList')
@@ -195,7 +195,7 @@ app.get('/botV2',async(req,res)=>{
 		}
 })
 
-app.get('/bot/:idddd', (req, res)=>{
+app.get('/bot/:idddd', requireAuth, (req, res)=>{
 	let id = req.params.idddd;
 	if(!isInt(id)) {
 		//not the expected parameter
@@ -215,7 +215,7 @@ app.get('/bot/:idddd', (req, res)=>{
 	}
 });
 
-app.get('/botV2/3011', (req, res)=>{
+app.get('/botV2/3011', requireAuth, (req, res)=>{
 	//let id = req.params.idddd;
 	if(!isInt(id)) {
 		//not the expected parameter
@@ -231,7 +231,7 @@ app.get('/botV2/3011', (req, res)=>{
 	}
 });
 
-app.get('/botV2/3012', (req, res)=>{
+app.get('/botV2/3012', requireAuth, (req, res)=>{
 	//let id = req.params.idddd;
 	if(!isInt(id)) {
 		//not the expected parameter
@@ -247,7 +247,7 @@ app.get('/botV2/3012', (req, res)=>{
 	}
 });
 
-app.get('/botV2/3013', (req, res)=>{
+app.get('/botV2/3013', requireAuth, (req, res)=>{
 	//let id = req.params.idddd;
 	if(!isInt(id)) {
 		//not the expected parameter
@@ -292,7 +292,7 @@ app.get('/login', (req, res)=>{
 
 //app.delete();
 
-app.patch('/bot/:id',(req,res)=>{
+app.patch('/bot/:id', requireAuth, (req,res)=>{
 	let id = req.params.id;
 	if(!isInt(id)) { //Should I propagate a bad parameter to the model?
 		//not the expected parameter
