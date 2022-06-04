@@ -8,6 +8,7 @@ const authRoutes = require('./../server/routes/authRoutes.js');
 const cookieParser = require('cookie-parser');
 const { requireAuth, checkUser } = require('./../server/middleware/authMiddleware.js');
 const { Client, Intents } = require("discord.js");
+const { fork } = require("child_process");
 
 const app = express();
 const RiveScript = require('rivescript');
@@ -58,41 +59,111 @@ app.set('view engine', 'ejs');
 
 let firstMouth = {
 	'id': 1,
-	'name': 'Socket'
+	'name': 'Discord'
 };
 
 let secondMouth = {
 	'id': 2,
-	'name': 'Discord'
+	'name': 'Socket'
 };
 
-var bot = new RiveScript();
-bot.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
+/*let thirdMouth = {
+	'id': 3,
+	'name': 'Socket - Aiden'
+};
+
+let fourthMouth = {
+	'id': 4,
+	'name': 'Socket - Tom'
+};*/
+
+ 
+const child1 = fork("socketSteeve.js");
+const child2 = fork("socketAiden.js");
+const child3 = fork("socketTom.js");
+
+////////////////////////
+// Chargement des bots
+////////////////////////
+
+/*var botSteeve = new RiveScript();
+botSteeve.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done_steeve).catch(loading_error);
 //bot.loadFile("./../brainServer/pathtobrain/client.rive").then(loading_done).catch(loading_error);
 //bot.loadFile("./../brainServer/pathtobrain/eliza.rive").then(loading_done).catch(loading_error);
+var botAiden = new RiveScript();
+botAiden.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done_aiden).catch(loading_error);
+var botTom = new RiveScript();
+botTom.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done_tom).catch(loading_error);*/
 
 //let server;
 //let io;
-const server = http.createServer(app);
-const io = new Server(server);
-io.on('connection', (socket) => {
+//const server = http.createServer(app);
+//const io = new Server(server);
+/*io.on('connection', (socket) => {
 	console.log('a user connected');
 	let username = "local-user";
 	socket.on('chat message', (msg) => {
 		console.log('message: ' + msg);
-		bot.reply(username, msg).then(function (reply) {
-			console.log("The bot says: " + reply);
+		botSteeve.reply(username, msg).then(function (reply) {
+			console.log("Steeve: " + reply);
 			io.emit('chat message', msg);
 			io.emit('chat message', reply);
 		});
 
 	});
-});
+});*/
+
+/*function socketConnection(bot){
+	io.on('connection', (socket) => {
+		console.log('a user connected');
+		let username = "local-user";
+		socket.on('chat message', (msg) => {
+			console.log('message: ' + msg);
+			bot.reply(username, msg).then(function (reply) {
+				console.log("The bot says: " + reply);
+				io.emit('chat message', msg);
+				io.emit('chat message', reply);
+			});
+	
+		});
+	});
+}*/
+//const server2 = http.createServer(app);
+/*const io2 = new Server(server);
+io2.on('connection', (socket) => {
+	console.log('a user connected');
+	let username = "local-user";
+	socket.on('chat message', (msg) => {
+		console.log('message: ' + msg);
+		botAiden.reply(username, msg).then(function (reply) {
+			console.log("Aiden says: " + reply);
+			io.emit('chat message', msg);
+			io.emit('chat message', reply);
+		});
+
+	});
+});*/
+
+//const server = http.createServer(app);
+/*const io3 = new Server(server);
+io3.on('connection', (socket) => {
+	console.log('a user connected');
+	let username = "local-user";
+	socket.on('chat message', (msg) => {
+		console.log('message: ' + msg);
+		botTom.reply(username, msg).then(function (reply) {
+			console.log("Tom says: " + reply);
+			io.emit('chat message', msg);
+			io.emit('chat message', reply);
+		});
+
+	});
+});*/
 
 /*io.on("connect_error", (err) => {
 	console.log(`connect_error due to ${err.message}`);
   });*/
-function createBot(id) {
+/*function createBot(id) {
 	let bot = getBotById(id); //bot existant dans la base de données
 	//console.log("bot " +bot);
 	let newBot = new RiveScript();
@@ -101,7 +172,7 @@ function createBot(id) {
 	newBot.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
 	bot.botRivescript = "OK";
 	return bot.botRivescript
-}
+}*/
 
 /*function socketConnection(id){
 	let rive = createBot(id);
@@ -131,30 +202,48 @@ MouthService.create(mouthServiceAccessPoint).then(ms => {
 	mouthServiceInstance
 		.addMouth(secondMouth)
 		.catch((err) => { console.log(err); });
+	/*mouthServiceInstance
+		.addMouth(thirdMouth)
+		.catch((err) => { console.log(err); });
+	mouthServiceInstance
+		.addMouth(fourthMouth)
+		.catch((err) => { console.log(err); });*/
 	//loading_brains(3011);
-	server.listen(port, () => {
+	app.listen(port, () => {
 		console.log(`Mouth server app listening at http://localhost:${port}`)
 	});
 });
 
 app.get('*', checkUser);
 
-app.get('/socketio', (req, res) => {
+/*app.get('/socketio', (req, res) => {
 	try {
 		//let json_var = {'test':'oui'};
-		res.render('socket')
-		mouthServiceInstance
-			.addMouth(firstMouth)
-			.catch((err) => { console.log(err); });
-		//socketConnection(3012);
-		//console.log(mouthServiceInstance);
+		socketConnection(botSteeve);
+		console.log("Steeve connected on socket");
+		res.render('socketSteeve');
+		
 
 	}
 	catch (err) {
 		console.log(`Error ${err} thrown`);
 		res.status(404).send('NOT FOUND');
 	}
-});
+});*/
+
+/*app.get('/socketioAiden', (req, res) => {
+	try {
+		//let json_var = {'test':'oui'};
+		socketConnection(botAiden);
+		console.log("Aiden connected on socket");
+		res.render('socketAiden');
+
+	}
+	catch (err) {
+		console.log(`Error ${err} thrown`);
+		res.status(404).send('NOT FOUND');
+	}
+});*/
 
 app.get('/mouth', async (req, res) => {
 	//let mouthArray=await getMouths();
@@ -247,10 +336,10 @@ function loading_done() {
 	console.log("Bot has finished loading!");
 	bot.sortReplies();
 	let username = "local-user";
-	bot.reply(username, "Hello, bot!").then(function (reply) {
-		console.log("The bot says: " + reply);
+	bot.reply(username, "Hello, bot!").then(function(reply) {
+	  console.log("The bot says: " + reply);
 	});
-}
+  }
 
 function loading_error(error, filename, lineno) {
 	console.log("Error when loading files: " + error);
@@ -285,10 +374,6 @@ async function loading_brains(id) {
 			case 'Standard':
 				console.log("Standard to load");
 				botToLoad.botRivescript.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
-				break;
-			case 'Eliza':
-				console.log("Eliza to load");
-				botToLoad.botRivescript.loadFile("./../brainServer/pathtobrain/eliza.rive").then(loading_done).catch(loading_error);
 				break;
 			case 'Client':
 				console.log("Client to load");
