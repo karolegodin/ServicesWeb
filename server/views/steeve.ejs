@@ -452,9 +452,53 @@
 		}
 
 		function removeBrain(botId) {
-			console.log(`deleting bot brain with Id ${botId}`);
-			//TODO
-			//Obvioulsly, you will need to launch a modal
+			let brainSelected = `${brainListElt.value}`;
+			console.log("Brain selected : " + brainSelected);
+			//console.log(typeof(brainSelected));
+			let myHeaders = new Headers();
+			myHeaders.append('Content-Type', 'application/json');
+			myHeaders.append('Accept', 'application/json');
+			myHeaders.append('Set-Cookie', 'passPhrase=Hop');
+
+			let brainRequest = { "brain": brainSelected };
+			let myInit = {
+				method: 'PATCH',
+				headers: myHeaders,
+				credentials: 'same-origin',
+				mode: 'cors',
+				cache: 'no-store',
+				body: JSON.stringify(brainRequest)
+
+			};
+			console.log(typeof (myInit.body));
+			let myURL = `http://localhost:3001/bot/remove/3011`;
+
+			fetch(myURL, myInit)
+				.then((httpResponse) => {
+					//console.log("réponse"+ httpResponse.json());
+					return httpResponse.text()
+				})
+				.then((responseBody) => {
+
+					reloadBotInfos();
+					reloadBrainList();
+					reloadBrainListToRm();
+					console.log(`removing bot brain`);
+					location.reload;
+					/*
+						//let item = document.createElement("option");
+						//item.setAttribute('value',person.personId);
+						//item.innerHTML=person.personId;
+						//personListElt.appendChild(item);
+						
+						
+						brainListElt.appendChild(createItem(brain));
+						
+					*/
+				})
+				.catch((err) => {
+					console.log(`ERROR : ${err}${err.stack}`);
+				})
 		}
 	</script>
 

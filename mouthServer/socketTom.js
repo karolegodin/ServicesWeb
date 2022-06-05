@@ -13,6 +13,16 @@ const { fork } = require("child_process");
 const app = express();
 const RiveScript = require('rivescript');
 
+const { MouthService } = require('./models/MouthService_ArrayImpl.js');
+const { Mouth } = require('./models/Mouth.js');
+let mouthServiceInstance;
+let mouthServiceAccessPoint = new MouthService({ url: "http://localhost", port: 3002 });
+
+const { BotIdentifier, BotService } = require('./models/Bots.js');
+let botServiceInstance;
+let botServiceAccessPoint = new BotService({ url: "http://localhost", port: 3001 });
+let botsArray;
+
 const server = http.createServer(app)
 //const server = createServer();
 const port = process.env.PORT || 3013
@@ -28,7 +38,8 @@ app.set('views', '../server/views');
 
 
 // Load an individual file.
-bot.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
+//bot.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
+loading_brains(3013);
 
 function loading_done() {
   console.log("Bot has finished loading!");
@@ -48,6 +59,7 @@ function loading_error(error, filename, lineno) {
 app.get('/socketio', (req, res) => {
   //res.status(200).send('Working')
   try{
+    loading_brains(3013); //recharger la liste des brains en cas d'ajout/suppression
 		res.render('socketTom');
 
 	}
@@ -75,5 +87,27 @@ server.listen(port, () => {
   console.log(`Server running on port: ${port}`)
 })
 
+async function loading_brains(id) {
+	//console.log("Je suis dans loading_brains");
+	let botToLoad = await getBotById(id);
+	//console.log(botToLoad);
+	console.log("Liste des brains : ");
+	console.log(botToLoad[0].botBrain);
+	for (let i = 0; i < botToLoad[0].botBrain.length; i++) {
+		switch ((botToLoad[0].botBrain)[i]) {
+			case 'Standard':
+				console.log("Standard to load");
+				bot.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
+				break;
+			case 'Client':
+				console.log("Client to load");
+				bot.loadFile("./../brainServer/pathtobrain/client.rive").then(loading_done).catch(loading_error);
+		}
+	}
+}
+
+async function getBotById(botId) {
+	return await botServiceAccessPoint.getBotById(botId);
+}
 
 //console.log("Hello world");

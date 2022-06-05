@@ -34,6 +34,10 @@ let botsArray;
 /////////////////////////////////
 //Connection au bot Discord//////
 /////////////////////////////////
+
+let bot = new RiveScript();
+bot.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
+
 const botDiscord = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
 const { token } = require('./config.json');
@@ -82,37 +86,6 @@ const child1 = fork("socketSteeve.js");
 const child2 = fork("socketAiden.js");
 const child3 = fork("socketTom.js");
 
-////////////////////////
-// Chargement des bots
-////////////////////////
-
-/*var botSteeve = new RiveScript();
-botSteeve.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done_steeve).catch(loading_error);
-//bot.loadFile("./../brainServer/pathtobrain/client.rive").then(loading_done).catch(loading_error);
-//bot.loadFile("./../brainServer/pathtobrain/eliza.rive").then(loading_done).catch(loading_error);
-var botAiden = new RiveScript();
-botAiden.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done_aiden).catch(loading_error);
-var botTom = new RiveScript();
-botTom.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done_tom).catch(loading_error);*/
-
-//let server;
-//let io;
-//const server = http.createServer(app);
-//const io = new Server(server);
-/*io.on('connection', (socket) => {
-	console.log('a user connected');
-	let username = "local-user";
-	socket.on('chat message', (msg) => {
-		console.log('message: ' + msg);
-		botSteeve.reply(username, msg).then(function (reply) {
-			console.log("Steeve: " + reply);
-			io.emit('chat message', msg);
-			io.emit('chat message', reply);
-		});
-
-	});
-});*/
-
 /*function socketConnection(bot){
 	io.on('connection', (socket) => {
 		console.log('a user connected');
@@ -127,70 +100,6 @@ botTom.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done_
 	
 		});
 	});
-}*/
-//const server2 = http.createServer(app);
-/*const io2 = new Server(server);
-io2.on('connection', (socket) => {
-	console.log('a user connected');
-	let username = "local-user";
-	socket.on('chat message', (msg) => {
-		console.log('message: ' + msg);
-		botAiden.reply(username, msg).then(function (reply) {
-			console.log("Aiden says: " + reply);
-			io.emit('chat message', msg);
-			io.emit('chat message', reply);
-		});
-
-	});
-});*/
-
-//const server = http.createServer(app);
-/*const io3 = new Server(server);
-io3.on('connection', (socket) => {
-	console.log('a user connected');
-	let username = "local-user";
-	socket.on('chat message', (msg) => {
-		console.log('message: ' + msg);
-		botTom.reply(username, msg).then(function (reply) {
-			console.log("Tom says: " + reply);
-			io.emit('chat message', msg);
-			io.emit('chat message', reply);
-		});
-
-	});
-});*/
-
-/*io.on("connect_error", (err) => {
-	console.log(`connect_error due to ${err.message}`);
-  });*/
-/*function createBot(id) {
-	let bot = getBotById(id); //bot existant dans la base de données
-	//console.log("bot " +bot);
-	let newBot = new RiveScript();
-	console.log("Rivescript créé");
-	//console.log(bot.botRivescript);
-	newBot.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
-	bot.botRivescript = "OK";
-	return bot.botRivescript
-}*/
-
-/*function socketConnection(id){
-	let rive = createBot(id);
-	//server = http.createServer(app);
-	//io = new Server(server);
-	io.on('connection', (socket) => {
-		console.log('a user connected');
-		let username = "local-user";
-		socket.on('chat message', (msg) => {
-		console.log('message: ' + msg);
-		rive.reply(username,msg).then(function(reply) {
-			console.log("The bot says: " + reply);
-			io.emit('chat message', msg);
-			io.emit('chat message', reply);
-		});
-  
-	});
-  });
 }*/
 
 MouthService.create(mouthServiceAccessPoint).then(ms => {
@@ -231,19 +140,7 @@ app.get('*', checkUser);
 	}
 });*/
 
-/*app.get('/socketioAiden', (req, res) => {
-	try {
-		//let json_var = {'test':'oui'};
-		socketConnection(botAiden);
-		console.log("Aiden connected on socket");
-		res.render('socketAiden');
 
-	}
-	catch (err) {
-		console.log(`Error ${err} thrown`);
-		res.status(404).send('NOT FOUND');
-	}
-});*/
 
 app.get('/mouth', async (req, res) => {
 	//let mouthArray=await getMouths();
@@ -289,11 +186,11 @@ app.get('/bot/:idddd', async (req, res) => {
 	} else {
 		try {
 			let myBot = await getBotById(id);
-			console.log("My bot dans l'url ");
-			console.log(myBot[0]);
+			//console.log("My bot dans l'url ");
+			//console.log(myBot[0]);
 			res.status(200).json([{'id': myBot[0].botId, 'name': myBot[0].botName, 'mouth': myBot[0].botMouth, 'brain': myBot[0].botBrain, 'botRivescript': myBot[0].botRivescript }]);
 			//res.status(200).json({'brain':myBot});
-			createBot(3011);
+			//createBot(3011);
 		}
 		catch (err) {
 			console.log(`Error ${err} thrown`);
@@ -302,17 +199,7 @@ app.get('/bot/:idddd', async (req, res) => {
 	}
 });
 
-/*function socketConnection(){
-	//const server = http.createServer(app);
-	//const io = new Server(server);
-	io.on('connection', (socket) => {
-		console.log('a user connected');
-		socket.on('chat message', (msg) => {
-		  console.log('message: ' + msg);
-		  io.emit('chat message', msg);
-		});
-	  });
-}*/
+
 
 async function getMouths() {
 	return mouthServiceAccessPoint.getMouths();
@@ -363,23 +250,6 @@ botDiscord.on('messageCreate', message => {
 	}
 })
 
-async function loading_brains(id) {
-	console.log("Je suis dans loading_brains");
-	let botToLoad = await getBotById(id);
-	console.log(botToLoad);
-	console.log("Liste des brains : ");
-	console.log(botToLoad.botBrain);
-	for (let i = 0; i < botToLoad.botBrain.length; i++) {
-		switch ((botToLoad.botBrain)[i]) {
-			case 'Standard':
-				console.log("Standard to load");
-				botToLoad.botRivescript.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
-				break;
-			case 'Client':
-				console.log("Client to load");
-				botToLoad.botRivescript.loadFile("./../brainServer/pathtobrain/client.rive").then(loading_done).catch(loading_error);
-		}
-	}
-}
+
 
 app.use(authRoutes);
