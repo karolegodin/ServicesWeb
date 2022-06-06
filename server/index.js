@@ -237,6 +237,30 @@ app.get('/botV2/3013', (req, res)=>{
 	}
 });
 
+app.get('/mouthV2', async (req, res) => {
+	try {
+		//let json_var = {'test':'oui'};
+		res.render('mouthList')
+
+	}
+	catch (err) {
+		console.log(`Error ${err} thrown`);
+		res.status(404).send('NOT FOUND');
+	}
+});
+
+app.get('/brainV2',async(req,res)=>{
+	try{
+		//let json_var = {'test':'oui'};
+			res.render('brainList')
+	
+		}
+		catch(err){
+			console.log(`Error ${err} thrown`);
+			res.status(404).send('NOT FOUND');
+		}
+})
+
 app.get('/login', (req, res)=>{
 	try{
 			res.render('login')

@@ -100,7 +100,7 @@ app.get('/brain',async(req,res)=>{
 	}
 })
 
-app.get('/brainV2',async(req,res)=>{
+/*app.get('/brainV2',async(req,res)=>{
 	try{
 		//let json_var = {'test':'oui'};
 			res.render('brainList')
@@ -110,7 +110,7 @@ app.get('/brainV2',async(req,res)=>{
 			console.log(`Error ${err} thrown`);
 			res.status(404).send('NOT FOUND');
 		}
-})
+})*/
 
 async function getBrains(){
 	return brainServiceAccessPoint.getBrains();
