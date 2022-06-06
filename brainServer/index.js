@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const fetch = require('node-fetch');
 const authRoutes = require('./../server/routes/authRoutes.js');
+const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { requireAuth, checkUser } = require('./../server/middleware/authMiddleware.js');
 
@@ -37,6 +38,7 @@ app.use(cors())
 ////
 
 const port = 3003
+const port2 = 3005
 
 app.use(bodyParser.json()) 
 app.use(bodyParser.urlencoded({ extended: true })) 
@@ -45,8 +47,13 @@ app.use(express.json());
 app.use(cookieParser());
 
 // view engine
-app.set('views','./../server/views');
+app.set('views','./../server');
 app.set('view engine', 'ejs');
+
+const dbURI = 'mongodb+srv://user3:NYlrbhnAJDBkLiLu@cluster0.leyyy.mongodb.net/auth';
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true })
+  .then((result) => app.listen(port2), console.log(`Connected to database on port ${port2}`))
+  .catch((err) => console.log(err));
 
 let firstBrain ={ 
 	'id':0,
@@ -77,14 +84,14 @@ BrainService.create(brainServiceAccessPoint).then(ms=>{
 
 app.get('*', checkUser);
 
-app.get('/bot',requireAuth,async(req,res)=>{
+app.get('/bot',async(req,res)=>{
 	botsArray = await getAllBots();
 	//console.log("heheheee");
 	console.log(botsArray);
 	res.status(200).json(botsArray);
 })
 
-app.get('/brain',requireAuth,async(req,res)=>{
+app.get('/brain',async(req,res)=>{
 	//let brainArray=await getBrains();
 	//res.status(200).json(brainArray);
 	try{
@@ -100,7 +107,7 @@ app.get('/brain',requireAuth,async(req,res)=>{
 	}
 })
 
-app.get('/brainV2',requireAuth,async(req,res)=>{
+/*app.get('/brainV2',requireAuth,async(req,res)=>{
 	try{
 		//let json_var = {'test':'oui'};
 			res.render('brainList')
@@ -110,7 +117,7 @@ app.get('/brainV2',requireAuth,async(req,res)=>{
 			console.log(`Error ${err} thrown`);
 			res.status(404).send('NOT FOUND');
 		}
-})
+})*/
 
 async function getBrains(){
 	return brainServiceAccessPoint.getBrains();

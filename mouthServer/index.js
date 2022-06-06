@@ -5,9 +5,11 @@ const fetch = require('node-fetch');
 const http = require('http');
 const { Server } = require('socket.io');
 const authRoutes = require('./../server/routes/authRoutes.js');
+const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { requireAuth, checkUser } = require('./../server/middleware/authMiddleware.js');
 const { Client, Intents } = require("discord.js");
+const { fork } = require("child_process");
 
 const app = express();
 const RiveScript = require('rivescript');
@@ -30,6 +32,9 @@ let botServiceInstance;
 let botServiceAccessPoint = new BotService({ url: "http://localhost", port: 3001 });
 let botsArray;
 
+let bot = new RiveScript();
+bot.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
+
 /////////////////////////////////
 //Connection au bot Discord//////
 /////////////////////////////////
@@ -45,6 +50,7 @@ app.use(cors())
 ////
 
 const port = 3002
+const port2 = 3004
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -53,8 +59,13 @@ app.use(express.json());
 app.use(cookieParser());
 
 // view engine
-app.set('views', './../server/views');
+app.set('views', './../server');
 app.set('view engine', 'ejs');
+
+const dbURI = 'mongodb+srv://user2:qu6V4nLf5tmSQD4@cluster0.leyyy.mongodb.net/auth';
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true })
+  .then((result) => app.listen(port2), console.log(`Connected to database on port ${port2}`))
+  .catch((err) => console.log(err));
 
 let firstMouth = {
 	'id': 1,
@@ -63,10 +74,10 @@ let firstMouth = {
 
 let secondMouth = {
 	'id': 2,
-	'name': 'Socket - Steeve'
+	'name': 'Socket'
 };
 
-let thirdMouth = {
+/*let thirdMouth = {
 	'id': 3,
 	'name': 'Socket - Aiden'
 };
@@ -74,21 +85,15 @@ let thirdMouth = {
 let fourthMouth = {
 	'id': 4,
 	'name': 'Socket - Tom'
-};
+};*/
 
- 
+const child1 = fork("socketSteeve.js");
+const child2 = fork("socketAiden.js");
+const child3 = fork("socketTom.js");
 
-var botSteeve = new RiveScript();
-botSteeve.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done_steeve).catch(loading_error);
 //bot.loadFile("./../brainServer/pathtobrain/client.rive").then(loading_done).catch(loading_error);
 //bot.loadFile("./../brainServer/pathtobrain/eliza.rive").then(loading_done).catch(loading_error);
-var botAiden = new RiveScript();
-botAiden.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done_aiden).catch(loading_error);
-var botTom = new RiveScript();
-botTom.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done_tom).catch(loading_error);
-
-//let server;
-//let io;
+/*
 const server = http.createServer(app);
 const io = new Server(server);
 io.on('connection', (socket) => {
@@ -96,14 +101,29 @@ io.on('connection', (socket) => {
 	let username = "local-user";
 	socket.on('chat message', (msg) => {
 		console.log('message: ' + msg);
-		botSteeve.reply(username, msg).then(function (reply) {
+		bot.reply(username, msg).then(function (reply) {
 			console.log("The bot says: " + reply);
 			io.emit('chat message', msg);
 			io.emit('chat message', reply);
 		});
 
 	});
-});
+});*/
+
+/*function socketConnection(bot){
+	io.on('connection', (socket) => {
+		console.log('a user connected');
+		let username = "local-user";
+		socket.on('chat message', (msg) => {
+			console.log('message: ' + msg);
+			bot.reply(username, msg).then(function (reply) {
+				console.log("The bot says: " + reply);
+				io.emit('chat message', msg);
+				io.emit('chat message', reply);
+			});
+		});
+	});
+}*/
 
 /*io.on("connect_error", (err) => {
 	console.log(`connect_error due to ${err.message}`);
@@ -141,44 +161,41 @@ function createBot(id) {
 MouthService.create(mouthServiceAccessPoint).then(ms => {
 	mouthServiceInstance = ms;
 	mouthServiceInstance
-		.addMouth(secondMouth)
+		.addMouth(firstMouth)
 		.catch((err) => { console.log(err); });
 	//socketConnection;
 	mouthServiceInstance
-		.addMouth(firstMouth)
+		.addMouth(secondMouth)
 		.catch((err) => { console.log(err); });
-	mouthServiceInstance
+	/*mouthServiceInstance
 		.addMouth(thirdMouth)
 		.catch((err) => { console.log(err); });
 	mouthServiceInstance
 		.addMouth(fourthMouth)
-		.catch((err) => { console.log(err); });
+		.catch((err) => { console.log(err); });*/
 	//loading_brains(3011);
-	server.listen(port, () => {
+	app.listen(port, () => {
 		console.log(`Mouth server app listening at http://localhost:${port}`)
 	});
 });
 
 app.get('*', checkUser);
 
-app.get('/socketio', requireAuth, (req, res) => {
+/*app.get('/socketio', (req, res) => {
 	try {
 		//let json_var = {'test':'oui'};
-		res.render('socket')
-		/*mouthServiceInstance
-			.addMouth(firstMouth)
-			.catch((err) => { console.log(err); });*/
-		//socketConnection(3012);
-		//console.log(mouthServiceInstance);
-
+		socketConnection(botSteeve);
+		console.log("Steeve connected on socket");
+		res.render('socketSteeve');
+		
 	}
 	catch (err) {
 		console.log(`Error ${err} thrown`);
 		res.status(404).send('NOT FOUND');
 	}
-});
+});*/
 
-app.get('/mouth', requireAuth, async (req, res) => {
+app.get('/mouth', async (req, res) => {
 	//let mouthArray=await getMouths();
 	//res.status(200).json(mouthArray);
 	try {
@@ -194,7 +211,7 @@ app.get('/mouth', requireAuth, async (req, res) => {
 	}
 });
 
-app.get('/mouthV2', requireAuth, async (req, res) => {
+/*app.get('/mouthV2', requireAuth, async (req, res) => {
 	try {
 		//let json_var = {'test':'oui'};
 		res.render('mouthList')
@@ -204,9 +221,9 @@ app.get('/mouthV2', requireAuth, async (req, res) => {
 		console.log(`Error ${err} thrown`);
 		res.status(404).send('NOT FOUND');
 	}
-});
+});*/
 
-app.get('/bot', requireAuth, async (req, res) => {
+app.get('/bot', async (req, res) => {
 	botsArray = await getAllBots();
 	//let arrayTest = botServiceAccessPoint.getBotById(3011);
 	//console.log(botsArray);
@@ -214,7 +231,7 @@ app.get('/bot', requireAuth, async (req, res) => {
 	res.status(200).json(botsArray);
 });
 
-app.get('/bot/:idddd', requireAuth, async (req, res) => {
+app.get('/bot/:idddd', async (req, res) => {
 	let id = req.params.idddd;
 	if (!isInt(id)) {
 		//not the expected parameter
@@ -222,11 +239,11 @@ app.get('/bot/:idddd', requireAuth, async (req, res) => {
 	} else {
 		try {
 			let myBot = await getBotById(id);
-			console.log("My bot dans l'url ");
-			console.log(myBot[0]);
+			//console.log("My bot dans l'url ");
+			//console.log(myBot[0]);
 			res.status(200).json([{'id': myBot[0].botId, 'name': myBot[0].botName, 'mouth': myBot[0].botMouth, 'brain': myBot[0].botBrain, 'botRivescript': myBot[0].botRivescript }]);
 			//res.status(200).json({'brain':myBot});
-			createBot(3011);
+			//createBot(3011);
 		}
 		catch (err) {
 			console.log(`Error ${err} thrown`);
@@ -265,30 +282,12 @@ function isInt(value) {
 	return !isNaN(value) && (x | 0) === x;
 }
 
-function loading_done_steeve() {
-	console.log("Steeve has finished loading!");
-	botSteeve.sortReplies();
+function loading_done() {
+	console.log("Bot has finished loading!");
+	bot.sortReplies();
 	let username = "local-user";
-	botSteeve.reply(username, "Hello, bot!").then(function (reply) {
-		console.log("Steeve says: " + reply);
-	});
-}
-
-function loading_done_aiden() {
-	console.log("Aiden has finished loading!");
-	botAiden.sortReplies();
-	let username = "local-user";
-	botAiden.reply(username, "Hello, bot!").then(function (reply) {
-		console.log("Aiden says: " + reply);
-	});
-}
-
-function loading_done_tom() {
-	console.log("Tom has finished loading!");
-	botTom.sortReplies();
-	let username = "local-user";
-	botTom.reply(username, "Hello, bot!").then(function (reply) {
-		console.log("Tom says: " + reply);
+	bot.reply(username, "Hello, bot!").then(function (reply) {
+		console.log("The bot says: " + reply);
 	});
 }
 
@@ -313,24 +312,5 @@ botDiscord.on('messageCreate', message => {
 		);
 	}
 })
-
-async function loading_brains(id) {
-	console.log("Je suis dans loading_brains");
-	let botToLoad = await getBotById(id);
-	console.log(botToLoad);
-	console.log("Liste des brains : ");
-	console.log(botToLoad.botBrain);
-	for (let i = 0; i < botToLoad.botBrain.length; i++) {
-		switch ((botToLoad.botBrain)[i]) {
-			case 'Standard':
-				console.log("Standard to load");
-				botToLoad.botRivescript.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
-				break;
-			case 'Client':
-				console.log("Client to load");
-				botToLoad.botRivescript.loadFile("./../brainServer/pathtobrain/client.rive").then(loading_done).catch(loading_error);
-		}
-	}
-}
 
 app.use(authRoutes);

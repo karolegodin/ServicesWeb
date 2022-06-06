@@ -161,11 +161,18 @@
 
 		function talkingbot() {
 			let mouthSelected = mouthListElt.value;
+			let botSelected = botListElt.value;
 
-			if (mouthSelected == 'Socket - Steeve') {
-				window.open('http://localhost:3002/socketio/', '_blank');
-				//window.open('http://localhost:3001/bot/', '_blank');
-				//normalement faudrait faire un GET... ça arrive
+			if (mouthSelected == 'Socket') {
+				if(botSelected == 'Steeve'){
+					window.open('http://localhost:3011/socketio/', '_blank');
+				}
+				if(botSelected == 'Aiden'){
+					window.open('http://localhost:3012/socketio/', '_blank');
+				}
+				if(botSelected == 'Tom'){
+					window.open('http://localhost:3013/socketio/', '_blank');
+				}
 			}
 
 			if (mouthSelected == 'Discord') {
@@ -177,7 +184,7 @@
 	<body>
 
 		<header>
-			<h1>Parler à un ChatBot</h1>
+			<h1>Talk to a ChatBot</h1>
 		</header>
 
 		<ul id="botListUL">
@@ -202,7 +209,7 @@
 		</p>
 		<button id="talkBotButton">TALK TO A CHATBOT</button>
 
-		<button id="retour" onclick=window.location.href="http://localhost:3001/" ;>RETOUR</button>
+		<button id="retour" onclick=window.location.href="http://localhost:3001/" ;>BACKWARD</button>
 
 	</body>
 

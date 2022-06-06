@@ -135,39 +135,12 @@ app.get('/createBot', requireAuth, (req, res)=>{
 	res.status(200).json(brainsArray);
 })*/
 
-app.get('/mouth', requireAuth, async(req,res)=>{
+app.get('/mouth', async(req,res)=>{
 	let mouthsArray = await getAllMouths();
 	res.status(200).json(mouthsArray);
 })
 
-//const server = http.createServer(app);
-//const io = new Server(server);
-//PARLER AVEC SOCKET
-app.get('/socketio', requireAuth, (req, res)=>{
-	try{
-		res.render('socket')
-		/*io.on('connection', (socket) => {
-			console.log('a user connected');
-			let username = "local-user";
-			socket.on('chat message', (msg) => {
-			  console.log('message: ' + msg);
-			  firstBot.botRivescript.reply(username,msg).then(function(reply) {
-				console.log("The bot says: " + reply);
-				io.emit('chat message', msg);
-				io.emit('chat message', reply);
-			  });
-		  
-			});
-		  });*/
-
-	}
-	catch(err){
-		console.log(`Error ${err} thrown`);
-		res.status(404).send('NOT FOUND');
-	}
-});
-
-app.get('/bot', requireAuth, async(req,res)=>{
+app.get('/bot', async(req,res)=>{
 	//let botArray=await getBots();
 	//res.status(200).json(botArray);
 	try{
@@ -195,7 +168,7 @@ app.get('/botV2', requireAuth, async(req,res)=>{
 		}
 })
 
-app.get('/bot/:idddd', requireAuth, (req, res)=>{
+app.get('/bot/:idddd', (req, res)=>{
 	let id = req.params.idddd;
 	if(!isInt(id)) {
 		//not the expected parameter
@@ -203,8 +176,8 @@ app.get('/bot/:idddd', requireAuth, (req, res)=>{
 	}else{
 		try{
 			let myBot = botServiceInstance.getBot(id);
-			console.log("mybot dans l'url");
-			console.log(myBot);
+			//console.log("mybot dans l'url");
+			//console.log(myBot);
 			res.status(200).json([{'id':myBot.id,'name':myBot.name,'mouth':myBot.mouth,'brain':myBot.brain}]);
 			//res.status(200).json({'brain':myBot});
 		}
@@ -263,6 +236,30 @@ app.get('/botV2/3013', requireAuth, (req, res)=>{
 	}
 });
 
+app.get('/mouthV2', requireAuth, async (req, res) => {
+	try {
+		//let json_var = {'test':'oui'};
+		res.render('mouthList')
+
+	}
+	catch (err) {
+		console.log(`Error ${err} thrown`);
+		res.status(404).send('NOT FOUND');
+	}
+});
+
+app.get('/brainV2', requireAuth, async(req,res)=>{
+	try{
+		//let json_var = {'test':'oui'};
+			res.render('brainList')
+
+		}
+		catch(err){
+			console.log(`Error ${err} thrown`);
+			res.status(404).send('NOT FOUND');
+		}
+})
+
 app.get('/login', (req, res)=>{
 	try{
 			res.render('login')
@@ -292,7 +289,7 @@ app.get('/login', (req, res)=>{
 
 //app.delete();
 
-app.patch('/bot/:id', requireAuth, (req,res)=>{
+app.patch('/bot/:id', (req,res)=>{
 	let id = req.params.id;
 	if(!isInt(id)) { //Should I propagate a bad parameter to the model?
 		//not the expected parameter
@@ -303,6 +300,28 @@ app.patch('/bot/:id', requireAuth, (req,res)=>{
 		console.log(newValues.brain);
 		botServiceInstance
 			.updateBot(id, newValues)
+			.then((returnString)=>{
+				console.log(returnString);
+				res.status(201).send('All is OK');
+			})
+			.catch((err)=>{
+				console.log(`Error ${err} thrown... stack is : ${err.stack}`);
+				res.status(400).send('BAD REQUEST');
+			});	
+	}	
+});
+
+app.patch('/bot/remove/:id',(req,res)=>{
+	let id = req.params.id;
+	if(!isInt(id)) { //Should I propagate a bad parameter to the model?
+		//not the expected parameter
+		res.status(400).send('BAD REQUEST');
+	}else{
+		let newValues = req.body; //the client is responsible for formating its request with proper syntax.
+		console.log("Valeurs à supprimer");
+		console.log(newValues.brain);
+		botServiceInstance
+			.removeProperty(id, newValues)
 			.then((returnString)=>{
 				console.log(returnString);
 				res.status(201).send('All is OK');

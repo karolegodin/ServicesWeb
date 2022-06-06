@@ -16,12 +16,6 @@ const handleErrors = (err) => {
     errors.password = 'That password is incorrect';
   }
 
-  // duplicate email error
-  if (err.code === 11000) {
-    errors.email = 'that email is already registered';
-    return errors;
-  }
-
   // validation errors
   if (err.message.includes('user validation failed')) {
     // console.log(err);
@@ -38,7 +32,7 @@ const handleErrors = (err) => {
 // create json web token
 const maxAge = 3 * 24 * 60 * 60;
 const createToken = (id) => {
-  return jwt.sign({ id }, 'net ninja secret', {
+  return jwt.sign({ id }, 'secret', {
     expiresIn: maxAge
   });
 };

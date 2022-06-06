@@ -67,6 +67,30 @@ class BotService{
 		throw new Error(`cannot find bot of id ${id}`);
 	}
 
+	async removeProperty(id, anObject){
+		let index = this.array.findIndex(e=> e.id == id);	
+		if(index >-1 ){
+			//At this point, you may have a safeguard to verify if the fields of the given Object are from a Bot
+			//console.log((this.array)[index]);
+			for(let property in anObject){
+				if(!Bot.isValidProperty(property,anObject[property])){
+					throw new Error(`given property is not a valid Bot property : ${anObject}`);	
+				}
+			}
+			//At this point, we are sure that all properties are valid and that we can make the update.
+			let i = 0;
+			for(let property in anObject){
+				console.log(anObject);
+				//(this.array)[index][property] = anObject[property];
+				(this.array)[index][property].splice(i,1);
+				console.log((this.array)[index]);
+				i=i+1;
+			}
+			return "Done REMOVING BRAIN";
+		}
+		throw new Error(`cannot find bot of id ${id}`);
+	}
+
 	async removeBot(id){
 		let index = this.array.findIndex(e=> e.id == id);
 		if(index >-1 ){

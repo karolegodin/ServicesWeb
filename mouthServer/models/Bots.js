@@ -29,7 +29,7 @@ class BotService{
     } catch (error) {
       console.log(error);
     }
-    console.log(returnValue);
+    //console.log(returnValue);
     //console.log(typeof(returnValue));
     return returnValue;
   }
