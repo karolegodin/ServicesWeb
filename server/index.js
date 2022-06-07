@@ -178,7 +178,7 @@ app.get('/bot/:idddd', (req, res)=>{
 			let myBot = botServiceInstance.getBot(id);
 			//console.log("mybot dans l'url");
 			//console.log(myBot);
-			res.status(200).json([{'id':myBot.id,'name':myBot.name,'mouth':myBot.mouth,'brain':myBot.brain}]);
+			res.status(200).json([{'id':myBot.id,'name':myBot.name,'mouth':myBot.mouth,'brain':myBot.brain, 'status':myBot.status}]);
 			//res.status(200).json({'brain':myBot});
 		}
 		catch(err){
@@ -322,6 +322,28 @@ app.patch('/bot/remove/:id',(req,res)=>{
 		console.log(newValues.brain);
 		botServiceInstance
 			.removeProperty(id, newValues)
+			.then((returnString)=>{
+				console.log(returnString);
+				res.status(201).send('All is OK');
+			})
+			.catch((err)=>{
+				console.log(`Error ${err} thrown... stack is : ${err.stack}`);
+				res.status(400).send('BAD REQUEST');
+			});	
+	}	
+});
+
+app.patch('/bot/status/:id',(req,res)=>{
+	let id = req.params.id;
+	if(!isInt(id)) { //Should I propagate a bad parameter to the model?
+		//not the expected parameter
+		res.status(400).send('BAD REQUEST');
+	}else{
+		let newValues = req.body; //the client is responsible for formating its request with proper syntax.
+		console.log("Statut à modifier");
+		console.log(newValues.brain);
+		botServiceInstance
+			.updateBot2(id, newValues)
 			.then((returnString)=>{
 				console.log(returnString);
 				res.status(201).send('All is OK');

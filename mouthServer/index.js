@@ -241,7 +241,7 @@ app.get('/bot/:idddd', async (req, res) => {
 			let myBot = await getBotById(id);
 			//console.log("My bot dans l'url ");
 			//console.log(myBot[0]);
-			res.status(200).json([{'id': myBot[0].botId, 'name': myBot[0].botName, 'mouth': myBot[0].botMouth, 'brain': myBot[0].botBrain, 'botRivescript': myBot[0].botRivescript }]);
+			res.status(200).json([{'id': myBot[0].botId, 'name': myBot[0].botName, 'mouth': myBot[0].botMouth, 'brain': myBot[0].botBrain, 'botRivescript': myBot[0].botRivescript, 'status': myBot[0].botStatus }]);
 			//res.status(200).json({'brain':myBot});
 			//createBot(3011);
 		}

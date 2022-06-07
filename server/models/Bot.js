@@ -9,6 +9,7 @@ class Bot{
     static botRivescript = this.botRivescript;
     static mouth = this.mouth;
     static brain = this.brain;
+    static status = this.status;
 
   constructor(data){
     //this.url = data.url; // probably localhost
@@ -38,6 +39,10 @@ class Bot{
 
       if(undefined == data.mouth){
         this.mouth = "";
+      }
+
+      if(undefined == data.status){
+        this.status = "offline";
       }
 
       /*if(undefined != data.assignement) {

@@ -21,7 +21,7 @@ class BotService{
       //console.warn(xhr.responseText);
       for (let i=0; i<setOfBots.length; i++){
           //console.log(setOfBots);
-          returnValue.push({'botId': (setOfBots[i]).id, 'botName': (setOfBots[i]).name, 'botMouth':(setOfBots[i]).mouth, 'botBrain': (setOfBots[i]).brain, 'botRivescript':null});
+          returnValue.push({'botId': (setOfBots[i]).id, 'botName': (setOfBots[i]).name, 'botMouth':(setOfBots[i]).mouth, 'botBrain': (setOfBots[i]).brain, 'botRivescript':null, 'botStatus': (setOfBots[i]).status});
           //console.log(returnValue);
           //returnValue.push({'botRivescript': (setOfBots[i]).botRivescript});
       }
@@ -56,7 +56,7 @@ class BotService{
         //console.log("Le bot est : ");
         //console.log(bot);
         //console.log(bot.id);
-        returnValue.push(new BotIdentifier({'botId':bot.id, 'botName':bot.name, 'botMouth':bot.mouth, 'botBrain':bot.brain, 'botRivescript':null}));
+        returnValue.push(new BotIdentifier({'botId':bot.id, 'botName':bot.name, 'botMouth':bot.mouth, 'botBrain':bot.brain, 'botRivescript':null, 'botStatus':bot.status}));
         //console.log(returnValue);
       }
     } catch (error) {
@@ -81,6 +81,7 @@ class BotIdentifier{
       this.botMouth = data.botMouth;
       this.botBrain = data.botBrain;
       this.botRivescript = data.botRivescript;
+      this.botStatus = data.botStatus;
   }
   static isBotIdentifier(anObject){
     // check if mandatory fields are there

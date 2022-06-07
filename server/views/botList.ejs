@@ -61,6 +61,7 @@
                         let item = document.createElement("option");
                         item.setAttribute("value", bot.name);
                         item.innerHTML += ` ${bot.name}`;
+                        item.innerHTML += ` ${bot.status}`;
                         botListElt.appendChild(item);
                     }
                 })

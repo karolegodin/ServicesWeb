@@ -70,9 +70,10 @@
 						let item = document.createElement("option");
 						item.setAttribute("value", info.name);
 						item.setAttribute("value", info.brain);
-						item.innerHTML += `Id et port : 3012 `;
-						item.innerHTML += `Nom : ${info.name} \n`;
-						item.innerHTML += `Cerveaux : ${info.brain} \n`;
+						item.innerHTML += `Id and port : 3012 `;
+						item.innerHTML += `Name : ${info.name} \n`;
+						item.innerHTML += `Brains : ${info.brain} \n`;
+						item.innerHTML += `Status : ${info.status} \n`;
 						infoListElt.appendChild(item);
 						console.log(infoListElt);
 					}

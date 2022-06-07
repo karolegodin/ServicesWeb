@@ -67,6 +67,27 @@ class BotService{
 		throw new Error(`cannot find bot of id ${id}`);
 	}
 
+	async updateBot2(id, anObject){ //patch le statut du bot
+		let index = this.array.findIndex(e=> e.id == id);	
+		if(index >-1 ){
+			//At this point, you may have a safeguard to verify if the fields of the given Object are from a Bot
+			//console.log((this.array)[index]);
+			for(let property in anObject){
+				if(!Bot.isValidProperty(property,anObject[property])){
+					throw new Error(`given property is not a valid Bot property : ${anObject}`);	
+				}
+			}
+			//At this point, we are sure that all properties are valid and that we can make the update.
+			for(let property in anObject){
+				//console.log(anObject);
+				//(this.array)[index][property] = anObject[property];
+				(this.array)[index][property]=(anObject[property]);
+			}
+			return "Done UPDATING";
+		}
+		throw new Error(`cannot find bot of id ${id}`);
+	}
+
 	async removeProperty(id, anObject){
 		let index = this.array.findIndex(e=> e.id == id);	
 		if(index >-1 ){
@@ -114,7 +135,7 @@ class BotService{
 		let strArray = new Array();
 		for (let i=0; i<this.array.length; i++){
 			//console.log((this.array[i]).botRivescript);
-			strArray.push({'name':(this.array[i]).name, 'id':(this.array[i]).id, 'mouth':(this.array[i]).mouth, 'brain':(this.array[i]).brain});
+			strArray.push({'name':(this.array[i]).name, 'id':(this.array[i]).id, 'mouth':(this.array[i]).mouth, 'brain':(this.array[i]).brain, 'status':(this.array[i]).status});
 			//console.log(strArray[i]);
 		} 
 		return strArray;

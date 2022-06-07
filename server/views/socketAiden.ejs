@@ -32,6 +32,62 @@
         console.log(`connect_error due to ${err.message}`);
       });*/
     });
+
+    if (!window.opener.closed) {
+      patchStatus("online");
+    }
+
+    window.addEventListener('beforeunload', function (e) {
+      e.preventDefault();
+      patchStatus("offline");
+    });
+
+    function patchStatus(status) {
+			let myHeaders = new Headers();
+			myHeaders.append('Content-Type', 'application/json');
+			myHeaders.append('Accept', 'application/json');
+			myHeaders.append('Set-Cookie', 'passPhrase=Hop');
+			
+      let statusRequest = { "status": status };
+      
+      
+			//let statusRequest = { "status": "offline" };
+			let myInit = {
+				method: 'PATCH',
+				headers: myHeaders,
+				credentials: 'same-origin',
+				mode: 'cors',
+				cache: 'no-store',
+				body: JSON.stringify(statusRequest)
+			};
+			console.log(typeof (myInit.body));
+			let myURL = `http://localhost:3001/bot/status/3012`;
+			fetch(myURL, myInit)
+				.then((httpResponse) => {
+					//console.log("réponse"+ httpResponse.json());
+					return httpResponse.text()
+				})
+				.then((responseBody) => {
+					reloadBotInfos();
+					reloadBrainList();
+					reloadBrainListToRm();
+					console.log(`updating status`);
+					//location.reload;
+					/*
+						//let item = document.createElement("option");
+						//item.setAttribute('value',person.personId);
+						//item.innerHTML=person.personId;
+						//personListElt.appendChild(item);
+						
+						
+						brainListElt.appendChild(createItem(brain));
+						
+					*/
+				})
+				.catch((err) => {
+					console.log(`ERROR : ${err}${err.stack}`);
+				})
+		}
   </script>
 </body>
 

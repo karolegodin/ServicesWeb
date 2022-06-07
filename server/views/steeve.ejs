@@ -70,9 +70,10 @@
 						let item = document.createElement("option");
 						item.setAttribute("value", info.name);
 						item.setAttribute("value", info.brain);
-						item.innerHTML += `Id et port : 3011 `;
-						item.innerHTML += `Nom : ${info.name} \n`;
-						item.innerHTML += `Cerveaux : ${info.brain} \n`;
+						item.innerHTML += `Id and port : 3011 `;
+						item.innerHTML += `Name : ${info.name} \n`;
+						item.innerHTML += `Brains : ${info.brain} \n`;
+						item.innerHTML += `Status : ${info.status} \n`;
 						infoListElt.appendChild(item);
 						console.log(infoListElt);
 					}
@@ -481,6 +482,50 @@
 					reloadBrainListToRm();
 					console.log(`removing bot brain`);
 					location.reload;
+					/*
+						//let item = document.createElement("option");
+						//item.setAttribute('value',person.personId);
+						//item.innerHTML=person.personId;
+						//personListElt.appendChild(item);
+						
+						
+						brainListElt.appendChild(createItem(brain));
+						
+					*/
+				})
+				.catch((err) => {
+					console.log(`ERROR : ${err}${err.stack}`);
+				})
+		}
+
+		function patchStatus(botId) {
+			let myHeaders = new Headers();
+			myHeaders.append('Content-Type', 'application/json');
+			myHeaders.append('Accept', 'application/json');
+			myHeaders.append('Set-Cookie', 'passPhrase=Hop');
+			let statusRequest = { "status": "online" };
+			//let statusRequest = { "status": "offline" };
+			let myInit = {
+				method: 'PATCH',
+				headers: myHeaders,
+				credentials: 'same-origin',
+				mode: 'cors',
+				cache: 'no-store',
+				body: JSON.stringify(statusRequest)
+			};
+			console.log(typeof (myInit.body));
+			let myURL = `http://localhost:3001/bot/status/3011`;
+			fetch(myURL, myInit)
+				.then((httpResponse) => {
+					//console.log("réponse"+ httpResponse.json());
+					return httpResponse.text()
+				})
+				.then((responseBody) => {
+					reloadBotInfos();
+					reloadBrainList();
+					reloadBrainListToRm();
+					console.log(`updating status`);
+					//location.reload;
 					/*
 						//let item = document.createElement("option");
 						//item.setAttribute('value',person.personId);
