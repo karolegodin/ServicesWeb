@@ -74,17 +74,17 @@ class BotService{
 	async removeProperty(id, anObject){ //utilisé pour supprimer un brain du bot
 		let index = this.array.findIndex(e=> e.id == id);	
 		if(index >-1 ){
-			for(let property in anObject){
+			let property;
+			for(property in anObject){
 				if(!Bot.isValidProperty(property,anObject[property])){
 					throw new Error(`given property is not a valid Bot property : ${anObject}`);	
 				}
 			}
-			let i = 0;
-			for(let property in anObject){
-				console.log(anObject);
-				(this.array)[index][property].splice(i,1);
-				console.log((this.array)[index]);
-				i=i+1;
+		let index2 = this.array.findIndex(e=> e[property] == index[property]);
+			for(property in anObject){
+				//console.log(anObject);
+				(this.array)[index][property].splice(index2,1);
+				//console.log((this.array)[index]);
 			}
 			return "Done REMOVING BRAIN";
 		}
