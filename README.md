@@ -1,6 +1,6 @@
 # Projet de Service Web 2022
 
-> Ce projet a pour but la mise en place d'un service web à travers l'utilisation de bots sur différentes "bouches" (Discord, socket) et ayant des "cerveaux" (.rive) modifiables.
+> Ce projet a pour but la mise en place d'une interface d'administration de chatbots à travers l'utilisation de Rivescript sur différentes "bouches" (Discord, socket) et différents "cerveaux" (.rive) modifiables.
 
 ## Utilisation de l'application
 
@@ -33,6 +33,10 @@ Entrez les commandes suivantes dans chaque terminal :
 
 Ouvrez un navigateur Mozilla Firefox et entrez l'URL suivant :
 `http://localhost:3001/`
+
+## Authentification
+
+Toutes les fonctionnalités de l'interface d'administration des chatbots nécessitent une authentification. 
 
 ## Utilisation de la partie Socket
 
