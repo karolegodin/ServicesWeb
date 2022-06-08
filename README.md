@@ -6,7 +6,7 @@
 
 ### 1ère étape : Mise en place de l'environnement de travail
 
-Ouvrir 3 terminaux (1 pour chaque serveur : brainServer, mouthServer et server) avec dans chacun le chemin vers un des serveurs.
+Ouvrez 3 terminaux (1 pour chaque serveur : brainServer, mouthServer et server) avec dans chacun le chemin vers un des serveurs.
 
 ### 2e étape : Initialisation des serveurs
 
@@ -17,7 +17,7 @@ Appuyez sur la touche `entrée` pour chaque item puis validez (`yes`).
 
 ### 3e étape : Intallation des modules
 
-Installer tous les modules cités dans les dépendances (dependencies) du fichier "package.json" pour chaque serveur dans le terminal correspondant :
+Installez tous les modules cités dans les dépendances (dependencies) du fichier "package.json" pour chaque serveur dans le terminal correspondant :
 
 `$npm install nom_du_module`
 
@@ -43,6 +43,24 @@ Vous pouvez alors choisir le bot avec lequel vous souhaitez communiquer ainsi qu
 Une interface de communication avec le bot sélectionné s'ouvre alors dans votre navigateur. Vous pouvez entrer vos requêtes dans la partie basse de la page et presser la touche `entrée` ou bien cliquer sur le bouton `Send`.
 
 Vos requêtes s'afficheront en gris sur la partie haute de la page. Les réponses du bot s'afficheront en blanc en dessous de vos requêtes.
+
+Lorsqu'un onglet Socket est ouvert, le statut du bot associé s'actualise à `online`. Lorsqu'on ferme l'onglet, le statut du bot s'actualise à `offline`.
+
+## Afficher la liste des bots et afficher les informations d'un bot
+
+A partir de la page d'accueil, cliquez sur le bouton `Chatbots`. La liste de tous les bots s'affiche, ainsi que leur statut (online ou offline). En cliquant sur `About [nom du bot voulu]`, les différentes informations du bot s'affichent (identifiant, port, nom, bouches et cerveaux associés).
+
+## Ajout/suppression de cerveaux à un bot
+
+A partir de la page listant les différents bots, cliquez sur `About [nom du bot voulu]`. Vous pouvez alors ajouter un cerveau disponible dans la base de données, et supprimer un cerveau qui a été attribué au bot. La page se recharge automatiquement pour afficher les modifications.
+
+## Afficher la liste des bouches disponibles
+
+A partir de la page d'accueil, cliquez sur le bouton `Mouth`. La liste des bouches s'affiche alors.
+
+## Afficher la liste des cerveaux disponibles
+
+A partir de la page d'accueil, cliquez sur le bouton `Brains`. La liste des cerveaux s'affiche alors.
 
 ## Utilisation du bot Discord
 
