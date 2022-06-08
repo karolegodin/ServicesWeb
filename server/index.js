@@ -20,22 +20,12 @@ const {MouthIdentifier,MouthService} = require ('./models/Mouths.js');
 let mouthServiceInstance;
 let mouthServiceAccessPoint = new MouthService({url:"http://localhost",port:3002});
 
-
-/*import {BrainService} from "../brainServer/models/BrainService_ArrayImpl.mjs";
-let brainServiceInstance;
-let brainServiceAccessPoint = new BrainService({url:"http://localhost",port:3001});*/
-
-/*import {MouthService} from "../mouthServer/models/MouthService_ArrayImpl.mjs";
-import { Bot } from './models/Bot.mjs';
-let mouthServiceInstance;
-let mouthServiceAccessPoint = new MouthService({url:"http://localhost",port:3002});*/
-
 //// Enable ALL CORS request
 app.use(cors())
 ////
 
-const port = 3001
-const port2 = 3000
+const port = 3001 //port du serveur de bots
+const port2 = 3000 //port de MongoDB
 
 app.use(bodyParser.json()) 
 app.use(bodyParser.urlencoded({ extended: true })) 
@@ -52,6 +42,8 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCr
   .then((result) => app.listen(port2))
   .catch((err) => console.log(err));
 
+//instanciation des trois bots
+
 let id = 0 ; 
 let firstBot ={ 
 	'id':3011,
@@ -66,6 +58,7 @@ let thirdBot ={
 	'name':'Tom'
 };
 
+//lancement du serveur de bots
 BotService.create(botServiceAccessPoint).then(bs=>{
 	botServiceInstance=bs;
 	botServiceInstance
@@ -77,7 +70,6 @@ BotService.create(botServiceAccessPoint).then(bs=>{
 	botServiceInstance
 		.addBot(thirdBot)
 		.catch((err)=>{console.log(err);});
-	//console.log(bs);
 	app.listen(port, () => {
 		console.log(firstBot.id, firstBot.name)
 		console.log(secondBot.id, secondBot.name)
@@ -88,10 +80,9 @@ BotService.create(botServiceAccessPoint).then(bs=>{
 
 app.get('*', checkUser);
 
-//Page d'accueil
+//Page d'accueil du site
 app.get('/', (req, res)=>{
 	try{
-    //let json_var = {'test':'oui'};
 		res.render('index')
 
 	}
@@ -101,10 +92,9 @@ app.get('/', (req, res)=>{
 	}
 });
 
-//Page pour parler à un bot
+//Page pour sélectionner le bot et la mouth
 app.get('/createBot', requireAuth, (req, res)=>{
 	try{
-    //let json_var = {'test':'oui'};
 		res.render('createBot')
 
 	}
@@ -114,35 +104,14 @@ app.get('/createBot', requireAuth, (req, res)=>{
 	}
 });
 
-
-//EXEMPLE DU TP3 :
-/*app.get('/v2/tasks/', (req, res)=>{
-	try{
-		let myArrayOfTasks;
-		if( undefined == (myArrayOfTasks = taskServiceInstance.getTasks() )){
-			throw new Error("No tasks to get");
-		}
-		res.status(200).json(myArrayOfTasks);
-	}
-	catch(err){
-		console.log(`Error ${err} thrown... stack is : ${err.stack}`);
-		res.status(404).send('NOT FOUND');
-	}
-})*/
-
-/*app.get('/brains',async(req,res)=>{
-	let brainsArray=await getAllBrains();
-	res.status(200).json(brainsArray);
-})*/
-
+//affichage de la liste de mouths en format JSON
 app.get('/mouth', async(req,res)=>{
 	let mouthsArray = await getAllMouths();
 	res.status(200).json(mouthsArray);
 })
 
+//affichage de la liste de bots au format JSON
 app.get('/bot', async(req,res)=>{
-	//let botArray=await getBots();
-	//res.status(200).json(botArray);
 	try{
 		let myArrayOfBots;
 		if( undefined == (myArrayOfBots = await botServiceInstance.getBots() )){
@@ -156,9 +125,9 @@ app.get('/bot', async(req,res)=>{
 	}
 })
 
+//affichage de la liste des bots 
 app.get('/botV2', requireAuth, async(req,res)=>{
 	try{
-		//let json_var = {'test':'oui'};
 			res.render('botList')
 	
 		}
@@ -168,6 +137,7 @@ app.get('/botV2', requireAuth, async(req,res)=>{
 		}
 })
 
+//affichage d'un bot au format JSON
 app.get('/bot/:idddd', (req, res)=>{
 	let id = req.params.idddd;
 	if(!isInt(id)) {
@@ -176,10 +146,7 @@ app.get('/bot/:idddd', (req, res)=>{
 	}else{
 		try{
 			let myBot = botServiceInstance.getBot(id);
-			//console.log("mybot dans l'url");
-			//console.log(myBot);
 			res.status(200).json([{'id':myBot.id,'name':myBot.name,'mouth':myBot.mouth,'brain':myBot.brain, 'status':myBot.status}]);
-			//res.status(200).json({'brain':myBot});
 		}
 		catch(err){
 			console.log(`Error ${err} thrown`);
@@ -188,8 +155,8 @@ app.get('/bot/:idddd', (req, res)=>{
 	}
 });
 
+//affichage des informations de Steeve
 app.get('/botV2/3011', requireAuth, (req, res)=>{
-	//let id = req.params.idddd;
 	if(!isInt(id)) {
 		//not the expected parameter
 		res.status(400).send('BAD REQUEST');
@@ -204,8 +171,8 @@ app.get('/botV2/3011', requireAuth, (req, res)=>{
 	}
 });
 
+//affichage des informations de Aiden
 app.get('/botV2/3012', requireAuth, (req, res)=>{
-	//let id = req.params.idddd;
 	if(!isInt(id)) {
 		//not the expected parameter
 		res.status(400).send('BAD REQUEST');
@@ -220,8 +187,8 @@ app.get('/botV2/3012', requireAuth, (req, res)=>{
 	}
 });
 
+//afficgahe des informations de Tom
 app.get('/botV2/3013', requireAuth, (req, res)=>{
-	//let id = req.params.idddd;
 	if(!isInt(id)) {
 		//not the expected parameter
 		res.status(400).send('BAD REQUEST');
@@ -236,9 +203,9 @@ app.get('/botV2/3013', requireAuth, (req, res)=>{
 	}
 });
 
+//affichage de la liste des mouths
 app.get('/mouthV2', requireAuth, async (req, res) => {
 	try {
-		//let json_var = {'test':'oui'};
 		res.render('mouthList')
 
 	}
@@ -248,9 +215,9 @@ app.get('/mouthV2', requireAuth, async (req, res) => {
 	}
 });
 
+//affichage de la liste des brains
 app.get('/brainV2', requireAuth, async(req,res)=>{
 	try{
-		//let json_var = {'test':'oui'};
 			res.render('brainList')
 
 		}
@@ -259,6 +226,7 @@ app.get('/brainV2', requireAuth, async(req,res)=>{
 			res.status(404).send('NOT FOUND');
 		}
 })
+
 
 app.get('/login', (req, res)=>{
 	try{
@@ -271,24 +239,7 @@ app.get('/login', (req, res)=>{
 		}
 });
 
-//create a new bot (POST HTTP method)
-/*app.post('/bots',(req,res)=>{
-	let theBotToAdd = req.body;
-	botServiceInstance
-		.addBot(theBotToAdd) 
-		.then((returnString)=>{
-			console.log(returnString);
-			res.status(201).send('New bot added');
-		})
-		.catch((err)=>{
-			console.log(`Error ${err} thrown... stack is : ${err.stack}`);
-			res.status(400).send('BAD REQUEST');
-		});	
-	getAllMouths();
-});*/
-
-//app.delete();
-
+//page pour ajouter un brain avec une requête PATCH
 app.patch('/bot/:id', (req,res)=>{
 	let id = req.params.id;
 	if(!isInt(id)) { //Should I propagate a bad parameter to the model?
@@ -311,6 +262,7 @@ app.patch('/bot/:id', (req,res)=>{
 	}	
 });
 
+//page pour supprimer un brain avec une requête PATCH
 app.patch('/bot/remove/:id',(req,res)=>{
 	let id = req.params.id;
 	if(!isInt(id)) { //Should I propagate a bad parameter to the model?
@@ -333,6 +285,7 @@ app.patch('/bot/remove/:id',(req,res)=>{
 	}	
 });
 
+//page pour actualiser le statut d'un bot par une requête PATCH
 app.patch('/bot/status/:id',(req,res)=>{
 	let id = req.params.id;
 	if(!isInt(id)) { //Should I propagate a bad parameter to the model?
@@ -355,40 +308,14 @@ app.patch('/bot/status/:id',(req,res)=>{
 	}	
 });
 
-/*app.post('/v2/bots/',(req,res)=>{
-	let thebotToAdd = req.body;
-	botServiceInstance
-		.addBot(thebotToAdd) 
-		.then((returnString)=>{
-			console.log(returnString);
-			res.status(201).send('All is OK');
-		})
-		.catch((err)=>{
-			console.log(`Error ${err} thrown... stack is : ${err.stack}`);
-			res.status(400).send('BAD REQUEST');
-		});	
-});*/
-
 function isInt(value) {
   let x = parseFloat(value);
   return !isNaN(value) && (x | 0) === x;
 }
 
-/*async function getAllBots(){
-	return await botServiceAccessPoint.getAllBots();
-}*/
-
-/*async function getAllBrains(){
-	return await brainServiceAccessPoint.getAllBrains();
-}*/
-
 async function getAllMouths(){
 	return await mouthServiceAccessPoint.getAllMouths();
 }
-
-/*async function getMouthById(id){
-	getAllMouths();
-}*/
 
 async function getBots(){
 	console.log(botServiceAccessPoint);

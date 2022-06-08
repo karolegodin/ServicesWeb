@@ -28,17 +28,16 @@ const server = http.createServer(app)
 const port = process.env.PORT || 3011
 const io = new Server(server);
 
+//////////////////////////////////////////////////
+//PARLER A STEEVE AVEC SOCKET.IO SUR LE PORT 3011
+//////////////////////////////////////////////////
+
 var bot = new RiveScript();
 
-//const pathtoviews = './../server/views';
-//app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 app.set('views', '../server/views');
-//const path = require("path");
 
-
-// Load an individual file.
-//bot.loadFile("./../brainServer/pathtobrain/standard.rive").then(loading_done).catch(loading_error);
+//chargement des brains
 loading_brains(3011);
 
 function loading_done() {
@@ -55,13 +54,11 @@ function loading_error(error, filename, lineno) {
 }
 
 
-// just to test the server
+// page pour parler à Steeve
 app.get('/socketio', (req, res) => {
-  //res.status(200).send('Working')
   try{
     loading_brains(3011); //recharger la liste des brains en cas d'ajout/suppression
 		res.render('socketSteeve');
-
 	}
 	catch(err){
 		console.log(`Error ${err} thrown`);
@@ -69,6 +66,7 @@ app.get('/socketio', (req, res) => {
 	}
 })
 
+//lancement du serveur Socket.io
 io.on('connection', (socket) => {
   console.log('a user connected');
   let username = "local-user";
@@ -79,7 +77,6 @@ io.on('connection', (socket) => {
       io.emit('chat message', msg);
       io.emit('chat message', reply);
     });
-
   });
 });
 
@@ -87,10 +84,9 @@ server.listen(port, () => {
   console.log(`Server running on port: ${port}`)
 })
 
+//chargement des différents brains du bot
 async function loading_brains(id) {
-	//console.log("Je suis dans loading_brains");
 	let botToLoad = await getBotById(id);
-	//console.log(botToLoad);
 	console.log("Liste des brains : ");
 	console.log(botToLoad[0].botBrain);
 	for (let i = 0; i < botToLoad[0].botBrain.length; i++) {
@@ -106,6 +102,7 @@ async function loading_brains(id) {
 	}
 }
 
+//obtenir tous les bots du serveur de bots grâce à une requête GET
 async function getBotById(botId) {
 	return await botServiceAccessPoint.getBotById(botId);
 }

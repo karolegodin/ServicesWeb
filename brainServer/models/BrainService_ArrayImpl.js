@@ -10,12 +10,12 @@ class BrainService{
 		return new BrainService();
 	}
 
-	async addBrain(anObject){
+	async addBrain(anObject){ //ajouter un brain dans le tableau des brains
 		let newBrain;
 		try{
   			newBrain = new Brain(anObject);
 		}catch(err){
-			throw err; //throwing an error inside a Promise
+			throw err; 
 		}
 		this.array.push(newBrain);
 		return `added brain of id ${newBrain.id}`;

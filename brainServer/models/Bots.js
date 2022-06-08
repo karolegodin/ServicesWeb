@@ -7,7 +7,7 @@ class BotService{
     this.port = data.port; // probably 3002
   }
 
-  async getAllBots(){
+  async getAllBots(){ //requête GET pour récupérer tous les bots du server 3001
     let returnValue = new Array();
     let myInit = { 
       method: 'GET',
@@ -18,30 +18,19 @@ class BotService{
     try {
       const response = await fetch(myURL,myInit);
       const setOfBots = await response.json();
-      //console.warn(xhr.responseText);
-      /*for(let bot of setOfBots){
-          //console.log(bot);
-          returnValue.push(new BotIdentifier({'botId':bot.id, 'botName':bot.name}));
-          
-      }*/
       for (let i=0; i<setOfBots.length; i++){
-          //console.log(setOfBots);
           returnValue.push({'botId': (setOfBots[i]).id, 'botName': (setOfBots[i]).name, 'botMouth':(setOfBots[i]).mouth, 'botBrain': (setOfBots[i]).brain, 'botRivescript':null, 'botStatus': (setOfBots[i]).status});
-          //console.log(returnValue);
-          //returnValue.push({'botRivescript': (setOfBots[i]).botRivescript});
       }
       
     } catch (error) {
       console.log(error);
     }
-    //console.log("Je sors de la requête GET");
-    //console.log(returnValue);
     console.log("type de données array");
     console.log(returnValue);
     return returnValue;
   }
 
-  async getBotById(botId){
+  async getBotById(botId){ //requête GET pour obtenir un bot identifié par son id
     let returnValue = new BotIdentifier({'botId':id});
     let myInit = { 
       method: 'GET',
@@ -51,28 +40,19 @@ class BotService{
     let myURL = `http://localhost:3001/bot/${id}`;
     try {
       const response = await fetch(myURL,myInit);
-      //console.log(response);
-      //console.log("Problème"+await response.json());
       const setOfBots = await response.json();
-      //console.log(setOfBots);
-      //console.warn(xhr.responseText);
       returnValue.botName = (setOfBots.name);
       
     } catch (error) {
       console.log(error);
     }
-    console.log(returnValue);
-    //console.log(typeof(returnValue));
+    //console.log(returnValue);
     return returnValue;
   }
-
 }
 
-
-
-class BotIdentifier{
+class BotIdentifier{ //structure d'un bot dans le serveur des brains
   static botId = this.botId; //the id of the Bot in the micro-service
-  //static botName = this.botName;
   // TODO : when multiple sources of Bots is used : should differentiate botId and a localbotId...
   constructor(data){ // TODO : Should check if sourceId is known and valid
       this.botId = data.botId;
@@ -83,13 +63,10 @@ class BotIdentifier{
       this.botStatus = data.botStatus;
   }
   static isBotIdentifier(anObject){
-    // check if mandatory fields are there
     let hasMandatoryProperties = Object.keys(this).every(key=> anObject.hasOwnProperty(key));
-    // TODO : we should also check the property values (if are strings, etc ... as in constructor) 
     return hasMandatoryProperties;
   }
 }
-
 
 
 module.exports = {BotIdentifier, BotService};

@@ -4,9 +4,6 @@ class Mouth{
     static name = this.name; 
 
   constructor(data){
-    //this.url = data.url; // probably localhost
-    //this.port = data.port; // probably 3002
-
     if(undefined != data.id) { 
         if(!isInt(data.id)){
           throw new Error("Mouth Creation : passed Id is not an integer");
@@ -41,8 +38,6 @@ class Mouth{
     // we should also check the property values (if are strings, etc ... as in constructor) 
     return true;
   }
-
-
 }
 
 function isInt(value) {

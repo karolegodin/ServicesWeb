@@ -10,19 +10,6 @@ const { requireAuth, checkUser } = require('./../server/middleware/authMiddlewar
 const app = express();
 const RiveScript = require('rivescript');
 
-/*import {BotService} from "./models/BotService_ArrayImpl.mjs";
-let botServiceInstance;
-let botServiceAccessPoint = new BotService({url:"http://localhost",port:3001});*/
-
-/*import {BrainService} from "./models/BrainService_ArrayImpl.mjs";
-let brainServiceInstance;
-let brainServiceAccessPoint = new BrainService({url:"http://localhost",port:3001});*/
-
-/*import {MouthService} from "../mouthServer/models/MouthService_ArrayImpl.mjs";
-import { Bot } from './models/Bot.mjs';
-let mouthServiceInstance;
-let mouthServiceAccessPoint = new MouthService({url:"http://localhost",port:3002});*/
-
 const {BrainService} = require("./models/BrainService_ArrayImpl.js");
 const { Brain } = require('./models/Brain.js');
 let brainServiceInstance;
@@ -37,8 +24,8 @@ let botsArray;
 app.use(cors())
 ////
 
-const port = 3003
-const port2 = 3005
+const port = 3003 //port du server
+const port2 = 3005 //port MongoDB
 
 app.use(bodyParser.json()) 
 app.use(bodyParser.urlencoded({ extended: true })) 
@@ -55,6 +42,8 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCr
   .then((result) => app.listen(port2), console.log(`Connected to database on port ${port2}`))
   .catch((err) => console.log(err));
 
+//instanciation des deux brains : Standard et Client
+
 let firstBrain ={ 
 	'id':0,
 	'name':'Standard'
@@ -65,6 +54,7 @@ let secondBrain ={
 	'name':'Client'
 };
 
+//lancement du serveur : ajout des deux brains dans la base de données
 BrainService.create(brainServiceAccessPoint).then(ms=>{
 	brainServiceInstance=ms;
 	brainServiceInstance
@@ -73,10 +63,6 @@ BrainService.create(brainServiceAccessPoint).then(ms=>{
 	brainServiceInstance
 		.addBrain(secondBrain)
 		.catch((err)=>{console.log(err);});
-    //socketConnection;
-	/*brainServiceInstance
-		.addBrain(secondBrain)
-		.catch((err)=>{console.log(err);});*/
 	app.listen(port, () => {
   		console.log(`Brain server app listening at http://localhost:${port}`)
 	});
@@ -84,6 +70,7 @@ BrainService.create(brainServiceAccessPoint).then(ms=>{
 
 app.get('*', checkUser);
 
+//récupérer tous les bots du serveur de bots
 app.get('/bot',async(req,res)=>{
 	botsArray = await getAllBots();
 	//console.log("heheheee");
@@ -91,6 +78,7 @@ app.get('/bot',async(req,res)=>{
 	res.status(200).json(botsArray);
 })
 
+//afficher tous les brains au format JSON
 app.get('/brain',async(req,res)=>{
 	//let brainArray=await getBrains();
 	//res.status(200).json(brainArray);
@@ -107,17 +95,6 @@ app.get('/brain',async(req,res)=>{
 	}
 })
 
-/*app.get('/brainV2',requireAuth,async(req,res)=>{
-	try{
-		//let json_var = {'test':'oui'};
-			res.render('brainList')
-	
-		}
-		catch(err){
-			console.log(`Error ${err} thrown`);
-			res.status(404).send('NOT FOUND');
-		}
-})*/
 
 async function getBrains(){
 	return brainServiceAccessPoint.getBrains();

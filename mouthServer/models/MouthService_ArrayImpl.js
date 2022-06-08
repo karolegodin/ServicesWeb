@@ -10,7 +10,7 @@ class MouthService{
 		return new MouthService();
 	}
 
-	async addMouth(anObject){
+	async addMouth(anObject){ //ajouter une mouth dans le serveur des mouths
 		let newMouth;
 		try{
   			newMouth = new Mouth(anObject);
@@ -18,12 +18,11 @@ class MouthService{
 			throw err; //throwing an error inside a Promise
 		}
 		this.array.push(newMouth);
-		//console.log(`added mouth of id ${newMouth.id}, named ${newMouth.name}`);
 		return `added mouth of id ${newMouth.id},named ${newMouth.name}`;
 	}
 
 	//from PUT
-	async replaceMouth(id, anObject){
+	async replaceMouth(id, anObject){ 
 		let index = this.array.findIndex(e=> e.id == id);	
 		if(index >-1 ){
 			//At this point, you may have a safeguard to verify if the given Object is a Task

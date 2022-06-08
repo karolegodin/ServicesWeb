@@ -7,7 +7,7 @@ class BotService{
     this.port = data.port; // probably 3002
   }
 
-  async getAllBots(){
+  async getAllBots(){ //obtenir tous les bots du serveur de bots par une requête GET
     let returnValue = new Array();
     let myInit = { 
       method: 'GET',
@@ -20,24 +20,18 @@ class BotService{
       const setOfBots = await response.json();
       //console.warn(xhr.responseText);
       for (let i=0; i<setOfBots.length; i++){
-          //console.log(setOfBots);
           returnValue.push({'botId': (setOfBots[i]).id, 'botName': (setOfBots[i]).name, 'botMouth':(setOfBots[i]).mouth, 'botBrain': (setOfBots[i]).brain, 'botRivescript':null, 'botStatus': (setOfBots[i]).status});
-          //console.log(returnValue);
-          //returnValue.push({'botRivescript': (setOfBots[i]).botRivescript});
       }
       
     } catch (error) {
       console.log(error);
     }
     //console.log(returnValue);
-    //console.log(typeof(returnValue));
     return returnValue;
   }
 
-  async getBotById(id){
-    //let returnValue = new BotIdentifier({'botId':id});
+  async getBotById(id){ //obtenir un bot du serveur de bots grâce à son identifiant
     let returnValue = new Array();
-    //console.log(returnValue);
     let myInit = { 
       method: 'GET',
       mode: 'cors',
@@ -48,34 +42,23 @@ class BotService{
       const response = await fetch(myURL,myInit);
       const setOfBots = await response.json();
       //console.warn(xhr.responseText);
-      //returnValue.botName = (setOfBots.name);
-      //returnValue.botBrain = (setOfBots.brain);
-      //returnValue.botName = (setOfBots.name);
-      //returnValue.botBrain = (setOfBots.brain);
       for(let bot of setOfBots){
-        //console.log("Le bot est : ");
-        //console.log(bot);
-        //console.log(bot.id);
         returnValue.push(new BotIdentifier({'botId':bot.id, 'botName':bot.name, 'botMouth':bot.mouth, 'botBrain':bot.brain, 'botRivescript':null, 'botStatus':bot.status}));
-        //console.log(returnValue);
       }
     } catch (error) {
       console.log(error);
     }
     //console.log(returnValue);
-    //console.log(typeof(returnValue));
     return returnValue;
   }
-
 }
 
 
 
-class BotIdentifier{
+class BotIdentifier{ //structure d'un bot dans le serveur des mouths
   static botId = this.botId; //the id of the Bot in the micro-service
   static botName = this.botName;
-  // TODO : when multiple sources of Bots is used : should differentiate botId and a localbotId...
-  constructor(data){ // TODO : Should check if sourceId is known and valid
+  constructor(data){ 
       this.botId = data.botId;
       this.botName = data.botName;
       this.botMouth = data.botMouth;
@@ -84,13 +67,9 @@ class BotIdentifier{
       this.botStatus = data.botStatus;
   }
   static isBotIdentifier(anObject){
-    // check if mandatory fields are there
     let hasMandatoryProperties = Object.keys(this).every(key=> anObject.hasOwnProperty(key));
-    // TODO : we should also check the property values (if are strings, etc ... as in constructor) 
     return hasMandatoryProperties;
   }
 }
-
-
 
 module.exports = {BotIdentifier, BotService};
