@@ -46,7 +46,7 @@ botDiscord.login(token);
 /////////////////////////////////////////////
 //Création et connection au bot Mastodon/////
 /////////////////////////////////////////////
-
+/*
 //nécessite la présence d'un fichier .env contenant les clés/secrets dans le dossier 'mouthServer'
 const M = new Mastodon({
 	client_key: process.env.CLIENT_KEY,
@@ -54,7 +54,7 @@ const M = new Mastodon({
 	access_token: process.env.ACCESS_TOKEN,
 	timeout_ms: 60 * 1000, // Requête HTTP optionnelle qui permet d'appliquer un temps maximal à toutes les requêtes
 	api_url: 'https://botsin.space/api/v1/',
-})
+})*/
 /////////////////////////////////////////////
 
 //enable ALL CORS request
@@ -222,7 +222,7 @@ botDiscord.on('messageCreate', message => {
 /////////////////////////////
 ////Lancement de Mastodon////
 /////////////////////////////
-
+/*
 const listener = M.stream('streaming/user')
 listener.on('error', err => console.log(err))
 
@@ -264,6 +264,7 @@ function postMsg(content, id) {//envoie la réponse du bot Mastodon sur la plate
 		}
 	});
 }
+*/
 
 //fonction middleware qui lie le router 'authRoutes' à l'application
 app.use(authRoutes);
