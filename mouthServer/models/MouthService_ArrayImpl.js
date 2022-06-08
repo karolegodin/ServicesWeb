@@ -6,7 +6,7 @@ class MouthService{
 		this.db = {};
 	}
 
-	static async create(){ 
+	static async create(){ //création d'une nouvelle instance de MouthService
 		return new MouthService();
 	}
 
@@ -15,7 +15,7 @@ class MouthService{
 		try{
   			newMouth = new Mouth(anObject);
 		}catch(err){
-			throw err; //throwing an error inside a Promise
+			throw err; //throw une erreur dans une promesse
 		}
 		this.array.push(newMouth);
 		return `added mouth of id ${newMouth.id},named ${newMouth.name}`;
@@ -25,9 +25,7 @@ class MouthService{
 	async replaceMouth(id, anObject){ 
 		let index = this.array.findIndex(e=> e.id == id);	
 		if(index >-1 ){
-			//At this point, you may have a safeguard to verify if the given Object is a Task
 			if(Mouth.isMouth(anObject)){
-				/// Just replace it already!
 				this.array.splice(index,1,anObject);
 				return "Done REPLACING";
 			}
@@ -40,13 +38,12 @@ class MouthService{
 	async updateMouth(id, anObject){
 		let index = this.array.findIndex(e=> e.id == id);	
 		if(index >-1 ){
-			//At this point, you may have a safeguard to verify if the fields of the given Object are from a Bot
 			for(let property in anObject){
 				if(!Mouth.isValidProperty(property,anObject[property])){
 					throw new Error(`given property is not a valid Mouth property : ${anObject}`);	
 				}
 			}
-			//At this point, we are sure that all properties are valid and that we can make the update.
+			//ici, nous sommes sûrs que toutes les propriétés sont valides et que l'on peut effectuer la modification
 			for(let property in anObject){
 				(this.array)[index][property] = anObject[property];
 			}
@@ -55,7 +52,7 @@ class MouthService{
 		throw new Error(`cannot find mouth of id ${id}`);
 	}
 
-	async removeMouth(id){
+	async removeMouth(id){//supprime la bouche d'identifiant 'id' du tableau des bouches
 		let index = this.array.findIndex(e=> e.id == id);
 		if(index >-1 ){
 			this.array.splice(index,1);
@@ -65,7 +62,7 @@ class MouthService{
 		
 	}
 
-	getMouth(id){
+	getMouth(id){//Retourne la bouche d'identifiant 'id'
 		let index = this.array.findIndex(e=> e.id == id);
 		if(index >-1 ){
 			return  (this.array)[index];
@@ -73,10 +70,11 @@ class MouthService{
 		throw new Error(`cannot find mouth of id ${id}`);	
 	}
 
-	getMouths(){
+	getMouths(){//retourne le tableau des bouches
 		return this.array;
 	}
 
 }
 
+//permet d'utiliser MouthService dans les autres fichiers
 module.exports = {MouthService};

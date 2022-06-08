@@ -23,30 +23,28 @@ class Mouth{
       }
   }
 
-
-  static isMouth(anObject){
-    // check if mandatory fields are there
+  static isMouth(anObject){//vérifie si 'anObject' est bien une bouche
+    // vérifie les propriétés obligatoires
     let hasMandatoryProperties = Object.keys(this).every(key=> anObject.hasOwnProperty(key));
-    // we should also check the property values (if are strings, etc ... as in constructor) 
     return hasMandatoryProperties;
   }
 
-  static isValidProperty(propertyName,propertyValue) {
+  static isValidProperty(propertyName,propertyValue) {//vérifie si 'propertyName' est bien une propriété valide de bouche
     if(!this.hasOwnProperty(propertyName)){
       return false;
     }
-    // we should also check the property values (if are strings, etc ... as in constructor) 
     return true;
   }
 }
 
-function isInt(value) {
+function isInt(value) {//vérifie si 'value' est bien un entier
   let x = parseFloat(value);
   return !isNaN(value) && (x | 0) === x;
 }
 
-function isString(myVar) {
+function isString(myVar) {//vérifie si 'myVar' est bien une chaîne de caractères
   return (typeof myVar === 'string' || myVar instanceof String) ;
 }
 
+//permet d'utiliser la classe 'Mouth' dans d'autres fichiers
 module.exports = {Mouth};

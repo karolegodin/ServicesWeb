@@ -20,7 +20,6 @@
 		}
 
 		function reloadBotInfos() { //rechargement de la liste des informations du bot
-			//first, clean up
 			console.log("Je reload la liste des infos");
 			while (infoListElt.firstChild) {
 				infoListElt.removeChild(infoListElt.firstChild);
@@ -71,7 +70,6 @@
 		}
 
 		function reloadBotList() { //met à jour la liste de tous les bots par une requête GET
-			//first, clean up
 			console.log("Je reload la liste des bots");
 			while (botListElt.firstChild) {
 				botListElt.removeChild(botListElt.firstChild);
@@ -126,7 +124,6 @@
 		}
 
 		function reloadBrainListToRm() { //rechargement de la liste des brains de Tom par une requête GET
-			//first, clean up
 			console.log("Je reload la liste des brains de Tom");
 			while (brainListToRm.firstChild) {
 				brainListToRm.removeChild(brainListToRm.firstChild);
@@ -169,7 +166,6 @@
 		}
 
 		function reloadMouthList() { //rechargement de la liste de mouths par une requête GET
-			//first, clean up
 			while (mouthListElt.firstChild) {
 				mouthListElt.removeChild(mouthListElt.firstChild);
 			}
@@ -218,7 +214,6 @@
 		}
 
 		function reloadBrainList() { //rechargement de la liste des brains par une requête GET
-			//first, clean up
 			console.log("Je reload la liste des brains");
 			while (brainListElt.firstChild) {
 				brainListElt.removeChild(brainListElt.firstChild);

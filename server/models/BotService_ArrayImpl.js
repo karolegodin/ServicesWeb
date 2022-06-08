@@ -8,7 +8,7 @@ class BotService{
 		this.db = {};
 	}
 
-	static async create(){ 
+	static async create(){//création d'une nouvelle instance de BotService
 		return new BotService();
 	}
 
@@ -17,7 +17,7 @@ class BotService{
 		try{
   			newBot = new Bot(anObject);
 		}catch(err){
-			throw err; //throwing an error inside a Promise
+			throw err;
 		}
 		this.array.push(newBot);
 		console.log(`added bot of id ${newBot.id}, named ${newBot.name}`);
@@ -29,9 +29,7 @@ class BotService{
 	async replaceBot(id, anObject){
 		let index = this.array.findIndex(e=> e.id == id);	
 		if(index >-1 ){
-			//At this point, you may have a safeguard to verify if the given Object is a Task
 			if(Bot.isBot(anObject)){
-				/// Just replace it already!
 				this.array.splice(index,1,anObject);
 				return "Done REPLACING";
 			}
@@ -93,7 +91,7 @@ class BotService{
 		throw new Error(`cannot find bot of id ${id}`);
 	}
 
-	async removeBot(id){
+	async removeBot(id){//supprime le bot d'identifiant 'id' du tableau des Bots
 		let index = this.array.findIndex(e=> e.id == id);
 		if(index >-1 ){
 			this.array.splice(index,1);
@@ -121,4 +119,5 @@ class BotService{
 
 }
 
+//permet d'utiliser les classes dans d'autres fichiers
 module.exports = {BotService};

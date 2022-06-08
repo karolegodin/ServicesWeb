@@ -1,27 +1,24 @@
 const User = require("../models/User");
 const jwt = require('jsonwebtoken');
 
-// handle errors
+//manage les erreurs sur l'authentification
 const handleErrors = (err) => {
   console.log(err.message, err.code);
   let errors = { email: '', password: '' };
 
-  // incorrect email
+  // email incorrect
   if (err.message === 'incorrect email') {
     errors.email = 'That email is not registered';
   }
 
-  // incorrect password
+  // mot de passe incorrect
   if (err.message === 'incorrect password') {
     errors.password = 'That password is incorrect';
   }
 
-  // validation errors
+  // identifiants incorrect, la connexion de l'utilisateur a échoué
   if (err.message.includes('user validation failed')) {
-    // console.log(err);
     Object.values(err.errors).forEach(({ properties }) => {
-      // console.log(val);
-      // console.log(properties);
       errors[properties.path] = properties.message;
     });
   }
@@ -29,19 +26,22 @@ const handleErrors = (err) => {
   return errors;
 }
 
-// create json web token
-const maxAge = 3 * 24 * 60 * 60;
+// crée un json web token
+const maxAge = 3 * 24 * 60 * 60;//durée avant expiration du json web token en millisecondes
 const createToken = (id) => {
   return jwt.sign({ id }, 'secret', {
     expiresIn: maxAge
   });
 };
 
-// controller actions
+//actions du controlleur
+
+//affiche la page d'authentification via une requête de type 'GET'
 module.exports.login_get = (req, res) => {
   res.render('login');
 }
 
+//envoi de la demande d'authentification via une requête de type 'POST'
 module.exports.login_post = async (req, res) => {
   const { email, password } = req.body;
 
@@ -58,6 +58,7 @@ module.exports.login_post = async (req, res) => {
 
 }
 
+//expiration du cookie, déconnexion de l'utilisateur et redirection vers la page d'accueil
 module.exports.logout_get = (req, res) => {
   res.cookie('jwt', '', { maxAge: 1 });
   res.redirect('/');

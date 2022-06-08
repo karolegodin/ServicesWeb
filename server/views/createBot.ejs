@@ -18,7 +18,6 @@
 		}
 
 		function reloadBotList() { //met à jour la liste de tous les bots par une requête GET
-			//first, clean up
 			console.log("Je reload la liste des bots");
 			while (botListElt.firstChild) {
 				botListElt.removeChild(botListElt.firstChild);
@@ -102,7 +101,6 @@
 		}
 
 		function reloadMouthList() { //rechargement de la liste des mouths par une requête GET
-			//first, clean up
 			while (mouthListElt.firstChild) {
 				mouthListElt.removeChild(mouthListElt.firstChild);
 			}

@@ -1,10 +1,11 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+//oblige les utilisateurs à s'authentifier pour accéder à une page du client
 const requireAuth = (req, res, next) => {
   const token = req.cookies.jwt;
 
-  // check json web token exists & is verified
+  //vérifie si le json web token existe et est valide
   if (token) {
     jwt.verify(token, 'secret', (err, decodedToken) => {
       if (err) {
@@ -20,7 +21,7 @@ const requireAuth = (req, res, next) => {
   }
 };
 
-// check current user
+//vérifie l'authentification de l'utilisateur
 const checkUser = (req, res, next) => {
   const token = req.cookies.jwt;
   if (token) {
@@ -40,5 +41,5 @@ const checkUser = (req, res, next) => {
   }
 };
 
-
+//permet d'utiliser les classes dans d'autres fichiers
 module.exports = { requireAuth, checkUser };

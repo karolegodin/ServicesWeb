@@ -33,12 +33,13 @@ const io = new Server(server);
 
 var bot = new RiveScript();
 
-app.set('view engine', 'ejs');
-app.set('views', '../server/views');
+app.set('view engine', 'ejs');//recherche les fichiers ejs dans un dossier 'views'
+app.set('views', '../server/views');//chemin vers le dossier 'views'
 
 //chargement des brains
 loading_brains(3013);
 
+//chargement d'un bot
 function loading_done() {
   console.log("Bot has finished loading!");
   bot.sortReplies();
@@ -48,12 +49,12 @@ function loading_done() {
   });
 }
 
+//en cas d'erreur de chargement
 function loading_error(error, filename, lineno) {
   console.log("Error when loading files: " + error);
 }
 
-
-// page pour parler à Tom avec Socket.io
+//affiche la page pour parler à Tom avec Socket.io grâce à une requête de type 'GET'
 app.get('/socketio', (req, res) => {
   try{
     loading_brains(3013); //recharger la liste des brains en cas d'ajout/suppression
@@ -79,6 +80,7 @@ io.on('connection', (socket) => {
   });
 });
 
+//'server' écoute sur le port 'port'
 server.listen(port, () => {
   console.log(`Server running on port: ${port}`)
 })

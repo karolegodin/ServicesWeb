@@ -22,7 +22,6 @@ let mouthServiceAccessPoint = new MouthService({url:"http://localhost",port:3002
 
 //// Enable ALL CORS request
 app.use(cors())
-////
 
 const port = 3001 //port du serveur de bots
 const port2 = 3000 //port de MongoDB
@@ -34,9 +33,9 @@ app.use(express.json());
 app.use(cookieParser());
 
 // view engine
-app.set('view engine', 'ejs');
+app.set('view engine', 'ejs');//recherche les fichiers ejs dans un dossier 'views'
 
-// database connection
+//connection à Mongodb, via l'utilisateur 'webserviceproject', à la collection 'auth', via le port d'écoute 3000
 const dbURI = 'mongodb+srv://webserviceproject:YjWds5PxDPBsDEA@cluster0.leyyy.mongodb.net/auth';
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true })
   .then((result) => app.listen(port2))
@@ -78,6 +77,8 @@ BotService.create(botServiceAccessPoint).then(bs=>{
 	});
 });
 
+//pour toutes les requêtes de type 'get', on vérifie si un utilisateur est connecté via mongodb
+//et le système d'authentification
 app.get('*', checkUser);
 
 //Page d'accueil du site
@@ -227,7 +228,7 @@ app.get('/brainV2', requireAuth, async(req,res)=>{
 		}
 })
 
-
+//Page d'authentification
 app.get('/login', (req, res)=>{
 	try{
 			res.render('login')
@@ -242,11 +243,11 @@ app.get('/login', (req, res)=>{
 //page pour ajouter un brain avec une requête PATCH
 app.patch('/bot/:id', (req,res)=>{
 	let id = req.params.id;
-	if(!isInt(id)) { //Should I propagate a bad parameter to the model?
+	if(!isInt(id)) {
 		//not the expected parameter
 		res.status(400).send('BAD REQUEST');
 	}else{
-		let newValues = req.body; //the client is responsible for formating its request with proper syntax.
+		let newValues = req.body;
 		console.log("Valeurs à update");
 		console.log(newValues.brain);
 		botServiceInstance
@@ -265,11 +266,11 @@ app.patch('/bot/:id', (req,res)=>{
 //page pour supprimer un brain avec une requête PATCH
 app.patch('/bot/remove/:id',(req,res)=>{
 	let id = req.params.id;
-	if(!isInt(id)) { //Should I propagate a bad parameter to the model?
+	if(!isInt(id)) {
 		//not the expected parameter
 		res.status(400).send('BAD REQUEST');
 	}else{
-		let newValues = req.body; //the client is responsible for formating its request with proper syntax.
+		let newValues = req.body;
 		console.log("Valeurs à supprimer");
 		console.log(newValues.brain);
 		botServiceInstance
@@ -288,11 +289,11 @@ app.patch('/bot/remove/:id',(req,res)=>{
 //page pour actualiser le statut d'un bot par une requête PATCH
 app.patch('/bot/status/:id',(req,res)=>{
 	let id = req.params.id;
-	if(!isInt(id)) { //Should I propagate a bad parameter to the model?
+	if(!isInt(id)) {
 		//not the expected parameter
 		res.status(400).send('BAD REQUEST');
 	}else{
-		let newValues = req.body; //the client is responsible for formating its request with proper syntax.
+		let newValues = req.body;
 		console.log("Statut à modifier");
 		console.log(newValues.brain);
 		botServiceInstance
@@ -308,18 +309,19 @@ app.patch('/bot/status/:id',(req,res)=>{
 	}	
 });
 
-function isInt(value) {
+function isInt(value) {//vérifie si 'value' est de type entier
   let x = parseFloat(value);
   return !isNaN(value) && (x | 0) === x;
 }
 
-async function getAllMouths(){
+async function getAllMouths(){//retourne le tableau de toutes les bouches
 	return await mouthServiceAccessPoint.getAllMouths();
 }
 
-async function getBots(){
+async function getBots(){//retourne le tableau de tous les bots
 	console.log(botServiceAccessPoint);
 	return botServiceAccessPoint.getBots();
 }
 
+//fonction middleware qui lie le router 'authRoutes' à l'application
 app.use(authRoutes);

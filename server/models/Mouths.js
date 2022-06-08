@@ -17,7 +17,6 @@ class MouthService{
     try {
       const response = await fetch(myURL,myInit);
       const setOfMouths = await response.json();
-      //console.warn(xhr.responseText);
       for(let mouth of setOfMouths){
           console.log(mouth);
           returnValue.push(new MouthIdentifier({'mouthId':mouth.id, 'mouthName':mouth.name}));
@@ -26,7 +25,6 @@ class MouthService{
     } catch (error) {
       console.log(error);
     }
-    //console.log(returnValue);
     return returnValue;
   }
 }
@@ -38,10 +36,11 @@ class MouthIdentifier{ //structure d'une mouth dans le serveur des bots
       this.mouthId = data.mouthId
       this.mouth = data.mouthName
   }
-  static isMouthIdentifier(anObject){
+  static isMouthIdentifier(anObject){//vérifie si 'anObject' est de type MouthIdentifier
     let hasMandatoryProperties = Object.keys(this).every(key=> anObject.hasOwnProperty(key));
     return hasMandatoryProperties;
   }
 }
 
+//permet d'utiliser les classes dans d'autres fichiers
 module.exports = {MouthIdentifier, MouthService};

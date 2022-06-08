@@ -14,9 +14,9 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
 
-	////////////////////////////////
-	//PARLER A TOM AVEC SOCKET.IO
-	////////////////////////////////
+    ////////////////////////////////
+    //PARLER A TOM AVEC SOCKET.IO
+    ////////////////////////////////
 
     var socket = io();
     var form = document.getElementById('form');
@@ -30,7 +30,7 @@
       }
     });
 
-	//lancement du serveur socket
+    //lancement du serveur socket
     socket.on('chat message', function (msg) { //lorque Socket reçoit un message/renvoie un message, affichage sur la page web
       var item = document.createElement('li');
       item.textContent = msg;
@@ -48,36 +48,36 @@
     });
 
     function patchStatus(status) { //actualisation du statut du bot par une requête PATCH
-			let myHeaders = new Headers();
-			myHeaders.append('Content-Type', 'application/json');
-			myHeaders.append('Accept', 'application/json');
-			myHeaders.append('Set-Cookie', 'passPhrase=Hop');
-			
+      let myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
+      myHeaders.append('Accept', 'application/json');
+      myHeaders.append('Set-Cookie', 'passPhrase=Hop');
+
       let statusRequest = { "status": status };
-			let myInit = {
-				method: 'PATCH',
-				headers: myHeaders,
-				credentials: 'same-origin',
-				mode: 'cors',
-				cache: 'no-store',
-				body: JSON.stringify(statusRequest)
-			};
-			console.log(typeof (myInit.body));
-			let myURL = `http://localhost:3001/bot/status/3013`;
-			fetch(myURL, myInit)
-				.then((httpResponse) => {
-					return httpResponse.text()
-				})
-				.then((responseBody) => {
-					reloadBotInfos();
-					reloadBrainList();
-					reloadBrainListToRm();
-					console.log(`updating status`);
-				})
-				.catch((err) => {
-					console.log(`ERROR : ${err}${err.stack}`);
-				})
-		}
+      let myInit = {
+        method: 'PATCH',
+        headers: myHeaders,
+        credentials: 'same-origin',
+        mode: 'cors',
+        cache: 'no-store',
+        body: JSON.stringify(statusRequest)
+      };
+      console.log(typeof (myInit.body));
+      let myURL = `http://localhost:3001/bot/status/3013`;
+      fetch(myURL, myInit)
+        .then((httpResponse) => {
+          return httpResponse.text()
+        })
+        .then((responseBody) => {
+          reloadBotInfos();
+          reloadBrainList();
+          reloadBrainListToRm();
+          console.log(`updating status`);
+        })
+        .catch((err) => {
+          console.log(`ERROR : ${err}${err.stack}`);
+        })
+    }
   </script>
 </body>
 

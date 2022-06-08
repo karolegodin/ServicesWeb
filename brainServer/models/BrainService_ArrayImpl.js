@@ -6,7 +6,7 @@ class BrainService{
 		this.db = {};
 	}
 
-	static async create(){ 
+	static async create(){//création d'un nouveau BrainService
 		return new BrainService();
 	}
 
@@ -55,7 +55,7 @@ class BrainService{
 		throw new Error(`cannot find brain of id ${id}`);
 	}
 
-	async removeBrain(id){
+	async removeBrain(id){//enlève le brain d'identifiant 'id' du tableau des brains
 		let index = this.array.findIndex(e=> e.id == id);
 		if(index >-1 ){
 			this.array.splice(index,1);
@@ -65,7 +65,7 @@ class BrainService{
 		
 	}
 
-	getBrain(id){
+	getBrain(id){//retourne s'il existe le brain d'identifiant 'id'
 		let index = this.array.findIndex(e=> e.id == id);
 		if(index >-1 ){
 			return  (this.array)[index];
@@ -73,7 +73,7 @@ class BrainService{
 		throw new Error(`cannot find brain of id ${id}`);	
 	}
 
-	getBrains(){
+	getBrains(){//retourne le tableau de tous les brains
 		return this.array;
 	}
 

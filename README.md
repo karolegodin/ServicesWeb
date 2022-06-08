@@ -58,6 +58,8 @@ Remarque : Le bot sur Discord se prénomme **Steeve**. Cependant, cela ne signif
 
 La connexion vers le bot mastodon a été implémentée mais elle n'est pas fonctionnelle. Par conséquent, le code permettant de l'utiliser est accessible sur ce dépôt mais il n'est pas possible de communiquer avec le bot mastodon depuis notre application.
 
+Pour utiliser Mastodon, vous devez mentionner le compte du bot mastodon (ici : `@sclaude`) dans vos "pouets". Le bot vous répondra alors en vous mentionnant.
+
 ## Auteurs
 
 **Sarah CLAUDE & Karole GODIN**

@@ -26,12 +26,12 @@ class Brain{
       }
   }
 
-  static isBrain(anObject){
+  static isBrain(anObject){//vérifie si 'anObject' est bien un cerveau
     let hasMandatoryProperties = Object.keys(this).every(key=> anObject.hasOwnProperty(key)); 
     return hasMandatoryProperties;
   }
 
-  static isValidProperty(propertyName,propertyValue) {
+  static isValidProperty(propertyName,propertyValue) {//vérifie si 'propertyName' est bien une propriété valide d'un cerveau
     if(!this.hasOwnProperty(propertyName)){
       return false;
     }
@@ -40,13 +40,14 @@ class Brain{
 
 }
 
-function isInt(value) {
+function isInt(value) {//vérifie si 'value' est bien un entier
   let x = parseFloat(value);
   return !isNaN(value) && (x | 0) === x;
 }
 
-function isString(myVar) {
+function isString(myVar) {//vérifie si 'myVar' est bien une chaîne de caractères
   return (typeof myVar === 'string' || myVar instanceof String) ;
 }
 
+//permet d'utiliser 'Brain' dans d'autres fichiers
 module.exports = {Brain};

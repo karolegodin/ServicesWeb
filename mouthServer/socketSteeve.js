@@ -24,7 +24,6 @@ let botServiceAccessPoint = new BotService({ url: "http://localhost", port: 3001
 let botsArray;
 
 const server = http.createServer(app)
-//const server = createServer();
 const port = process.env.PORT || 3011
 const io = new Server(server);
 
@@ -34,12 +33,13 @@ const io = new Server(server);
 
 var bot = new RiveScript();
 
-app.set('view engine', 'ejs');
-app.set('views', '../server/views');
+app.set('view engine', 'ejs');//recherche les fichiers ejs dans un dossier 'views'
+app.set('views', '../server/views');//chemin vers le dossier 'views'
 
 //chargement des brains
 loading_brains(3011);
 
+//chargement d'un bot
 function loading_done() {
   console.log("Bot has finished loading!");
   bot.sortReplies();
@@ -49,12 +49,13 @@ function loading_done() {
   });
 }
 
+//en cas d'erreur de chargement
 function loading_error(error, filename, lineno) {
   console.log("Error when loading files: " + error);
 }
 
 
-// page pour parler à Steeve
+//affiche la page pour parler à Steeve
 app.get('/socketio', (req, res) => {
   try{
     loading_brains(3011); //recharger la liste des brains en cas d'ajout/suppression
@@ -80,6 +81,7 @@ io.on('connection', (socket) => {
   });
 });
 
+//'server' écoute sur le port 'port'
 server.listen(port, () => {
   console.log(`Server running on port: ${port}`)
 })

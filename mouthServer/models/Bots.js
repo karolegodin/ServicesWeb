@@ -22,11 +22,9 @@ class BotService{
       for (let i=0; i<setOfBots.length; i++){
           returnValue.push({'botId': (setOfBots[i]).id, 'botName': (setOfBots[i]).name, 'botMouth':(setOfBots[i]).mouth, 'botBrain': (setOfBots[i]).brain, 'botRivescript':null, 'botStatus': (setOfBots[i]).status});
       }
-      
     } catch (error) {
       console.log(error);
     }
-    //console.log(returnValue);
     return returnValue;
   }
 
@@ -41,22 +39,18 @@ class BotService{
     try {
       const response = await fetch(myURL,myInit);
       const setOfBots = await response.json();
-      //console.warn(xhr.responseText);
       for(let bot of setOfBots){
         returnValue.push(new BotIdentifier({'botId':bot.id, 'botName':bot.name, 'botMouth':bot.mouth, 'botBrain':bot.brain, 'botRivescript':null, 'botStatus':bot.status}));
       }
     } catch (error) {
       console.log(error);
     }
-    //console.log(returnValue);
     return returnValue;
   }
 }
 
-
-
 class BotIdentifier{ //structure d'un bot dans le serveur des mouths
-  static botId = this.botId; //the id of the Bot in the micro-service
+  static botId = this.botId; //identifiant du bot dans le micro-service
   static botName = this.botName;
   constructor(data){ 
       this.botId = data.botId;
@@ -66,10 +60,11 @@ class BotIdentifier{ //structure d'un bot dans le serveur des mouths
       this.botRivescript = data.botRivescript;
       this.botStatus = data.botStatus;
   }
-  static isBotIdentifier(anObject){
+  static isBotIdentifier(anObject){//vérifie si 'anObject' est bien un de type BotIdentifier
     let hasMandatoryProperties = Object.keys(this).every(key=> anObject.hasOwnProperty(key));
     return hasMandatoryProperties;
   }
 }
 
+//permet d'utiliser les classes exportées dans d'autres fichiers
 module.exports = {BotIdentifier, BotService};
