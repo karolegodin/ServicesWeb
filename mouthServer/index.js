@@ -1,4 +1,5 @@
 //importation des modules/fichiers requis
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -11,9 +12,9 @@ const cookieParser = require('cookie-parser');
 const { requireAuth, checkUser } = require('./../server/middleware/authMiddleware.js');
 const { Client, Intents } = require("discord.js");
 const { fork } = require("child_process");
-require('dotenv').config();
 const Mastodon = require('mastodon-api');
 const fs = require('fs');
+//const PersonalData = require('./models/PersonalData.js);
 
 const app = express();
 const RiveScript = require('rivescript');
@@ -207,6 +208,11 @@ botDiscord.on('messageCreate', message => {
 		let entry = message.content
 		//recherche de la réponse au message reçu dans le cerveau choisi
 		bot.reply(message.author.name, entry).then(function (reply) {
+			//Récupération des données utilisateur sur la base mongodb
+			//id = bot.currentUser();
+			//data = PersonalData.retrieve({ id });
+			//bot.setUservar(id,'name',data[0],'en');
+			//bot.setUservar(id,'color',data[1],'en');
 			var output = reply;
 			if (output != "Error::No Reply Matched") {
 				message.channel.send(output)
@@ -214,6 +220,10 @@ botDiscord.on('messageCreate', message => {
 			else {
 				message.channel.send("I do not understand, please be more precise.")
 			}
+			//envoi des données sur la base mongodb
+			//name = bot.getUservar(id,'name','en');
+			//color = bot.getUservar(id,'color','en');
+			//PersonalData.send({ id, name, color });
 		}
 		);
 	}
